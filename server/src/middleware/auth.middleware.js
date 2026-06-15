@@ -7,21 +7,27 @@ export const authenticate = async (
   next
 ) => {
   try {
-    const authHeader =
-      req.headers.authorization;
+    // const authHeader =
+    //   req.headers.authorization;
 
-    if (
-      !authHeader ||
-      !authHeader.startsWith("Bearer ")
-    ) {
-      return res.status(401).json({
-        success: false,
-        message: "Access token required",
-      });
-    }
+    // if (
+    //   !authHeader ||
+    //   !authHeader.startsWith("Bearer ")
+    // ) {
+    //   return res.status(401).json({
+    //     success: false,
+    //     message: "Access token required",
+    //   });
+    // } 
+    // *** *** 
+    // disabled for testing purposes
 
-    const token =
-      authHeader.split(" ")[1];
+    const token = jwt.sign(
+      {
+        userId: "mongodb_user_id"
+      },
+      process.env.JWT_SECRET
+    );
 
     const decoded = jwt.verify(
       token,

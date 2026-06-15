@@ -1,5 +1,10 @@
 import express from "express";
 import cors from "cors";
+import 'dotenv/config';
+import cookieParser from "cookie-parser";   
+import connectDB from './config/mongodb.js'
+
+import authRouter from '.src/routes/auth.routes.js'
 
 import attendanceRoutes from "./src/routes/attendance.routes.js";
 import userRoutes from "./src/routes/user.routes.js";
@@ -10,6 +15,24 @@ app.use(cors());
 
 app.use(express.json());
 
+app.use(cookieParser());
+
+app.use(cors({
+    origin:"http://localhost:5173",
+    credentials:true
+}));
+
+
+//to console log the incoming requests
+app.use((req, res, next) => {
+    console.log(` ${req.method} request made to: " ${req.url} " `);
+    next(); 
+});
+
+//routes
+
+app.use('/api/auth',authRouter)
+
 app.use(
   "/api/attendance",
   attendanceRoutes
@@ -17,6 +40,8 @@ app.use(
 
 app.use("/api/users", userRoutes);
 
+
+//sample route for the app
 app.get("/", (req, res) => {
   res.json({
     message:
