@@ -1,6 +1,6 @@
 import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
-import User from '../models/User.js';
+import User from '../model/User.js';
 import transporter from '../config/nodemailer.js';
 
 export const register = async(req,res)=>{
@@ -54,17 +54,17 @@ export const login = async(req,res)=>{
         return res.status(400).json({success:false, msg:"email and password are required "})
     }
     try{
-        const User = await User.findOne({email})
+        const user = await User.findOne({email})
 
-        if(!User){
+        if(!user){
             return res.json({success:false,msg:"Invalid credentials"})
         }
-        const isMatch=await bcrypt.compare(password,User.password)
+        const isMatch=await bcrypt.compare(password,user.password)
 
         if(!isMatch){
             return res.json({success:false,msg:"Invalid password"})
         };
-        const token = jwt.sign({id: User._id}, process.env.JWT_SECRET,{expiresIn:'7d'});
+        const token = jwt.sign({id: user._id}, process.env.JWT_SECRET,{expiresIn:'7d'});
 
         res.cookie('token', token, {
             httpOnly:true,
@@ -74,10 +74,11 @@ export const login = async(req,res)=>{
         });
         return res.json({
             success: true,
-            userId: User._id,
-            name: User.name
+            userId: user._id,
+            name: user.name
         });
-//message
+//message 
+
 
     }catch(err){
         return res.json({success:false,msg:err.message})

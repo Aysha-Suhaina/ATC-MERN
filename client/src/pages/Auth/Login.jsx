@@ -1,4 +1,4 @@
-import React from 'react'
+
 import { useState} from 'react';
 import axios from 'axios';
 import {Link} from 'react-router-dom';
@@ -29,18 +29,18 @@ const Login = () => {
       }
       if(res.data.success==true){
         //localStorage.setItem("user", JSON.stringify(res.data));
-        localStorage.setItem("userId",JSON.parse(res.data.userId));
+        localStorage.setItem("userId",JSON.stringify(res.data.userId))  ;
         //console.log("userId:",localStorage.getItem("userId"));
-        const userId = localStorage.getItem("userId");
-      console.log("RAW:", userId);
-      console.log("TYPE:", typeof userId);
+        // const userId = localStorage.getItem("userId");
+      // console.log("RAW:", userId);
+      // console.log("TYPE:", typeof userId);
       navigate("/dashboard");
       }
       //localStorage.setItem("userId", student._id);
         
     }catch(err){
-      console.log(err);
-      toast.error("login failed");
+      console.log(err.message);
+      toast.error("login failed ");
     }
   }
   return (
