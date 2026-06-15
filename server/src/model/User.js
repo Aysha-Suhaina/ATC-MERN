@@ -2,31 +2,29 @@ import mongoose from "mongoose";
 
 const userSchema = new mongoose.Schema(
   {
+
+    // name: {type: String , required:true },
+    // email: {type: String , required:true, unique:true },
+    // password: {type: String , required:true},
+    // resetOtp :{type: String , default: ''},
+    // resetOtpExpireAt :{type: Number , default: 0}
+
     name: String,
+    email: {type: String,unique: true, required: true},
+    password:{type: String , required:true},
 
-    email: {
-      type: String,
-      unique: true,
-    },
-
-    password: String,
-
+    resetOtp :{type: String , default: ''},
+    resetOtpExpireAt :{type: Number , default: 0},
+    
     role: {
       type: String,
       enum: ["admin", "manager", "employee"],
       default: "employee",
     },
-
     profileImage: String,
-
     department: String,
-
     designation: String,
-
-    isActive: {
-      type: Boolean,
-      default: true,
-    },
+    isActive: {type: Boolean,default: true},
   },
   {
     timestamps: true,
