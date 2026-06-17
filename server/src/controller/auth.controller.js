@@ -18,7 +18,7 @@ export const register = async(req,res)=>{
         }
 
         const hashedPassword= await bcrypt.hash(password,10);
-        const user = new User({name,email,password:hashedPassword});
+        const user = new User({name,email,password:hashedPassword, role:"employee"});
 
         await user.save();
 
@@ -33,13 +33,13 @@ export const register = async(req,res)=>{
         }).json({ success: true, msg: "Registered successfully" });
 
         const mailOptions ={
-        from:process.env.SENDER_MAIL,
+        from: process.env.SENDER_MAIL,
         to: email,
-        subject:`Welcome to our platform ${name}`,
-        text:`Thank you for registering with us ${name}  . Your accound has been created with the email id ${email}.
+        subject: `Welcome to our platform ${name}`,
+        text: `Thank you for registering with us ${name}  . Your accound has been created with the email id ${email}.
         We are excited to have you on board`
     }
-    console.log("sending mail with options:", mailOptions);
+        console.log("sending mail with options:", mailOptions);
         const info = await transporter.sendMail(mailOptions);
 
     }catch(err){
@@ -57,14 +57,16 @@ export const login = async(req,res)=>{
         const user = await User.findOne({email})
 
         if(!user){
-            return res.json({success:false,msg:"Invalid credentials"})
+            return res.json({success:false,msg:"User not registered"})
         }
         const isMatch=await bcrypt.compare(password,user.password)
 
         if(!isMatch){
             return res.json({success:false,msg:"Invalid password"})
         };
-        const token = jwt.sign({id: user._id}, process.env.JWT_SECRET,{expiresIn:'7d'});
+        const token = jwt.sign({id: user._id,role: user.role},
+             process.env.JWT_SECRET,
+             {expiresIn:'7d'});
 
         res.cookie('token', token, {
             httpOnly:true,
@@ -75,7 +77,9 @@ export const login = async(req,res)=>{
         return res.json({
             success: true,
             userId: user._id,
-            name: user.name
+            name: user.name,
+            userRole: user.role,
+            msg: "Login successful"
         });
 //message 
 
@@ -116,17 +120,17 @@ export const sendResetOtp = async (req,res)=>{
         user.resetOtpExpiresAt= Date.now() + 10*60*1000;
 
         await user.save();
-        console.log(" before sending mail ")
+        // console.log(" before sending mail ")
         const mailOptions ={
-        from:process.env.SENDER_MAIL,
+        from: process.env.SENDER_MAIL,
         to: email,
-        subject:"Password Reset OTP",
-        text:`your OTP for resetting your password is ${otp}. The OTP is valid for 10 minutes, 
+        subject: "Password Reset OTP",
+        text: `your OTP for resetting your password is ${otp}. The OTP is valid for 10 minutes, 
         please use it to reset your password.`
         }
 
-        await transporter.sendMail(mailOptions);
-        console.log("mail sent:", mailOptions);
+         const info = await transporter.sendMail(mailOptions);
+        console.log("mail sent:", info);
         return res.status(200).json({success:true,msg:"OTP sent to your email"})
 
     }catch(err){

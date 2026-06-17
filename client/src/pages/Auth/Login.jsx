@@ -30,12 +30,27 @@ const Login = () => {
       if(res.data.success==true){
         //localStorage.setItem("user", JSON.stringify(res.data));
         localStorage.setItem("userId",JSON.stringify(res.data.userId))  ;
-        //console.log("userId:",localStorage.getItem("userId"));
-        // const userId = localStorage.getItem("userId");
+        localStorage.setItem("userRole", res.data.userRole);
+        console.log(res.data);
+        console.log(res.data.role);
+        const role = localStorage.getItem("userRole");
+        console.log("RAW:", role);
+         console.log("TYPE:", typeof role);
+
       // console.log("RAW:", userId);
       // console.log("TYPE:", typeof userId);
-      navigate("/dashboard");
-      }
+
+        
+        if (role === "admin") {
+          navigate("/admin-dashboard");
+        }
+        else if (role === "manager") {
+            navigate("/manager-dashboard");
+        }
+        else {
+            navigate("/employee-dashboard");
+        }
+        }
       //localStorage.setItem("userId", student._id);
         
     }catch(err){

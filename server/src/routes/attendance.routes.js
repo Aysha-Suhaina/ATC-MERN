@@ -8,7 +8,7 @@ import {
   rejectAttendance,
 } from "../controller/attendance.controller.js";
 
-import { authenticate } from "../middleware/auth.middleware.js";
+import { authenticate } from "../middleware/authenticate.middleware.js";
 
 import { authorize } from "../middleware/authorize.middleware.js";
 

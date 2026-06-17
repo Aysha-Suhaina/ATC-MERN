@@ -5,7 +5,7 @@ import {
   updateProfile,
 } from "../controller/user.controller.js";
 
-import { authenticate } from "../middleware/auth.middleware.js";
+import { authenticate } from "../middleware/authenticate.middleware.js";
 
 const router = express.Router();
 
