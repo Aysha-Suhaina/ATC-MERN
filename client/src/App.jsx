@@ -5,6 +5,7 @@ import Login from "./pages/Auth/Login";
 import ResetPassword from "./pages/Auth/ResetPassword";
 import Register from "./pages/Auth/Register";
 import Dashboard from "./pages/Dashboard/Dashboard";
+import EditAttendance from "./pages/Dashboard/EditAttendance";
 import AdminDashboard from "./pages/Dashboard/AdminDashboard";
 import ManagerDashboard from "./pages/Dashboard/ManagerDashboard";
 import { ToastContainer } from "react-toastify";
@@ -25,6 +26,11 @@ function App(){
               <Dashboard />
             </ProtectedRoute>
           }
+        />
+
+        <Route
+          path="/attendance/edit/:id"
+          element={<EditAttendance />}
         />
 
         <Route

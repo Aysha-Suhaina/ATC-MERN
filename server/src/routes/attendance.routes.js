@@ -5,6 +5,7 @@ import {
   getPendingAttendance,
   approveAttendance,
   rejectAttendance,
+  resubmitAttendance
 } from "../controller/attendance.controller.js";
 import { authenticate } from "../middleware/authenticate.middleware.js";
 import { authorize } from "../middleware/authorize.middleware.js";
@@ -13,6 +14,9 @@ import {
 } from "../validators/attendance.validator.js";
 
 const router = express.Router();
+
+//route path: /api/attendance
+
 
 router.post(
   "/",
@@ -56,5 +60,13 @@ router.patch(
   ),
   rejectAttendance
 );
+
+router.put(
+  "/:id/resubmit",
+  authenticate,
+  authorize("employee"),
+  validateAttendanceSubmission,
+  resubmitAttendance
+)
 
 export default router;

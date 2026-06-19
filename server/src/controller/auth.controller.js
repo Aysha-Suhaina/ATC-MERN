@@ -4,7 +4,7 @@ import User from '../model/User.js';
 import transporter from '../config/nodemailer.js';
 
 export const register = async(req,res)=>{
-    const{name,email,password}=req.body;
+    const{name,email,password,designation,department}=req.body;
 
     if(!name || !email || !password){
         return res.status(400).json({success:false , msg:"enter all the credentials"})
@@ -18,7 +18,7 @@ export const register = async(req,res)=>{
         }
 
         const hashedPassword= await bcrypt.hash(password,10);
-        const user = new User({name,email,password:hashedPassword, role:"employee"});
+        const user = new User({name,email,password:hashedPassword,designation,department, role:"employee"});
 
         await user.save();
 
@@ -39,8 +39,8 @@ export const register = async(req,res)=>{
         text: `Thank you for registering with us ${name}  . Your accound has been created with the email id ${email}.
         We are excited to have you on board`
     }
-        console.log("sending mail with options:", mailOptions);
-        const info = await transporter.sendMail(mailOptions);
+
+       // const info = await transporter.sendMail(mailOptions);
 
     }catch(err){
         return res.status(400).json({success:false,msg:err.message})

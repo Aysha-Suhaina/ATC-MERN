@@ -60,6 +60,14 @@ const attendanceSchema = new mongoose.Schema(
     },
 
     approvedAt: Date,
+
+    
+    rejectedBy: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "User",
+    },
+
+    rejectedAt: Date,
   },
   {
     timestamps: true,
