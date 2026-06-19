@@ -218,10 +218,10 @@ export const rejectAttendance =
       attendance.approvalStatus =
         "rejected";
 
-      attendance.approvedBy =
+      attendance.rejectedBy =
         req.user.id;
 
-      attendance.approvedAt =
+      attendance.rejectedAt =
         new Date();
 
       attendance.remarks = remarks;
@@ -239,3 +239,59 @@ export const rejectAttendance =
       next(error);
     }
   };
+
+  export const resubmitAttendance = async (req, res) => {
+  try {
+    const attendance = await Attendance.findById(req.params.id);
+
+    if (!attendance) {
+      return res.status(404).json({
+        success: false,
+        message: "Attendance not found",
+      });
+    }
+
+    if (
+      attendance.employee.toString() !== req.user.id
+    ) {
+      return res.status(403).json({
+        success: false,
+        message: "Unauthorized",
+      });
+    }
+
+    if (
+      attendance.approvalStatus !== "rejected"
+    ) {
+      return res.status(400).json({
+        success: false,
+        message: "Only rejected attendance can be edited",
+      });
+    }
+
+    attendance.checkInTime = req.body.checkInTime;
+    attendance.checkOutTime = req.body.checkOutTime;
+    attendance.remarks = req.body.remarks;
+
+    attendance.approvalStatus = "pending";
+
+    attendance.rejectionReason = "";
+
+    attendance.rejectedBy = null;
+
+    attendance.rejectedAt = null;
+
+    await attendance.save();
+
+    res.status(200).json({
+      success: true,
+      message: "Attendance resubmitted successfully",
+      attendance,
+    });
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      message: error.message,
+    });
+  }
+};

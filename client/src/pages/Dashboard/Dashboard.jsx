@@ -4,10 +4,14 @@ import {
   submitAttendance,
   getMyAttendance,
 } from "../../api/attendanceApi";
+import { useNavigate } from "react-router-dom";
+
 import Navbar from "../../components/Navbar";
 import { toast } from "react-toastify";
 
 const Dashboard = () => {
+  
+const navigate = useNavigate();
   console.log("Dashboard rendered");
   const [profile, setProfile] =
     useState(null);
@@ -264,12 +268,26 @@ const Dashboard = () => {
                 <td>
                   {item.approvalStatus}
                 </td>
+
+                <td>
+                   {
+                    item.approvalStatus === "rejected" && (
+                      <button  onClick={() =>
+                          navigate(`/attendance/edit/${item._id}`)
+                        }>
+                        Edit & Resubmit
+                      </button>
+                    )
+                  }
+                </td>
               </tr>
             ))}
 
         </tbody>
 
       </table>
+
+     
 
     </div>
     </>
