@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { getProfile } from "../../api/userApi";
 import {
   submitAttendance,
@@ -8,9 +8,22 @@ import Navbar from "../../components/Navbar";
 import { toast } from "react-toastify";
 
 const Dashboard = () => {
+  console.log("Dashboard rendered");
   const [profile, setProfile] =
     useState(null);
 
+
+    //Backend attendance structure :
+    // const attendance =
+    // await Attendance.create({
+    //   user: req.user.id, - missing
+    //   date,
+    //   checkInTime,
+    //   checkOutTime,
+    //   totalHours, - missing
+    //   attendanceStatus,
+    //   remarks,
+    // });
   const [attendance,
     setAttendance] = useState([]);
 
@@ -23,7 +36,9 @@ const Dashboard = () => {
       remarks: "",
     });
 
-  const loadData = async () => {
+    
+
+  const loadData = useCallback(async () => {
     try {
       const profileRes =
         await getProfile();
@@ -32,20 +47,28 @@ const Dashboard = () => {
         await getMyAttendance();
 
       setProfile(
-        profileRes.data.data
+        profileRes.data?.data ??
+          profileRes.data ??
+          null
       );
 
       setAttendance(
-        attendanceRes.data.data
+        attendanceRes.data?.data ??
+          attendanceRes.data ??
+          []
       );
     } catch (err) {
       console.log(err);
     }
-  };
+  }, []);
 
-//   useEffect(() => {
-//     loadData();
-//   }, []);
+  useEffect(() => {
+    const fetchData = async () => {
+      await loadData();
+    };
+
+    fetchData();
+  }, [loadData]);
 
   const handleChange = (e) => {
     setForm({
@@ -60,14 +83,30 @@ const Dashboard = () => {
       e.preventDefault();
 
       try {
-        await submitAttendance(form);
+        if (
+          !form.date ||
+          !form.checkInTime ||
+          !form.checkOutTime
+        ) {
+          toast.warning(
+            "Please select date and both times"
+          );
+          return;
+        }
+
+        const payload = {
+          ...form,
+          checkInTime: `${form.date}T${form.checkInTime}`,
+          checkOutTime: `${form.date}T${form.checkOutTime}`,
+        };
+
+        await submitAttendance(payload);
 
         toast.success(
           "Attendance submitted"
         );
 
-        loadData();
-
+        await loadData();
       } catch (err) {
         toast.error(
           err.response?.data?.message ||
@@ -116,7 +155,7 @@ const Dashboard = () => {
       <form
         onSubmit={handleSubmit}
       >
-
+        <label>Date:</label>
         <input
           type="date"
           name="date"
@@ -126,17 +165,18 @@ const Dashboard = () => {
 
         <br />
 
+        <label>Check In Time:</label>
         <input
-          type="datetime-local"
+          type="time"
           name="checkInTime"
           onChange={handleChange}
           required
         />
 
         <br />
-
+        <label>Check Out Time:</label>
         <input
-          type="datetime-local"
+          type="time"
           name="checkOutTime"
           onChange={handleChange}
           required
@@ -204,37 +244,28 @@ const Dashboard = () => {
 
         <tbody>
 
-          {attendance.map(
-            (item) => (
+          {Array.isArray(attendance) &&
+            attendance.map((item) => (
               <tr key={item._id}>
                 <td>
-                  {
-                    new Date(
-                      item.date
-                    ).toLocaleDateString()
-                  }
+                  {new Date(
+                    item.date
+                  ).toLocaleDateString()}
                 </td>
 
                 <td>
-                  {
-                    item.attendanceStatus
-                  }
+                  {item.attendanceStatus}
                 </td>
 
                 <td>
-                  {
-                    item.totalHours
-                  }
+                  {item.totalHours ?? "-"}
                 </td>
 
                 <td>
-                  {
-                    item.approvalStatus
-                  }
+                  {item.approvalStatus}
                 </td>
               </tr>
-            )
-          )}
+            ))}
 
         </tbody>
 

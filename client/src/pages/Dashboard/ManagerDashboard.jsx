@@ -1,5 +1,5 @@
 import {
-  useState,
+  useEffect,useState,
 } from "react";
 import Navbar from "../../components/Navbar";
 
@@ -25,10 +25,10 @@ const ManagerDashboard = () => {
       );
     };
 
-  // useEffect(() => {
-  //   loadData();
-  // }, []);
-  // while uncommenting make sure to import useeffecct 
+  useEffect(() => {
+    loadData();
+  }, []);
+  
 
   return (
 

@@ -9,6 +9,8 @@ import { authenticate } from "../middleware/authenticate.middleware.js";
 
 const router = express.Router();
 
+// route path : /api/user
+
 router.get(
   "/profile",
   authenticate,

@@ -15,9 +15,59 @@ export const submitAttendance = async (
       remarks,
     } = req.body;
 
+    const parsedDate = new Date(date);
+
+    const normalizeDateTime = (
+      value,
+      fallbackDate
+    ) => {
+      if (!value) return null;
+
+      const direct = new Date(value);
+      if (!Number.isNaN(direct.getTime())) {
+        return direct;
+      }
+
+      if (
+        typeof value === "string" &&
+        value.includes(":") &&
+        !value.includes("T") &&
+        fallbackDate
+      ) {
+        const combined = new Date(
+          `${fallbackDate}T${value}`
+        );
+        if (!Number.isNaN(combined.getTime())) {
+          return combined;
+        }
+      }
+
+      return null;
+    };
+
+    const normalizedCheckIn = normalizeDateTime(
+      checkInTime,
+      date
+    );
+    const normalizedCheckOut = normalizeDateTime(
+      checkOutTime,
+      date
+    );
+
+    if (
+      Number.isNaN(parsedDate.getTime()) ||
+      !normalizedCheckIn ||
+      !normalizedCheckOut
+    ) {
+      return res.status(400).json({
+        message:
+          "Please provide valid date and time values",
+      });
+    }
+
     const existing = await Attendance.findOne({
       user: req.user.id,
-      date,
+      date: parsedDate,
     });
 
     if (existing) {
@@ -28,17 +78,19 @@ export const submitAttendance = async (
     }
 
     const totalHours =
-      (new Date(checkOutTime) -
-        new Date(checkInTime)) /
-      (1000 * 60 * 60);
+      Math.max(
+        0,
+        (normalizedCheckOut - normalizedCheckIn) /
+          (1000 * 60 * 60)
+      ) || 0;
 
     const attendance =
       await Attendance.create({
         user: req.user.id,
-        date,
-        checkInTime,
-        checkOutTime,
-        totalHours,
+        date: parsedDate,
+        checkInTime: normalizedCheckIn,
+        checkOutTime: normalizedCheckOut,
+        totalHours: Number(totalHours.toFixed(2)),
         attendanceStatus,
         remarks,
       });

@@ -51,7 +51,7 @@ const Login = () => {
             navigate("/employee-dashboard");
         }
         }
-      //localStorage.setItem("userId", student._id);
+      //localStorage.setItem("userId", userId._id);
         
     }catch(err){
       console.log(err.message);
