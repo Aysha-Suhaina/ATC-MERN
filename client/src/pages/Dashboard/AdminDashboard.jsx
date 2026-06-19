@@ -1,10 +1,8 @@
-
+import ManagerDashboard from "./ManagerDashboard";
+import Navbar from "../../components/Navbar"
 const AdminDashboard = () => {
-  return (
-    <div>
-      <h1>admin dashboard </h1>
-    </div>
-  )
-}
 
-export default AdminDashboard
+  <Navbar/>
+  return <ManagerDashboard />;
+};
+export default AdminDashboard;

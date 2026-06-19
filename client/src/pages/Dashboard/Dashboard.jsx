@@ -1,0 +1,248 @@
+import { useState } from "react";
+import { getProfile } from "../../api/userApi";
+import {
+  submitAttendance,
+  getMyAttendance,
+} from "../../api/attendanceApi";
+import Navbar from "../../components/Navbar";
+import { toast } from "react-toastify";
+
+const Dashboard = () => {
+  const [profile, setProfile] =
+    useState(null);
+
+  const [attendance,
+    setAttendance] = useState([]);
+
+  const [form,
+    setForm] = useState({
+      date: "",
+      checkInTime: "",
+      checkOutTime: "",
+      attendanceStatus: "present",
+      remarks: "",
+    });
+
+  const loadData = async () => {
+    try {
+      const profileRes =
+        await getProfile();
+
+      const attendanceRes =
+        await getMyAttendance();
+
+      setProfile(
+        profileRes.data.data
+      );
+
+      setAttendance(
+        attendanceRes.data.data
+      );
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
+//   useEffect(() => {
+//     loadData();
+//   }, []);
+
+  const handleChange = (e) => {
+    setForm({
+      ...form,
+      [e.target.name]:
+        e.target.value,
+    });
+  };
+
+  const handleSubmit =
+    async (e) => {
+      e.preventDefault();
+
+      try {
+        await submitAttendance(form);
+
+        toast.success(
+          "Attendance submitted"
+        );
+
+        loadData();
+
+      } catch (err) {
+        toast.error(
+          err.response?.data?.message ||
+          "Failed"
+        );
+      }
+    };
+
+  return (
+
+    <>
+    <Navbar />
+    
+    <div style={{ padding: "20px" }}>
+
+      <h1>
+        Employee Dashboard
+      </h1>
+
+      {profile && (
+        <div>
+          <h3>
+            {profile.name}
+          </h3>
+
+          <p>
+            {profile.department}
+          </p>
+
+          <p>
+            {profile.designation}
+          </p>
+
+          <p>
+            Role: {profile.role}
+          </p>
+        </div>
+      )}
+
+      <hr />
+
+      <h2>
+        Submit Attendance
+      </h2>
+
+      <form
+        onSubmit={handleSubmit}
+      >
+
+        <input
+          type="date"
+          name="date"
+          onChange={handleChange}
+          required
+        />
+
+        <br />
+
+        <input
+          type="datetime-local"
+          name="checkInTime"
+          onChange={handleChange}
+          required
+        />
+
+        <br />
+
+        <input
+          type="datetime-local"
+          name="checkOutTime"
+          onChange={handleChange}
+          required
+        />
+
+        <br />
+
+        <select
+          name="attendanceStatus"
+          onChange={handleChange}
+        >
+          <option value="present">
+            Present
+          </option>
+
+          <option value="absent">
+            Absent
+          </option>
+
+          <option value="half_day">
+            Half Day
+          </option>
+
+          <option value="late">
+            Late
+          </option>
+
+          <option value="leave">
+            Leave
+          </option>
+        </select>
+
+        <br />
+
+        <textarea
+          name="remarks"
+          placeholder="Remarks"
+          onChange={handleChange}
+        />
+
+        <br />
+
+        <button type="submit">
+          Submit
+        </button>
+
+      </form>
+
+      <hr />
+
+      <h2>
+        My Attendance
+      </h2>
+
+      <table border="1">
+
+        <thead>
+          <tr>
+            <th>Date</th>
+            <th>Status</th>
+            <th>Hours</th>
+            <th>Approval</th>
+          </tr>
+        </thead>
+
+        <tbody>
+
+          {attendance.map(
+            (item) => (
+              <tr key={item._id}>
+                <td>
+                  {
+                    new Date(
+                      item.date
+                    ).toLocaleDateString()
+                  }
+                </td>
+
+                <td>
+                  {
+                    item.attendanceStatus
+                  }
+                </td>
+
+                <td>
+                  {
+                    item.totalHours
+                  }
+                </td>
+
+                <td>
+                  {
+                    item.approvalStatus
+                  }
+                </td>
+              </tr>
+            )
+          )}
+
+        </tbody>
+
+      </table>
+
+    </div>
+    </>
+  );
+};
+
+export default Dashboard;

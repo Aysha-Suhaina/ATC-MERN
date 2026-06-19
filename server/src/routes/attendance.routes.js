@@ -1,5 +1,4 @@
 import express from "express";
-
 import {
   submitAttendance,
   getMyAttendance,
@@ -7,11 +6,8 @@ import {
   approveAttendance,
   rejectAttendance,
 } from "../controller/attendance.controller.js";
-
 import { authenticate } from "../middleware/authenticate.middleware.js";
-
 import { authorize } from "../middleware/authorize.middleware.js";
-
 import {
   validateAttendanceSubmission,
 } from "../validators/attendance.validator.js";
@@ -20,7 +16,7 @@ const router = express.Router();
 
 router.post(
   "/",
-  // authenticate,
+  authenticate,
   validateAttendanceSubmission,
   submitAttendance
 );
