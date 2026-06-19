@@ -7,7 +7,8 @@ function Logout({ close }) {
 
   const logout = async () => {
     await axios.post("http://localhost:4000/api/auth/logout", {}, { withCredentials: true });
-    localStorage.removeItem("user");
+    localStorage.removeItem("userId");
+    localStorage.removeItem("userRole");
     navigate("/");
   };
 

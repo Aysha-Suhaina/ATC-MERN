@@ -5,7 +5,7 @@ function Navbar() {
   const [open, setOpen] = useState(false);
   return (
     <div className="navbar">
-      <h2>Student Portal</h2>
+      <h2>Employee Portal</h2>
       <button onClick={() => setOpen(true)}>Logout</button>
 
       {open && <Logout close={() => setOpen(false)} />}

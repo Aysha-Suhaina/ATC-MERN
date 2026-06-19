@@ -1,9 +1,10 @@
 import {Routes,Route} from "react-router-dom";
+import ProtectedRoute from "./ProtectedRoute";
 import Home from "./pages/Auth/Home";
 import Login from "./pages/Auth/Login";
 import ResetPassword from "./pages/Auth/ResetPassword";
 import Register from "./pages/Auth/Register";
-import Dashboard from "./pages/Auth/Dashboard";
+import Dashboard from "./pages/Dashboard/Dashboard";
 import AdminDashboard from "./pages/Dashboard/AdminDashboard";
 import ManagerDashboard from "./pages/Dashboard/ManagerDashboard";
 import { ToastContainer } from "react-toastify";
@@ -17,12 +18,31 @@ function App(){
         <Route path="/login" element={<Login/>} />
         <Route path="/reset-password" element={<ResetPassword/>} />
         <Route path="/register" element={<Register/>} />
-        <Route path="/employee-dashboard" element={<Dashboard/>} />
+        <Route
+          path="/employee-dashboard"
+          element={
+            <ProtectedRoute allowedRoles={["employee","admin","manager"]}>
+              <Dashboard />
+            </ProtectedRoute>
+          }
+        />
 
-        <Route path="/admin-dashboard" element={<AdminDashboard/>} />
-        <Route path="/manager-dashboard" element={<ManagerDashboard/>} />
-
-        
+        <Route
+          path="/admin-dashboard"
+          element={
+            <ProtectedRoute allowedRoles={["admin"]}>
+              <AdminDashboard />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/manager-dashboard"
+          element={
+            <ProtectedRoute allowedRoles={["manager","admin"]}>
+              <ManagerDashboard />
+            </ProtectedRoute>
+          }
+        />
 
       </Routes>
       <ToastContainer position="top-right" autoClose={3000} theme="colored"/>
