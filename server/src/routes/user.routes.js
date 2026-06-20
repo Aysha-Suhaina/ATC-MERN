@@ -2,10 +2,12 @@ import express from "express";
 
 import {
   getProfile,
-  updateProfile,
+  updateProfile,getAllEmployees,getEmployeeById,createEmployee,
+  updateEmployee,deactivateEmployee
 } from "../controller/user.controller.js";
 
 import { authenticate } from "../middleware/authenticate.middleware.js";
+import { authorize } from "../middleware/authorize.middleware.js";
 
 const router = express.Router();
 
@@ -22,5 +24,40 @@ router.put(
   authenticate,
   updateProfile
 );
+
+router.get(
+  "/employees",
+  authenticate,
+  authorize("admin"),
+  getAllEmployees
+);
+
+router.get(
+  "/employees/:id",
+  authenticate,
+  authorize("admin"),
+  getEmployeeById
+);
+
+router.post(
+  "/employees",
+  authenticate,
+  authorize("admin"),
+  createEmployee
+);
+
+router.put(
+  "/employees/:id",
+  authenticate,
+  authorize("admin"),
+  updateEmployee
+);
+router.patch(
+  "/employees/:id/deactivate",
+  authenticate,
+  authorize("admin"),
+  deactivateEmployee
+);
+
 
 export default router;

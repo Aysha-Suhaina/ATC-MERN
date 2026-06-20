@@ -59,6 +59,14 @@ export const login = async(req,res)=>{
         if(!user){
             return res.json({success:false,msg:"User not registered"})
         }
+
+        if (!user.isActive) {
+            return res.status(403).json({
+                success: false,
+                message:
+                "Account has been deactivated",
+            });
+            }
         const isMatch=await bcrypt.compare(password,user.password)
 
         if(!isMatch){
