@@ -2,6 +2,7 @@ import express from "express";
 import {
   submitAttendance,
   getMyAttendance,
+  getAttendanceById,
   getPendingAttendance,
   approveAttendance,
   rejectAttendance,
@@ -39,6 +40,12 @@ router.get(
     "manager"
   ),
   getPendingAttendance
+);
+
+router.get(
+  "/:attendanceId",
+  authenticate,
+  getAttendanceById
 );
 
 router.patch(

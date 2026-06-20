@@ -130,6 +130,45 @@ export const getMyAttendance = async (
   }
 };
 
+export const getAttendanceById = async (
+  req,
+  res,
+  next
+) => {
+  try {
+    const attendance = await Attendance.findById(
+      req.params.attendanceId
+    );
+
+    if (!attendance) {
+      return res.status(404).json({
+        success: false,
+        message: "Attendance not found",
+      });
+    }
+
+    if (
+      attendance.user.toString() !==
+      req.user.id
+    ) {
+      return res.status(403).json({
+        success: false,
+        message: "Unauthorized",
+      });
+    }
+
+    return res.status(200).json(
+      new ApiResponse(
+        200,
+        "Attendance fetched",
+        attendance
+      )
+    );
+  } catch (error) {
+    next(error);
+  }
+};
+
 export const getPendingAttendance =
   async (req, res, next) => {
     try {
@@ -240,9 +279,15 @@ export const rejectAttendance =
     }
   };
 
-  export const resubmitAttendance = async (req, res) => {
+export const resubmitAttendance = async (
+  req,
+  res,
+  next
+) => {
   try {
-    const attendance = await Attendance.findById(req.params.id);
+    const attendance = await Attendance.findById(
+      req.params.id
+    );
 
     if (!attendance) {
       return res.status(404).json({
@@ -252,7 +297,8 @@ export const rejectAttendance =
     }
 
     if (
-      attendance.employee.toString() !== req.user.id
+      attendance.user.toString() !==
+      req.user.id
     ) {
       return res.status(403).json({
         success: false,
@@ -265,33 +311,87 @@ export const rejectAttendance =
     ) {
       return res.status(400).json({
         success: false,
-        message: "Only rejected attendance can be edited",
+        message:
+          "Only rejected attendance can be edited",
       });
     }
 
-    attendance.checkInTime = req.body.checkInTime;
-    attendance.checkOutTime = req.body.checkOutTime;
-    attendance.remarks = req.body.remarks;
+    const baseDate = attendance.date || new Date();
+
+    const normalizeTimeToDate = (
+      value,
+      fallbackDate
+    ) => {
+      if (!value) return null;
+
+      const direct = new Date(value);
+      if (!Number.isNaN(direct.getTime())) {
+        return direct;
+      }
+
+      if (
+        typeof value === "string" &&
+        value.includes(":") &&
+        !value.includes("T")
+      ) {
+        const combined = new Date(
+          `${fallbackDate.toISOString().slice(
+            0,
+            10
+          )}T${value}`
+        );
+
+        if (!Number.isNaN(combined.getTime())) {
+          return combined;
+        }
+      }
+
+      return null;
+    };
+
+    const normalizedCheckIn = normalizeTimeToDate(
+      req.body.checkInTime,
+      baseDate
+    );
+    const normalizedCheckOut = normalizeTimeToDate(
+      req.body.checkOutTime,
+      baseDate
+    );
+
+    if (
+      !normalizedCheckIn ||
+      !normalizedCheckOut
+    ) {
+      return res.status(400).json({
+        success: false,
+        message: "Invalid check-in or check-out time",
+      });
+    }
+
+    attendance.checkInTime = normalizedCheckIn;
+    attendance.checkOutTime = normalizedCheckOut;
+    attendance.remarks = req.body.remarks || "";
+    attendance.totalHours = Number(
+      Math.max(
+        0,
+        (normalizedCheckOut - normalizedCheckIn) /
+          (1000 * 60 * 60)
+      ).toFixed(2)
+    );
 
     attendance.approvalStatus = "pending";
-
     attendance.rejectionReason = "";
-
     attendance.rejectedBy = null;
-
     attendance.rejectedAt = null;
 
     await attendance.save();
 
-    res.status(200).json({
+    return res.status(200).json({
       success: true,
       message: "Attendance resubmitted successfully",
       attendance,
     });
   } catch (error) {
-    res.status(500).json({
-      success: false,
-      message: error.message,
-    });
+    next(error);
   }
 };
