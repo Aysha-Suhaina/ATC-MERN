@@ -66,7 +66,7 @@ export const login = async(req,res)=>{
                 message:
                 "Account has been deactivated",
             });
-            }
+        }
         const isMatch=await bcrypt.compare(password,user.password)
 
         if(!isMatch){

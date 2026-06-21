@@ -1,3 +1,4 @@
+import bcrypt from "bcryptjs";
 import User from "../model/User.js";
 import ApiResponse from "../utils/ApiResponse.js";
 
@@ -78,6 +79,37 @@ export const updateProfile =
   }
 };
 
+export const getAllAttendance =
+  async (req, res, next) => {
+    try {
+      const records =
+        await Attendance.find()
+          .populate("employeeId");
+
+      res.status(200).json({
+        success: true,
+        records,
+      });
+    } catch (error) {
+      next(error);
+    }
+  };
+
+  export const deleteAttendance =
+  async (req, res, next) => {
+    try {
+      await Attendance.findByIdAndDelete(
+        req.params.id
+      );
+
+      res.status(200).json({
+        success: true,
+      });
+    } catch (error) {
+      next(error);
+    }
+  };
+
 export const getEmployeeById =
   async (req, res) => {
     const employee =
@@ -105,19 +137,40 @@ export const createEmployee = async (
       designation,
     } = req.body;
 
-    const employee =
-      await User.create({
-        name,
-        email,
-        password,
-        role: "employee",
-        department,
-        designation,
+    if (!name || !email || !password) {
+      return res.status(400).json({
+        success: false,
+        message: "Name, email, and password are required",
       });
+    }
 
-    res.status(201).json({
+    const existingEmployee = await User.findOne({ email });
+
+    if (existingEmployee) {
+      return res.status(409).json({
+        success: false,
+        message: "Email already exists",
+      });
+    }
+
+    const hashedPassword = await bcrypt.hash(password, 10);
+
+    const employee = await User.create({
+      name,
+      email,
+      password: hashedPassword,
+      role: "employee",
+      department,
+      designation,
+    });
+
+    const employeeResponse = employee.toObject();
+    delete employeeResponse.password;
+
+    return res.status(201).json({
       success: true,
-      employee,
+      message: "Employee created successfully",
+      employee: employeeResponse,
     });
   } catch (error) {
     next(error);
