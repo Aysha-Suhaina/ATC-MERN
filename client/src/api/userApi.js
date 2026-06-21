@@ -17,3 +17,58 @@ export const updateProfile = async (data) => {
     }
   );
 };
+
+//employee mgmt 
+
+export const getEmployees =
+  async () => {
+    return axios.get(
+      `${API}/employees`,
+      {
+        withCredentials: true,
+      }
+    );
+  };
+
+export const createEmployee =
+  async (data) => {
+    return axios.post(
+      `${API}/employees`,
+      data,
+      {
+        withCredentials: true,
+      }
+    );
+  };
+
+  export const updateEmployee =
+  async (id, data) => {
+    return axios.put(
+      `${API}/employees/${id}`,
+      data,
+      {
+        withCredentials: true,
+      }
+    );
+  };
+
+export const getEmployeeById =
+  async (id) => {
+    return axios.get(
+      `${API}/employees/${id}`,
+      {
+        withCredentials: true,
+      }
+    );
+  };
+
+  export const deactivateEmployee =
+  async (id) => {
+    return axios.patch(
+      `${API}/employees/${id}/deactivate`,
+      {},
+      {
+        withCredentials: true,
+      }
+    );
+  };

@@ -18,6 +18,7 @@ const navigate = useNavigate();
 
 
     //Backend attendance structure :
+    //for my reference 
     // const attendance =
     // await Attendance.create({
     //   user: req.user.id, - missing

@@ -8,6 +8,9 @@ import Dashboard from "./pages/Dashboard/Dashboard";
 import EditAttendance from "./pages/Dashboard/EditAttendance";
 import AdminDashboard from "./pages/Dashboard/AdminDashboard";
 import ManagerDashboard from "./pages/Dashboard/ManagerDashboard";
+import EmployeeList from "./pages/admin/EmployeeList";
+import CreateEmployee from "./pages/admin/CreateEmployee";
+import UpdateEmployee from "./pages/admin/UpdateEmployee";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
@@ -46,6 +49,33 @@ function App(){
           element={
             <ProtectedRoute allowedRoles={["manager","admin"]}>
               <ManagerDashboard />
+            </ProtectedRoute>
+          }
+        />
+
+        <Route
+          path="/admin/employees"
+          element={
+            <ProtectedRoute allowedRoles={['admin']}>
+              <EmployeeList />
+            </ProtectedRoute>
+          }
+        />
+
+        <Route
+          path="/admin/employees/create"
+          element={
+            <ProtectedRoute allowedRoles={['admin']}>
+              <CreateEmployee />
+            </ProtectedRoute>
+          }
+        />
+
+        <Route
+          path="/admin/employees/edit/:id"
+          element={
+            <ProtectedRoute allowedRoles={['admin']}>
+              <UpdateEmployee />
             </ProtectedRoute>
           }
         />
