@@ -11,6 +11,9 @@ import ManagerDashboard from "./pages/Dashboard/ManagerDashboard";
 import EmployeeList from "./pages/admin/EmployeeList";
 import CreateEmployee from "./pages/admin/CreateEmployee";
 import UpdateEmployee from "./pages/admin/UpdateEmployee";
+import AdminAttendanceMgmt from "./pages/admin/AdminAttendanceMgmt";
+import PendingAttendance from "./pages/admin/PendingAttendance";
+//import Profile from "./pages/Profile/Profile";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
@@ -36,6 +39,7 @@ function App(){
           element={<EditAttendance />}
         />
 
+
         <Route
           path="/admin-dashboard"
           element={
@@ -52,6 +56,35 @@ function App(){
             </ProtectedRoute>
           }
         />
+
+        <Route
+          path="/admin/attendance"
+          element={
+            <ProtectedRoute allowedRoles={["admin"]}>
+              <AdminAttendanceMgmt />
+            </ProtectedRoute>
+          }
+        />
+
+        <Route
+          path="/admin/pending-attendance"
+          element={
+            <ProtectedRoute allowedRoles={["admin"]}>
+              <PendingAttendance />
+            </ProtectedRoute>
+          }
+        />
+
+        {/* <Route
+          path="/profile"
+          element={
+            <ProtectedRoute
+              allowedRoles={["admin","manager","employee"]}
+            >
+              <Profile />
+            </ProtectedRoute>
+          }
+        /> */}
 
         <Route
           path="/admin/employees"

@@ -1,12 +1,14 @@
 import express from "express";
 import {
   submitAttendance,
+  getAllAttendance,
   getMyAttendance,
   getAttendanceById,
   getPendingAttendance,
   approveAttendance,
   rejectAttendance,
-  resubmitAttendance
+  resubmitAttendance,
+  deleteAttendance,
 } from "../controller/attendance.controller.js";
 import { authenticate } from "../middleware/authenticate.middleware.js";
 import { authorize } from "../middleware/authorize.middleware.js";
@@ -24,6 +26,16 @@ router.post(
   authenticate,
   validateAttendanceSubmission,
   submitAttendance
+);
+
+router.get(
+  "/",
+  authenticate,
+  authorize(
+    "admin",
+    "manager"
+  ),
+  getAllAttendance
 );
 
 router.get(
@@ -74,6 +86,13 @@ router.put(
   authorize("employee"),
   validateAttendanceSubmission,
   resubmitAttendance
-)
+);
+
+router.delete(
+  "/:attendanceId",
+  authenticate,
+  authorize("admin"),
+  deleteAttendance
+);
 
 export default router;

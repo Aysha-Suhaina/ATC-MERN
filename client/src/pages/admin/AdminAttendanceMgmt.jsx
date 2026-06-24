@@ -1,12 +1,10 @@
 import { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
 import {
   getAllAttendance,
   deleteAttendance,
 } from "../../api/attendanceApi";
 
 const AdminAttendanceMgmt = () => {
-    const navigate = useNavigate();
   const [records, setRecords] =
     useState([]);
 
@@ -14,8 +12,8 @@ const AdminAttendanceMgmt = () => {
   const fetchAttendance = async () => {
     try {
       const res = await getAllAttendance();
-
-      setRecords(res.data.records);
+      console.log(res.data);
+      setRecords(res.data.data);
     } catch (error) {
       console.log(error);
     }
@@ -58,66 +56,39 @@ const handleDelete = async (id) => {
       </h1>
 
       <table>
-        <thead>
-          <tr>
-            <th>Employee</th>
-            <th>Date</th>
-            <th>Status</th>
-          </tr>
-        </thead>
-
-        <tbody>
-          {records.map((record) => (
-            <tr key={record._id}>
-              <td>
-                {
-                  record.employeeId
-                    ?.name
-                }
-              </td>
-
-              <td>
-                {record.date}
-              </td>
-
-              <td>
-                {
-                  record.attendanceStatus
-                }
-              </td>
-            </tr>
-          ))}
-        </tbody>
-        <tbody>
-  {records.map((record) => (
-    <tr key={record._id}>
-      <td>{record.employeeId?.name}</td>
-      <td>{record.date}</td>
-      <td>{record.attendanceStatus}</td>
-
-      <td>
-        <button
-          onClick={() =>
-            navigate(
-              `/attendance/edit/${record._id}`
-            )
-          }
-        >
-          Edit
-        </button>
-
-        <button
-          onClick={() =>
-            handleDelete(record._id)
-          }
-        >
-          Delete
-        </button>
-      </td>
+  <thead>
+    <tr>
+      <th>Employee</th>
+      <th>Date</th>
+      <th>Status</th>
+      <th>Actions</th>
     </tr>
-  ))}
-</tbody>
-      </table>
+  </thead>
+
+  <tbody>
+    {records.map((record) => (
+      <tr key={record._id}>
+        <td>{record.user?.name || "Unknown User"}</td>
+
+        <td>
+          {new Date(record.date).toLocaleDateString()}
+        </td>
+
+        <td>{record.attendanceStatus}</td>
+
+        <td>
+          <button
+            onClick={() =>
+              handleDelete(record._id)
+            }
+          >
+            Delete
+          </button>
+        </td>
+      </tr>
+    ))}
+  </tbody>
+</table>
     </div>
   );
 };

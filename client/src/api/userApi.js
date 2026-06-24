@@ -72,3 +72,28 @@ export const getEmployeeById =
       }
     );
   };
+
+  export const getAllAttendance = async () => {
+  return axios.get(API, {
+    withCredentials: true,
+  });
+};
+
+export const deleteAttendance = async (id) => {
+  return axios.delete(`${API}/${id}`, {
+    withCredentials: true,
+  });
+};
+
+export const updateAttendance = async (
+  id,
+  data
+) => {
+  return axios.put(
+    `${API}/${id}`,
+    data,
+    {
+      withCredentials: true,
+    }
+  );
+};

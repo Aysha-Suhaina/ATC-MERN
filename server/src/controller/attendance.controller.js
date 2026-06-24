@@ -107,6 +107,28 @@ export const submitAttendance = async (
   }
 };
 
+export const getAllAttendance = async (
+  req,
+  res,
+  next
+) => {
+  try {
+    const attendance = await Attendance.find()
+      .populate("user", "name email role department")
+      .sort({ createdAt: -1 });
+
+    return res.status(200).json(
+      new ApiResponse(
+        200,
+        "All attendance fetched",
+        attendance
+      )
+    );
+  } catch (error) {
+    next(error);
+  }
+};
+
 export const getMyAttendance = async (
   req,
   res,
@@ -278,6 +300,35 @@ export const rejectAttendance =
       next(error);
     }
   };
+
+export const deleteAttendance = async (
+  req,
+  res,
+  next
+) => {
+  try {
+    const attendance = await Attendance.findByIdAndDelete(
+      req.params.attendanceId
+    );
+
+    if (!attendance) {
+      return res.status(404).json({
+        success: false,
+        message: "Attendance not found",
+      });
+    }
+
+    return res.status(200).json(
+      new ApiResponse(
+        200,
+        "Attendance deleted",
+        attendance
+      )
+    );
+  } catch (error) {
+    next(error);
+  }
+};
 
 export const resubmitAttendance = async (
   req,
