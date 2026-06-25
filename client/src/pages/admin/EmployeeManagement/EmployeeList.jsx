@@ -7,7 +7,7 @@ import {
 import {
   getEmployees,
   deactivateEmployee,
-} from "../../api/userApi";
+} from "../../../api/userApi";
 
 import {
   useNavigate,

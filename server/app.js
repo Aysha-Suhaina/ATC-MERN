@@ -8,6 +8,7 @@ import authRouter from './src/routes/auth.routes.js'
 
 import attendanceRoutes from "./src/routes/attendance.routes.js";
 import userRoutes from "./src/routes/user.routes.js";
+import departmentRoutes from "./src/routes/department.routes.js";
 
 const app = express();
 
@@ -38,6 +39,10 @@ app.use(
 );
 
 app.use("/api/users", userRoutes);
+
+app.use(
+  "/api/departments",departmentRoutes
+);
 
 
 //sample route for the app

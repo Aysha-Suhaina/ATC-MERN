@@ -224,3 +224,8 @@ export const deactivateEmployee =
       next(error);
     }
   };
+
+  export const addDepartment = async (req,res,next)=>{
+
+    
+  }

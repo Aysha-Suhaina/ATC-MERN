@@ -12,10 +12,9 @@ import { toast } from "react-toastify";
 const Dashboard = () => {
   
 const navigate = useNavigate();
-  console.log("Dashboard rendered");
+  //console.log("Dashboard rendered");
   const [profile, setProfile] =
     useState(null);
-
 
     //Backend attendance structure :
     //for my reference 
@@ -74,6 +73,14 @@ const navigate = useNavigate();
 
     fetchData();
   }, [loadData]);
+
+  const isToday =
+  new Date(attendance.date).toDateString() ===
+  new Date().toDateString();
+
+const canResubmit =
+  attendance.approvalStatus === "rejected" &&
+  isToday;
 
   const handleChange = (e) => {
     setForm({
@@ -276,7 +283,7 @@ const navigate = useNavigate();
 
                 <td>
                    {
-                    item.approvalStatus === "rejected" && (
+                    canResubmit && (
                       <button  onClick={() =>
                           navigate(`/attendance/edit/${item._id}`)
                         }>

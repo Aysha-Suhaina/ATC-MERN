@@ -7,7 +7,7 @@ import {
 import {
   getEmployeeById,
   updateEmployee,
-} from "../../api/userApi";
+} from "../../../api/userApi";
 
 import {
   useNavigate,
@@ -148,6 +148,7 @@ const UpdateEmployee =
           />
 
           <input
+          placeholder="Department"
             name="department"
             value={
               form.department
@@ -158,6 +159,7 @@ const UpdateEmployee =
           />
 
           <input
+          placeholder="Designation"
             name="designation"
             value={
               form.designation
