@@ -92,7 +92,7 @@ const EditAttendance = () => {
         "Attendance resubmitted successfully"
       );
 
-      navigate("/my-attendance");
+      navigate("/employee-dashboard");
     } catch (error) {
       console.error(error);
 

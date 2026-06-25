@@ -1,18 +1,19 @@
 import { useEffect, useState } from "react";
-import attendanceApi from "../../api/attendanceApi";
 import {
   approveAttendance,
   rejectAttendance,
+  getPendingAttendance
 } from "../../api/attendanceApi";
 
 function PendingAttendance() {
   const [attendanceList, setAttendanceList] = useState([]);
   const [loading, setLoading] = useState(true);
 
-  const loadPendingAttendance = async () => {
+  useEffect(() => {
+  const fetchPendingAttendance = async () => {
     try {
       const response =
-        await attendanceApi.getPendingAttendance();
+        await getPendingAttendance();
 
       setAttendanceList(response.data.data);
     } catch (error) {
@@ -25,9 +26,9 @@ function PendingAttendance() {
     }
   };
 
-  useEffect(() => {
-    loadPendingAttendance();
-  }, []);
+  fetchPendingAttendance();
+}, []);
+
   const handleApprove = async (attendanceId) => {
   try {
     await approveAttendance(
@@ -35,9 +36,13 @@ function PendingAttendance() {
       "Approved by admin"
     );
 
-    alert("Attendance approved");
+    setAttendanceList((prev) =>
+      prev.filter(
+        (item) => item._id !== attendanceId
+      )
+    );
 
-    loadPendingAttendance(); // refresh list
+    alert("Attendance approved");
   } catch (error) {
     console.error(error);
     alert("Failed to approve attendance");
@@ -51,9 +56,13 @@ const handleReject = async (attendanceId) => {
       "Rejected by admin"
     );
 
-    alert("Attendance rejected");
+    setAttendanceList((prev) =>
+      prev.filter(
+        (item) => item._id !== attendanceId
+      )
+    );
 
-    loadPendingAttendance(); // refresh list
+    alert("Attendance rejected");
   } catch (error) {
     console.error(error);
     alert("Failed to reject attendance");
