@@ -51,6 +51,8 @@ export const getAllAttendance = async () => {
   });
 };
 
+
+
 export const deleteAttendance = async (id) => {
   return axios.delete(`${API}/${id}`, {
     withCredentials: true,

@@ -3,7 +3,7 @@ import {
   approveAttendance,
   rejectAttendance,
   getPendingAttendance
-} from "../../api/attendanceApi";
+} from "../../../api/attendanceApi";
 
 function PendingAttendance() {
   const [attendanceList, setAttendanceList] = useState([]);

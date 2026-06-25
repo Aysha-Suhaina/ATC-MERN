@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import {
   getAllAttendance,
   deleteAttendance,
-} from "../../api/attendanceApi";
+} from "../../../api/attendanceApi";
 
 const AdminAttendanceMgmt = () => {
   const [records, setRecords] =

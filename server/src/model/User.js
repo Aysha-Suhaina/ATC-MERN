@@ -22,8 +22,15 @@ const userSchema = new mongoose.Schema(
       default: "employee",
     },
     profileImage: String,
-    department: String,
-    designation: String,
+    department: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Department"
+    },
+
+    designation: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Designation"
+    },
     isActive: {type: Boolean,default: true},
   },
   {
