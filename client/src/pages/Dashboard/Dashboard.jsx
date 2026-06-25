@@ -86,23 +86,27 @@ const navigate = useNavigate();
   const handleSubmit =
     async (e) => {
       e.preventDefault();
-
+      const today = new Date().toISOString().split("T")[0];
       try {
         if (
-          !form.date ||
-          !form.checkInTime ||
-          !form.checkOutTime
+
+          !form.checkInTime 
         ) {
           toast.warning(
-            "Please select date and both times"
+            "Please select checkin time"
           );
           return;
         }
 
         const payload = {
           ...form,
-          checkInTime: `${form.date}T${form.checkInTime}`,
-          checkOutTime: `${form.date}T${form.checkOutTime}`,
+          date: today,
+          checkInTime: form.checkInTime
+            ? `${today}T${form.checkInTime}`
+            : null,
+          checkOutTime: form.checkOutTime
+            ? `${today}T${form.checkOutTime}`
+            : null,
         };
 
         await submitAttendance(payload);
@@ -160,7 +164,7 @@ const navigate = useNavigate();
       <form
         onSubmit={handleSubmit}
       >
-        <label>Date:</label>
+        {/* <label>Date:</label>
         <input
           type="date"
           name="date"
@@ -168,7 +172,7 @@ const navigate = useNavigate();
           required
         />
 
-        <br />
+        <br /> */}
 
         <label>Check In Time:</label>
         <input

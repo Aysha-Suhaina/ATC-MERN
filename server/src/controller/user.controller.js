@@ -84,7 +84,8 @@ export const getAllAttendance =
     try {
       const records =
         await Attendance.find()
-          .populate("employeeId");
+          .populate("employeeId")
+          .sort({ date: -1 });
 
       res.status(200).json({
         success: true,

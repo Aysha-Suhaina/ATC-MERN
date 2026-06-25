@@ -8,14 +8,14 @@ export const submitAttendance = async (
 ) => {
   try {
     const {
-      date,
       checkInTime,
       checkOutTime,
       attendanceStatus,
       remarks,
     } = req.body;
-
-    const parsedDate = new Date(date);
+    const attendanceDate = new Date();
+    attendanceDate.setHours(0, 0, 0, 0);
+    const parsedDate = attendanceDate;
 
     const normalizeDateTime = (
       value,
@@ -35,7 +35,7 @@ export const submitAttendance = async (
         fallbackDate
       ) {
         const combined = new Date(
-          `${fallbackDate}T${value}`
+          `${fallbackDate.toISOString().split("T")[0]}T${value}`
         );
         if (!Number.isNaN(combined.getTime())) {
           return combined;
@@ -47,11 +47,11 @@ export const submitAttendance = async (
 
     const normalizedCheckIn = normalizeDateTime(
       checkInTime,
-      date
+      attendanceDate
     );
     const normalizedCheckOut = normalizeDateTime(
       checkOutTime,
-      date
+      attendanceDate
     );
 
     if (
@@ -67,7 +67,7 @@ export const submitAttendance = async (
 
     const existing = await Attendance.findOne({
       user: req.user.id,
-      date: parsedDate,
+      date: attendanceDate,
     });
 
     if (existing) {
@@ -87,7 +87,7 @@ export const submitAttendance = async (
     const attendance =
       await Attendance.create({
         user: req.user.id,
-        date: parsedDate,
+        date: attendanceDate,
         checkInTime: normalizedCheckIn,
         checkOutTime: normalizedCheckOut,
         totalHours: Number(totalHours.toFixed(2)),
@@ -115,7 +115,7 @@ export const getAllAttendance = async (
   try {
     const attendance = await Attendance.find()
       .populate("user", "name email role department")
-      .sort({ createdAt: -1 });
+      .sort({ date: -1 });
 
     return res.status(200).json(
       new ApiResponse(
@@ -138,7 +138,7 @@ export const getMyAttendance = async (
     const attendance =
       await Attendance.find({
         user: req.user.id,
-      }).sort({ createdAt: -1 });
+      }).sort({ date : -1 });
 
     return res.status(200).json(
       new ApiResponse(
@@ -194,14 +194,15 @@ export const getAttendanceById = async (
 export const getPendingAttendance =
   async (req, res, next) => {
     try {
+      const today = new Date();
+      today.setHours(0, 0, 0, 0);
       const attendance =
         await Attendance.find({
           approvalStatus: "pending",
+          date: { $gte: today },
         })
           .populate("user")
-          .sort({
-            createdAt: -1,
-          });
+          .sort({ date: -1 });
 
       return res.status(200).json(
         new ApiResponse(
