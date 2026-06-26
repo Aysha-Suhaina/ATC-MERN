@@ -30,13 +30,10 @@ const Login = () => {
       }
       if(res.data.success==true){
         //localStorage.setItem("user", JSON.stringify(res.data));
+        const role = res.data.userRole?.toLowerCase();
+
         localStorage.setItem("userId",JSON.stringify(res.data.userId))  ;
-        localStorage.setItem("userRole", res.data.userRole);
-        console.log(res.data);
-        console.log(res.data.role);
-        const role = localStorage.getItem("userRole");
-        console.log("RAW:", role);
-         console.log("TYPE:", typeof role);
+        localStorage.setItem("userRole", role);
 
       // console.log("RAW:", userId);
       // console.log("TYPE:", typeof userId);

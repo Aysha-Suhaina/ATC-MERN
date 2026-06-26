@@ -13,6 +13,9 @@ import CreateEmployee from "./pages/admin/EmployeeManagement/CreateEmployee";
 import UpdateEmployee from "./pages/admin/EmployeeManagement/UpdateEmployee";
 import AdminAttendanceMgmt from "./pages/admin/AttendanceManagement/AdminAttendanceMgmt";
 import PendingAttendance from "./pages/admin/AttendanceManagement/PendingAttendance";
+import DepartmentManagement from "./pages/admin/DepartmentManagement/DepartmentManagement";
+import EditDepartment from "./pages/admin/DepartmentManagement/EditDepartment";
+//import Profile from "./pages/Profile/Profile";
 //import Profile from "./pages/Profile/Profile";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
@@ -43,7 +46,7 @@ function App(){
         <Route
           path="/admin-dashboard"
           element={
-            <ProtectedRoute allowedRoles={["admin"]}>
+            <ProtectedRoute allowedRoles={["Admin"]}>
               <AdminDashboard />
             </ProtectedRoute>
           }
@@ -112,6 +115,16 @@ function App(){
             </ProtectedRoute>
           }
         />
+        <Route
+          path="/admin/departments"
+          element={<DepartmentManagement />}
+      />
+
+      <Route
+          path="/admin/departments/edit/:id"
+          element={<EditDepartment />}
+      />
+        
 
       </Routes>
       <ToastContainer position="top-right" autoClose={3000} theme="colored"/>
