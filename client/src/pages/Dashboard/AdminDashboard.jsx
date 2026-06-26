@@ -28,48 +28,47 @@ const AdminDashboard = () => {
 
   return (
     <>
+    
       <Navbar />
 
-      <div
-        style={{
-          padding: "20px",
-        }}
-      >
-        <h1>
-          Admin Dashboard
-        </h1>
+      <div style={{ padding: "25px" }}>
+        <h1>Admin Dashboard</h1>
 
         {profile && (
-          <div>
-            <h3>
-              Welcome,
-              {profile.name}
-            </h3>
+          <>
+            <h3>Welcome back, {profile.name} </h3>
 
             <p>
-              Role:
-              {profile.role}
+              <strong>Role:</strong> {profile.role}
             </p>
 
             <p>
-              Department:
-              {profile.department}
+              <strong>Department:</strong>{" "}
+              {profile.department || "Not Assigned"}
             </p>
-          </div>
+          </>
         )}
 
         <hr />
 
-        <h2>
-          Attendance
-          Management
-        </h2>
+        <p>
+          Manage employees, attendance, departments,
+          designations, reports and organizational
+          settings from a single place.
+        </p>
+
+        <hr />
+
+        <h2>Attendance Management</h2>
+
+        <p>
+          Review attendance records and approve or
+          reject attendance submissions.
+        </p>
 
         <button
           onClick={() =>
-            navigate(
-              "/admin/attendance"
-            )
+            navigate("/admin/attendance")
           }
         >
           View Attendance
@@ -77,56 +76,117 @@ const AdminDashboard = () => {
 
         <button
           onClick={() =>
-            navigate(
-              "/admin/pending-attendance"
-            )
+            navigate("/admin/pending-attendance")
           }
+          style={{ marginLeft: "10px" }}
         >
           Pending Requests
         </button>
 
         <hr />
 
-        <h2>
-          Employee
-          Management
-        </h2>
+        <h2>Employee Management</h2>
+
+        <p>
+          Create employee accounts, update employee
+          information and manage user roles.
+        </p>
 
         <button
           onClick={() =>
-            navigate(
-              "/admin/employees"
-            )
+            navigate("/admin/employees")
           }
         >
-          View Employees
+          Employee List
         </button>
 
         <button
           onClick={() =>
-            navigate(
-              "/admin/employees/create"
-            )
+            navigate("/admin/employees/create")
           }
+          style={{ marginLeft: "10px" }}
         >
           Create Employee
         </button>
 
         <hr />
 
-        <h2>
-          Account
-        </h2>
+        <h2>Organization Management</h2>
 
-        {/* <button
+        <p>
+          Configure the company's departments,
+          designations and department managers.
+        </p>
+
+        <button
           onClick={() =>
-            navigate(
-              "/profile"
-            )
+            navigate("/admin/departments")
           }
         >
-          My Profile
-        </button> */}
+          Manage Departments
+        </button>
+
+        <button
+          onClick={() =>
+            navigate("/admin/designations")
+          }
+          style={{ marginLeft: "10px" }}
+        >
+          Manage Designations
+        </button>
+
+        <hr />
+
+        <h2>Reports</h2>
+
+        <p>
+          Generate attendance and employee reports and
+          export them in multiple formats.
+        </p>
+
+        <button disabled>
+          Attendance Reports (Coming Soon)
+        </button>
+
+        <button
+          disabled
+          style={{ marginLeft: "10px" }}
+        >
+          Employee Reports (Coming Soon)
+        </button>
+
+        <hr />
+
+        <h2>Communication</h2>
+
+        <p>
+          Access private messaging and department group
+          chats.
+        </p>
+
+        <button disabled>
+          Private Chat (Coming Soon)
+        </button>
+
+        <button
+          disabled
+          style={{ marginLeft: "10px" }}
+        >
+          Department Chat (Coming Soon)
+        </button>
+
+        <hr />
+
+        <h2>Account</h2>
+
+        <p>
+          Manage your administrator account and
+          personal settings.
+        </p>
+
+        <button disabled>
+          My Profile (Coming Soon)
+        </button>
       </div>
     </>
   );
