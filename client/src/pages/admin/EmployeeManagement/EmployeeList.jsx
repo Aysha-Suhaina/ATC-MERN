@@ -145,7 +145,7 @@ const EmployeeList = () => {
 
                 <td>
                   {
-                    employee.designation
+                    employee.designation?.name
                   }
                 </td>
 

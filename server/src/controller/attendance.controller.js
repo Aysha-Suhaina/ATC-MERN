@@ -114,7 +114,14 @@ export const getAllAttendance = async (
 ) => {
   try {
     const attendance = await Attendance.find()
-      .populate("user", "name email role department")
+      .populate({
+    path: "user",
+    select: "name email role department designation",
+    populate: [
+        { path: "department" },
+        { path: "designation" }
+    ]
+})
       .sort({ date: -1 });
 
     return res.status(200).json(
@@ -201,7 +208,13 @@ export const getPendingAttendance =
           approvalStatus: "pending",
           date: { $gte: today },
         })
-          .populate("user")
+          .populate({
+    path: "user",
+    populate: [
+        { path: "department" },
+        { path: "designation" }
+    ]
+})
           .sort({ date: -1 });
 
       return res.status(200).json(
