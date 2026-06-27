@@ -33,7 +33,7 @@ const Register = () => {
     if (formData.password !== confirmPassword) {
       toast.error("Passwords do not match");
       return;
-    }
+    }    
     try {
       setLoading(true);
       // console.log(formData);
@@ -57,8 +57,7 @@ const Register = () => {
 
             <input type="text" name="name" placeholder="Name" value={formData.name} onChange={handleChange} />
             <input type="email" name="email" placeholder="Email" value={formData.email} onChange={handleChange}/>
-            <input type="text" name="designation" placeholder="Designation" value={formData.designation} onChange={handleChange}/>
-            <input type="text" name="department" placeholder="Department" value={formData.department} onChange={handleChange}/>
+
             <input type="password" name="password" placeholder="Password" value={formData.password} onChange={handleChange}/>
             <input type="password" placeholder="Confirm Password" value={confirmPassword} onChange={(e) => setConfirmPassword(e.target.value)}/>
             {confirmPassword && (

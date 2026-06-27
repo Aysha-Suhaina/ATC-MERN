@@ -8,7 +8,9 @@ import authRouter from './src/routes/auth.routes.js'
 
 import attendanceRoutes from "./src/routes/attendance.routes.js";
 import userRoutes from "./src/routes/user.routes.js";
+
 import departmentRoutes from "./src/routes/department.routes.js";
+import designationRoutes from "./src/routes/designation.routes.js";
 
 const app = express();
 
@@ -42,6 +44,11 @@ app.use("/api/users", userRoutes);
 
 app.use(
   "/api/departments",departmentRoutes
+);
+
+app.use(
+  "/api/designations",
+  designationRoutes
 );
 
 

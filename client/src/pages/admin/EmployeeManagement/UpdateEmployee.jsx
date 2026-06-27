@@ -53,10 +53,10 @@ const UpdateEmployee =
             email:
               employee.email || "",
             department:
-              employee.department ||
+              employee.department?.name ||
               "",
             designation:
-              employee.designation ||
+              employee.designation?.name ||
               "",
           });
         } catch (error) {

@@ -10,7 +10,10 @@ export const getProfile = async (
   try {
     const user = await User.findById(
       req.user.id
-    ).select("-password");
+    )
+    .populate("department")
+    .populate("designation")
+    .select("-password");
 
     return res.status(200).json(
       new ApiResponse(
@@ -44,7 +47,9 @@ export const updateProfile =
           {
             new: true,
           }
-        ).select("-password");
+        ).populate("department")
+        .populate("designation")
+        .select("-password");
 
       return res.status(200).json(
         new ApiResponse(
@@ -68,7 +73,9 @@ export const updateProfile =
   try {
     const employees = await User.find({
       role: "employee",
-    }).select("-password");
+    }).populate("department")
+    .populate("designation")
+    .select("-password");
 
     res.status(200).json({
       success: true,
@@ -85,6 +92,8 @@ export const getAllAttendance =
       const records =
         await Attendance.find()
           .populate("employeeId")
+          .populate("department")
+          .populate("designation")
           .sort({ date: -1 });
 
       res.status(200).json({
@@ -116,7 +125,8 @@ export const getEmployeeById =
     const employee =
       await User.findById(
         req.params.id
-      ).select("-password");
+      ).populate("department")
+    .populate("designation").select("-password");
 
     res.status(200).json({
       success: true,
@@ -192,7 +202,8 @@ export const updateEmployee = async (
           new: true,
           runValidators: true,
         }
-      );
+      ).populate("department")
+    .populate("designation");;
 
     res.status(200).json({
       success: true,
