@@ -194,21 +194,35 @@ export const updateEmployee = async (
   next
 ) => {
   try {
-    const employee =
-      await User.findByIdAndUpdate(
-        req.params.id,
-        req.body,
-        {
-          new: true,
-          runValidators: true,
-        }
-      ).populate("department")
-    .populate("designation");;
+    const {
+  name,
+  email,
+  department,
+  designation,
+} = req.body;
 
-    res.status(200).json({
-      success: true,
-      employee,
-    });
+const employee =
+  await User.findByIdAndUpdate(
+    req.params.id,
+    {
+      name,
+      email,
+      department,
+      designation,
+    },
+    {
+      new: true,
+      runValidators: true,
+    }
+  )
+    .populate("department")
+    .populate("designation")
+    .select("-password");
+
+res.status(200).json({
+  success: true,
+  employee,
+});
   } catch (error) {
     next(error);
   }

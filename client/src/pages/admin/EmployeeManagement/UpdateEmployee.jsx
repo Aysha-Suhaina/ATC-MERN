@@ -3,6 +3,7 @@ import {
   useEffect,
   useState,
 } from "react";
+import {toast} from 'react-toastify';
 
 import {
   getEmployeeById,
@@ -13,6 +14,14 @@ import {
   useNavigate,
   useParams,
 } from "react-router-dom";
+
+import {
+  getDepartments,
+} from "../../../api/departmentApi";
+
+import {
+  getDesignationsByDepartment,
+} from "../../../api/designationApi";
 
 const UpdateEmployee =
   () => {
@@ -30,6 +39,26 @@ const UpdateEmployee =
         department: "",
         designation: "",
       });
+      const [departments, setDepartments] = useState([]);
+      const [designations, setDesignations] = useState([]);
+
+      useEffect(() => {
+  const loadData = async () => {
+    try {
+      const deptRes = await getDepartments();
+
+      setDepartments(
+        deptRes.data.departments
+      );
+
+  
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
+  loadData();
+}, []);
 
     const loadEmployee =
       useCallback(async () => {
@@ -53,12 +82,19 @@ const UpdateEmployee =
             email:
               employee.email || "",
             department:
-              employee.department?.name ||
+              employee.department?._id ||
               "",
             designation:
-              employee.designation?.name ||
+              employee.designation?._id ||
               "",
           });
+          if (employee.department?._id) {
+            const res = await getDesignationsByDepartment(
+              employee.department._id
+            );
+
+            setDesignations(res.data.designations);
+          }
         } catch (error) {
           console.error(
             error
@@ -86,16 +122,41 @@ const UpdateEmployee =
       };
     }, [loadEmployee]);
 
-    const handleChange = (
-      e
-    ) => {
-      setForm({
-        ...form,
-        [e.target.name]:
-          e.target.value,
-      });
-    };
+    const handleChange = async (e) => {
+  const { name, value } = e.target;
 
+  if (name === "department") {
+    setForm((prev) => ({
+      ...prev,
+      department: value,
+      designation: "",
+    }));
+
+    if (!value) {
+      setDesignations([]);
+      return;
+    }
+
+    try {
+      const res =
+        await getDesignationsByDepartment(value);
+
+      setDesignations(
+        res.data.designations
+      );
+    } catch (err) {
+      console.error(err);
+      setDesignations([]);
+    }
+
+    return;
+  }
+
+  setForm((prev) => ({
+    ...prev,
+    [name]: value,
+  }));
+};
     const handleSubmit =
       async (e) => {
         e.preventDefault();
@@ -105,11 +166,16 @@ const UpdateEmployee =
             id,
             form
           );
+          toast.success("Employee updated successfully");
 
           navigate(
             "/admin/employees"
           );
         } catch (error) {
+          toast.error(
+            error.response?.data?.message ||
+            "Failed to update employee"
+);
           console.error(
             error
           );
@@ -147,28 +213,46 @@ const UpdateEmployee =
             }
           />
 
-          <input
-          placeholder="Department"
+          <select
             name="department"
-            value={
-              form.department
-            }
-            onChange={
-              handleChange
-            }
-          />
+            value={form.department}
+            onChange={handleChange}
+          >
+            <option value="">
+              Select Department
+            </option>
 
-          <input
-          placeholder="Designation"
+            {departments.map((dept) => (
+              <option
+                key={dept._id}
+                value={dept._id}
+              >
+                {dept.name}
+              </option>
+            ))}
+          </select>
+
+          <select
             name="designation"
-            value={
-              form.designation
-            }
-            onChange={
-              handleChange
-            }
-          />
+            value={form.designation}
+            onChange={handleChange}
+            disabled={!form.department}
+          >
+            <option value="">
+              {form.department
+                ? "Select Designation"
+                : "Select Department First"}
+            </option>
 
+            {designations.map((designation) => (
+              <option
+                key={designation._id}
+                value={designation._id}
+              >
+                {designation.name}
+              </option>
+            ))}
+          </select>
           <button
             type="submit"
           >

@@ -1,9 +1,13 @@
 import {Routes,Route} from "react-router-dom";
 import ProtectedRoute from "./ProtectedRoute";
+
+//auth
 import Home from "./pages/Auth/Home";
 import Login from "./pages/Auth/Login";
 import ResetPassword from "./pages/Auth/ResetPassword";
 import Register from "./pages/Auth/Register";
+
+//dashboard - attendance mgmt
 import Dashboard from "./pages/Dashboard/Dashboard";
 import EditAttendance from "./pages/Dashboard/EditAttendance";
 import AdminDashboard from "./pages/Dashboard/AdminDashboard";
@@ -13,8 +17,15 @@ import CreateEmployee from "./pages/admin/EmployeeManagement/CreateEmployee";
 import UpdateEmployee from "./pages/admin/EmployeeManagement/UpdateEmployee";
 import AdminAttendanceMgmt from "./pages/admin/AttendanceManagement/AdminAttendanceMgmt";
 import PendingAttendance from "./pages/admin/AttendanceManagement/PendingAttendance";
+
+//dept
 import DepartmentManagement from "./pages/admin/DepartmentManagement/DepartmentManagement";
 import EditDepartment from "./pages/admin/DepartmentManagement/EditDepartment";
+
+//designation
+import DesignationManagement from "./pages/admin/DesignationManagement/DesignationManagement"
+import EditDesignation from "./pages/admin/DesignationManagement/EditDesignation";
+
 //import Profile from "./pages/Profile/Profile";
 //import Profile from "./pages/Profile/Profile";
 import { ToastContainer } from "react-toastify";
@@ -123,6 +134,16 @@ function App(){
       <Route
           path="/admin/departments/edit/:id"
           element={<EditDepartment />}
+      />
+
+      <Route
+          path="/admin/designations"
+          element={<DesignationManagement />}
+      />
+
+      <Route
+          path="/admin/designations/edit/:id"
+          element={<EditDesignation />}
       />
         
 

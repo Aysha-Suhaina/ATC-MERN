@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { getDesignations } from "../../../api/designationApi";
+import { getAllDesignations } from "../../../api/designationApi";
 
 import DesignationForm from "../../../components/designation/DesignationForm";
 import DesignationList from "../../../components/designation/DesignationList";
@@ -10,7 +10,7 @@ function DesignationManagement() {
 
   const loadDesignations = async () => {
   try {
-    const response = await getDesignations();
+    const response = await getAllDesignations();
     setDesignations(response.data.designations);
   } finally {
     setLoading(false);

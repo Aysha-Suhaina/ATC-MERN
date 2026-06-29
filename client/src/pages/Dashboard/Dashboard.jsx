@@ -149,11 +149,11 @@ const canResubmit =
           </h3>
 
           <p>
-            {profile.department}
+            {profile.department?.name}
           </p>
 
           <p>
-            {profile.designation}
+            {profile.designation?.name}
           </p>
 
           <p>

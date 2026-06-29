@@ -1,10 +1,15 @@
 import {
   useState,
 } from "react";
+import {toast} from 'react-toastify';
 
 import {
   createEmployee,
 } from "../../../api/userApi";
+
+import { useEffect } from "react";
+import { getDepartments } from "../../../api/departmentApi";
+import { getDesignationsByDepartment } from "../../../api/designationApi";
 
 import {
   useNavigate,
@@ -13,6 +18,23 @@ import {
 const CreateEmployee = () => {
   const navigate =
     useNavigate();
+
+  const [departments, setDepartments] = useState([]);
+const [designations, setDesignations] = useState([]);
+
+useEffect(() => {
+  const loadData = async () => {
+    try {
+      const deptRes = await getDepartments();
+
+    setDepartments(deptRes.data.departments);
+        } catch (err) {
+          console.error(err);
+        }
+  };
+
+  loadData();
+}, []);
 
   const [form,
     setForm] =
@@ -24,15 +46,41 @@ const CreateEmployee = () => {
       designation: "",
     });
 
-  const handleChange = (
-    e
-  ) => {
-    setForm({
-      ...form,
-      [e.target.name]:
-        e.target.value,
-    });
-  };
+  const handleChange = async (e) => {
+  const { name, value } = e.target;
+
+  if (name === "department") {
+    setForm((prev) => ({
+      ...prev,
+      department: value,
+      designation: "", // Reset designation
+    }));
+
+    if (!value) {
+      setDesignations([]);
+      return;
+    }
+
+    try {
+      const res =
+        await getDesignationsByDepartment(value);
+
+      setDesignations(
+        res.data.designations
+      );
+    } catch (err) {
+      console.error(err);
+      setDesignations([]);
+    }
+
+    return;
+  }
+
+  setForm((prev) => ({
+    ...prev,
+    [name]: value,
+  }));
+};
 
   const handleSubmit =
     async (e) => {
@@ -46,9 +94,12 @@ const CreateEmployee = () => {
         navigate(
           "/admin/employees"
         );
-      } catch (error) {
-        console.log(error);
-      }
+      } catch (err) {
+  toast.error(
+    err.response?.data?.message ||
+    "Something went wrong"
+  );
+}
     };
 
   return (
@@ -87,22 +138,46 @@ const CreateEmployee = () => {
           }
         />
 
-        <input
+        <select
           name="department"
-          placeholder="Department"
-          onChange={
-            handleChange
-          }
-        />
+          value={form.department}
+          onChange={handleChange}
+        >
+          <option value="">
+            Select Department
+          </option>
 
-        <input
+          {departments.map((dept) => (
+            <option
+              key={dept._id}
+              value={dept._id}
+            >
+              {dept.name}
+            </option>
+          ))}
+        </select>
+
+        <select
           name="designation"
-          placeholder="Designation"
-          onChange={
-            handleChange
-          }
-        />
+          value={form.designation}
+          onChange={handleChange}
+          disabled={!form.department}
+        >
+          <option value="">
+            {form.department
+              ? "Select Designation"
+              : "Select Department First"}
+          </option>
 
+          {designations.map((designation) => (
+            <option
+              key={designation._id}
+              value={designation._id}
+            >
+              {designation.name}
+            </option>
+          ))}
+        </select>
         <button
           type="submit"
         >
