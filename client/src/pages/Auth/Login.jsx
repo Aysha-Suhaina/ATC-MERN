@@ -23,10 +23,10 @@ const Login = () => {
       const res=await axios.post("http://localhost:4000/api/auth/login",{email,password},{withCredentials: true}); 
 
       if(res.data.success === false){
-        toast.error(res.data.msg);
+        toast.error(res.data.message);
       }
       else{
-        toast.success(res.data.msg);
+        toast.success(res.data.message);
       }
       if(res.data.success==true){
         //localStorage.setItem("user", JSON.stringify(res.data));
@@ -53,7 +53,7 @@ const Login = () => {
         
     }catch(err){
       console.log(err.message);
-      toast.error("login failed ");
+      toast.error(err.response?.data?.message || "Something went wrong");
     }
   }
   return (

@@ -22,6 +22,10 @@ export const getAllDesignations = () =>
 export const getDesignationById = (id) =>
   API.get(`/${id}`);
 
+// Get Designations By Department
+export const getDesignationsByDepartment = (departmentId) =>
+  API.get(`/department/${departmentId}`);
+
 // Create
 export const createDesignation = (data) =>
   API.post("/", data);

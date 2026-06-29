@@ -4,6 +4,7 @@ import {
   createDesignation,
   getAllDesignations,
   getDesignationById,
+  getDesignationsByDepartment,
   updateDesignation,
   deleteDesignation,
 } from "../controller/designation.controller.js";
@@ -28,6 +29,11 @@ router.get(
   getAllDesignations
 );
 
+router.get(
+  "/department/:departmentId",
+  //authenticate,
+  getDesignationsByDepartment
+);
 // Get Designation By ID
 router.get(
   "/:id",

@@ -78,6 +78,26 @@ export const getDesignationById = async (req, res) => {
     });
   }
 };
+// Get Designations By Department
+export const getDesignationsByDepartment = async (req, res) => {
+  try {
+    const { departmentId } = req.params;
+
+    const designations = await Designation.find({
+      department: departmentId,
+    }).sort({ name: 1 });
+
+    res.json({
+      success: true,
+      designations,
+    });
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      msg: error.message,
+    });
+  }
+};
 
 // Update
 export const updateDesignation = async (req, res) => {
@@ -137,3 +157,4 @@ export const deleteDesignation = async (req, res) => {
     });
   }
 };
+

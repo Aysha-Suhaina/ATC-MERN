@@ -74,7 +74,7 @@ export const getEmployeeById =
   };
 
   export const getAllAttendance = async () => {
-  return axios.get(API, {
+  return axios.get(`${API}/attendance`, {
     withCredentials: true,
   });
 };
@@ -82,7 +82,8 @@ export const getEmployeeById =
 export const deleteAttendance = async (id) => {
   return axios.delete(`${API}/${id}`, {
     withCredentials: true,
-  });
+  }); // the rputer needs to be checked 
+  // if it is present in the controller
 };
 
 export const updateAttendance = async (
