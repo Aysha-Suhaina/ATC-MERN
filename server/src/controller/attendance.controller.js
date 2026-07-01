@@ -124,6 +124,24 @@ export const getAllAttendance = async (
 })
       .sort({ date: -1 });
 
+      attendance.sort((a, b) => {
+        // Pending comes first
+        if (
+          a.approvalStatus === "pending" &&
+          b.approvalStatus !== "pending"
+        )
+          return -1;
+
+        if (
+          a.approvalStatus !== "pending" &&
+          b.approvalStatus === "pending"
+        )
+          return 1;
+
+        // Otherwise newest date first
+        return new Date(b.date) - new Date(a.date);
+      });
+
     return res.status(200).json(
       new ApiResponse(
         200,
@@ -201,13 +219,9 @@ export const getAttendanceById = async (
 export const getPendingAttendance =
   async (req, res, next) => {
     try {
-      const today = new Date();
-      today.setHours(0, 0, 0, 0);
-      const attendance =
-        await Attendance.find({
-          approvalStatus: "pending",
-          date: { $gte: today },
-        })
+      const attendance = await Attendance.find({
+        approvalStatus: "pending",
+      })
           .populate({
     path: "user",
     populate: [

@@ -60,7 +60,8 @@ const handleDelete = async (id) => {
     <tr>
       <th>Employee</th>
       <th>Date</th>
-      <th>Status</th>
+      <th>Attendance Status</th>
+      <th>Approval Status</th>
       <th>Actions</th>
     </tr>
   </thead>
@@ -74,8 +75,14 @@ const handleDelete = async (id) => {
           {new Date(record.date).toLocaleDateString()}
         </td>
 
-        <td>{record.attendanceStatus}</td>
+        <td>
+          {record.attendanceStatus.replace("_", " ")}
+        </td>
 
+        <td>
+          {record.approvalStatus.charAt(0).toUpperCase() +
+            record.approvalStatus.slice(1)}
+        </td>
         <td>
           <button
             onClick={() =>

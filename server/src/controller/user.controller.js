@@ -75,6 +75,7 @@ export const updateProfile =
       role: "employee",
     }).populate("department")
     .populate("designation")
+    .populate("manager", "name email")
     .select("-password");
 
     res.status(200).json({
@@ -126,7 +127,8 @@ export const getEmployeeById =
       await User.findById(
         req.params.id
       ).populate("department")
-    .populate("designation").select("-password");
+    .populate("designation")
+    .populate("manager", "name email").select("-password");
 
     res.status(200).json({
       success: true,
@@ -146,6 +148,7 @@ export const createEmployee = async (
       password,
       department,
       designation,
+      manager
     } = req.body;
 
     if (!name || !email || !password) {
@@ -173,6 +176,7 @@ export const createEmployee = async (
       role: "employee",
       department,
       designation,
+      manager
     });
 
     const employeeResponse = employee.toObject();
@@ -199,6 +203,7 @@ export const updateEmployee = async (
   email,
   department,
   designation,
+  manager
 } = req.body;
 
 const employee =
@@ -209,6 +214,7 @@ const employee =
       email,
       department,
       designation,
+      manager
     },
     {
       new: true,
@@ -217,6 +223,7 @@ const employee =
   )
     .populate("department")
     .populate("designation")
+    .populate("manager", "name email")
     .select("-password");
 
 res.status(200).json({
@@ -250,7 +257,23 @@ export const deactivateEmployee =
     }
   };
 
-  export const addDepartment = async (req,res,next)=>{
+  // export const addDepartment = async (req,res,next)=>{
 
     
+  // }
+
+  export const getManagers = async (req, res, next) => {
+  try {
+    const managers = await User.find({
+      role: "manager",
+      isActive: true,
+    }).select("name email");
+
+    res.status(200).json({
+      success: true,
+      managers,
+    });
+  } catch (error) {
+    next(error);
   }
+};

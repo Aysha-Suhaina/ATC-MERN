@@ -1,270 +1,313 @@
-ADMIN
+# HRMS Project Roadmap & Task Tracker
 
-Authentication
-✅ Admin login
-✅ Logout
-✅ Protected admin routes
-✅ Redirect unauthorized users
+# HRMS Project Roadmap & Progress
 
-Status: Probably mostly done.
-------------------------
+---
 
-    CHECK CHATGPT EMPLOEE CRUD CHAT !
+# 📌 Overall Progress
 
-2. Dashboard - HAS TO BUILD 
+- ✅ Authentication
+- ✅ Department Management
+- ✅ Designation Management
+- ✅ Employee Management
+- ✅ Attendance Management
+- 🔄 Manager Module
+- ⏳ Live Chat (WebSocket) ⭐ Core Project Feature
+- ⏳ Notifications
+- ⏳ Dashboard
+- ⏳ Reports (PDF / Excel)
+- ⏳ UI / UX Polish
+- ⏳ Final Testing
 
-Dashboard cards
+---
 
-Total Employees
-Total Managers
-Total Team Leads
-Total Departments
-Total Designations
-Total Teams
-Present Today
-Absent Today
-Pending Attendance Requests
+# 1. Authentication ✅ COMPLETED
 
-Charts (later)
+## Features
 
-Monthly attendance
-Department-wise attendance
-Employee growth
-------------------
+- ✅ Admin Login
+- ✅ Logout
+- ✅ Protected Routes
+- ✅ Role-based Authentication
+- ✅ Unauthorized Redirect
+- ✅ Inactive User Login Restriction
 
+---
 
-3. Department Management - COMPLETED 
+# 2. Department Management ✅ COMPLETED
 
-CRUD
+## CRUD
 
-Add Department-yes 
-Edit Department-yes 
-Delete Department-yes 
-View Departments-yes 
+- ✅ Add Department
+- ✅ Edit Department
+- ✅ Delete Department
+- ✅ View Departments
 
-Future
+## Future Improvements
 
-Search
-Pagination
+- ⏳ Search
+- ⏳ Pagination
 
-4. Designation Management - COMPLETED
+---
 
-CRUD
+# 3. Designation Management ✅ COMPLETED
 
-Add Designation -yes 
-Edit Designation-yes 
-Delete Designation-yes 
-View Designations-yes 
+## CRUD
 
-Examples
+- ✅ Add Designation
+- ✅ Edit Designation
+- ✅ Delete Designation
+- ✅ View Designations
 
-Software Engineer
-HR Executive
-QA Engineer
-Accountant
------------------
-===== COMPLETED =====
-1. Create Employee
-⬜ Department dropdown loads all departments-yes
-⬜ Designation dropdown loads all designations-yes
-⬜ Create employee successfully-yes
-⬜ New employee appears in Employee List-yes 
-⬜ MongoDB stores ObjectId for department-yes
-⬜ MongoDB stores ObjectId for designation-yes 
+## Improvements
 
-2. Update Employee-COMPLETED
-⬜ Clicking Edit opens the correct employee.-yes 
-⬜ Name is prefilled.-yes 
-⬜ Email is prefilled.-yes 
-⬜ Department dropdown shows the current department selected.-yes 
-⬜ Designation dropdown shows the current designation selected.-yes 
-⬜ Change department and save.-yes 
-⬜ Change designation and save.-yes 
-⬜ Success toast appears.-yes 
-⬜ Employee List reflects the changes.-yes 
-⬜ MongoDB updates correctly.-yes 
+- ✅ Department-wise Designation Mapping
+- ✅ Dynamic Designation Dropdown
 
-3. Employee List-COMPLETED
-⬜ Department name displays correctly (employee.department?.name).-yes 
-⬜ Designation name displays correctly.-yes 
-⬜ Active/Inactive status is correct.-yes 
-⬜ Deactivate button still works.-yes 
+---
 
-===== COMPLETED =====
+# 4. Employee Management ✅ COMPLETED
 
------------------
+## Create Employee
 
-5. Team Management - HAS TO BUILD
+- ✅ Department dropdown loads correctly
+- ✅ Department-wise designation dropdown
+- ✅ Employee created successfully
+- ✅ Employee appears in Employee List
+- ✅ Department ObjectId stored
+- ✅ Designation ObjectId stored
 
-CRUD
+## Update Employee
 
-Create Team
-Edit Team
-Delete Team
+- ✅ Employee details prefilled
+- ✅ Change Department
+- ✅ Change Designation
+- ✅ Employee updated successfully
+- ✅ Success notification
+- ✅ MongoDB updates correctly
 
-Assign
+## Employee List
 
-Department
-Manager
-Team Lead
+- ✅ Department displayed correctly
+- ✅ Designation displayed correctly
+- ✅ Active / Inactive Status
+- ✅ Activate / Deactivate Employee
 
-Members
+## Future Improvements
 
-Add employees
-Remove employees
+- ⏳ Search
+- ⏳ Filters
+- ⏳ Pagination
+- ⏳ Employee Profile
 
-. Employee Management
+---
 
-This is probably the biggest module.
+# 5. Attendance Management ✅ COMPLETED
 
-Create Employee
+## Employee
 
-Fields
+- ✅ Submit Attendance
+- ✅ View Own Attendance
+- ✅ Resubmit Rejected Attendance
 
-Name
-Email
-Phone
-Password
-Role
-Department - enable authenticate , authorize in the backend 
-Designation
-Team
-Manager
-Team Lead
-Joining Date
-Status
+## Admin
 
-Actions
+- ✅ View Attendance
+- ✅ View Pending Attendance
+- ✅ Approve Attendance
+- ✅ Reject Attendance
 
-Create
-Edit
-Delete
-View Profile
-Search
-Filter
-Pagination
+## Future Improvements
 
-7. Manager Management HAS TO BUILD
+- ⏳ Manual Attendance Entry
+- ⏳ Correct Attendance
+- ⏳ Bulk Attendance
 
-Admin should be able to
+### Filters
 
-Create Manager
-Edit Manager
-Delete Manager
-Assign Department
-Assign Teams
+- ⏳ Date
+- ⏳ Department
+- ⏳ Employee
+- ⏳ Status
 
-8. Team Lead Management -HAS TO BUILD
+### Export
 
-Admin should
+- ⏳ PDF
+- ⏳ Excel
 
-Create Team Lead
-Edit
-Delete
-Assign Team
-Assign Manager
+---
 
-9. Attendance -TESTING REQUIRED
+# 6. Manager Module 🔄 IN PROGRESS
 
-Admin can
+## Admin Improvements
 
-View attendance
+- ⬜ Add Manager Role Support
+- ⬜ Promote Employee → Manager
+- ⬜ Demote Manager → Employee
+- ⬜ Add Promote/Demote Buttons
+- ⬜ Verify Manager Login Redirect
+- ⬜ Prevent Managers from accessing Admin Routes
+- ⬜ Prevent Employees from accessing Manager Routes
 
-Approve attendance
+## Manager Dashboard
 
-Reject attendance
+- ⬜ Dashboard
+- ⬜ Sidebar
 
-Manual attendance entry
+## Employee Management
 
-Correct attendance
+- ⬜ Backend API: Get Department Employees
+- ⬜ View Department Employees
+- ⬜ Restrict to Own Department
 
-Bulk attendance
+## Attendance
 
-Filter
+- ⬜ Backend API: Pending Attendance
+- ⬜ Pending Attendance Page
+- ⬜ Backend API: Attendance History
+- ⬜ Attendance History Page
+- ⬜ Approve Attendance
+- ⬜ Reject Attendance
 
-By
+## Permission Testing
 
-Date
-Department
-Employee
-Status
+- ⬜ Manager cannot create employees
+- ⬜ Manager cannot edit employees
+- ⬜ Manager cannot delete employees
+- ⬜ Manager cannot manage departments
+- ⬜ Manager cannot manage designations
+- ⬜ Manager cannot approve other departments' attendance
+- ⬜ Employee cannot access Manager Pages
+- ⬜ Employee cannot access Admin Pages
+- ⬜ Admin access verified
 
-Export
+## Final Testing
 
-PDF
-Excel
+- ⬜ Promote Employee → Manager
+- ⬜ Manager Login
+- ⬜ Manager Dashboard
+- ⬜ Department Employees
+- ⬜ Pending Attendance
+- ⬜ Attendance Approval
+- ⬜ Attendance Rejection
+- ⬜ Attendance History
+- ⬜ Role-based Access
 
-11. Reports - HAS TO BUILD
+---
 
-Attendance Report
+# 7. Live Chat (WebSocket) ⭐ CORE FEATURE
 
-Department Report
+## Backend
 
-Employee Report
+- ⬜ Configure Socket.IO
+- ⬜ Authenticate Socket Connections
+- ⬜ User Presence (Online / Offline)
 
-Monthly Report
+## Features
 
-Late Arrival Report
-
-Absent Report
-
-Export PDF
-
-Export Excel
---------------
-
-LATER :12. Notifications - HAS TO BUILD 
-
-View all notifications
-
-Send announcement
-
-Send department notification
-
-Send employee notification
-
-13. Settings - HAS TO BUILD
-
-Company Name
-
-Office Hours
-
-Attendance Rules
-
-Holiday List
-
-Weekend Settings
-
-Password Change
-
-Profile
-----------------
-SIDE BAR- ADMIN Dashboard
-
-Employees
-    List
-    Add Employee
-
-Managers
-
-Team Leads
-
-Departments
-
-Designations
-
-Teams
-
-Attendance
-
-Leaves
-
-Reports
-
-Notifications
-
-Settings
-
-Profile
-
-Logout
+- ⬜ One-to-One Chat
+- ⬜ Employee ↔ Manager Chat
+- ⬜ Manager ↔ Admin Chat
+- ⬜ Typing Indicator
+- ⬜ Read Receipts
+- ⬜ Message Notifications
+- ⬜ Chat History
+- ⬜ File Sharing (Optional)
+
+---
+
+# 8. Notifications ⏳ TO BUILD
+
+- ⬜ View Notifications
+- ⬜ Send Announcement
+- ⬜ Department Notifications
+- ⬜ Employee Notifications
+
+---
+
+# 9. Dashboard ⏳ TO BUILD
+
+## Cards
+
+- ⬜ Total Employees
+- ⬜ Total Managers
+- ⬜ Total Team Leads
+- ⬜ Total Departments
+- ⬜ Total Designations
+- ⬜ Total Teams
+- ⬜ Present Today
+- ⬜ Absent Today
+- ⬜ Pending Attendance
+
+## Charts
+
+- ⬜ Monthly Attendance
+- ⬜ Department-wise Attendance
+- ⬜ Employee Growth
+
+---
+
+# 10. Reports ⏳ TO BUILD
+
+- ⬜ Attendance Report
+- ⬜ Employee Report
+- ⬜ Department Report
+- ⬜ Monthly Report
+- ⬜ Late Arrival Report
+- ⬜ Absent Report
+- ⬜ Export PDF
+- ⬜ Export Excel
+
+---
+
+# 11. UI / UX Polish ⏳
+
+- ⬜ Responsive Design
+- ⬜ Search
+- ⬜ Pagination
+- ⬜ Filters
+- ⬜ Status Badges
+- ⬜ Dashboard Cards
+- ⬜ Better Tables
+- ⬜ Loading States
+- ⬜ Empty States
+- ⬜ Toast Notifications
+- ⬜ Confirmation Dialogs
+
+---
+
+# 12. Final Testing ⏳
+
+- ⬜ Authentication
+- ⬜ Department Module
+- ⬜ Designation Module
+- ⬜ Employee Module
+- ⬜ Attendance Module
+- ⬜ Manager Module
+- ⬜ Live Chat
+- ⬜ Notifications
+- ⬜ Dashboard
+- ⬜ Reports
+- ⬜ UI Testing
+- ⬜ Permission Testing
+- ⬜ End-to-End Testing
+
+---
+
+# Admin Sidebar
+
+- Dashboard
+- Employees
+  - Employee List
+  - Add Employee
+- Managers
+- Team Leads
+- Departments
+- Designations
+- Teams
+- Attendance
+- Reports
+- Notifications
+- Settings
+- Profile
+- Logout

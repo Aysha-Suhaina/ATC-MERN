@@ -3,7 +3,8 @@ import express from "express";
 import {
   getProfile,
   updateProfile,getAllEmployees,getEmployeeById,createEmployee,
-  updateEmployee,deactivateEmployee,getAllAttendance,deleteAttendance
+  updateEmployee,deactivateEmployee,getAllAttendance,deleteAttendance,
+  getManagers
 } from "../controller/user.controller.js";
 
 import { authenticate } from "../middleware/authenticate.middleware.js";
@@ -69,3 +70,9 @@ router.get(
 
 
 export default router;
+router.get(
+  "/managers",
+  authenticate,
+  authorize("admin"),
+  getManagers
+);
