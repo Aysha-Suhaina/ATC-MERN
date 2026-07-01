@@ -112,6 +112,7 @@ const EmployeeList = () => {
             <th>Email</th>
             <th>Department</th>
             <th>Designation</th>
+            <th>Manager</th>
             <th>Status</th>
             <th>Actions</th>
           </tr>
@@ -147,6 +148,10 @@ const EmployeeList = () => {
                   {
                     employee.designation?.name
                   }
+                </td>
+
+                <td>
+                  {employee.manager?.name || "Not Assigned"}
                 </td>
 
                 <td>

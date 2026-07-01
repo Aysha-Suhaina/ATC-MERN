@@ -1,5 +1,6 @@
 import { useCallback, useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
+import Toast from "../common/Toast";
 import axios from "axios";
 
 const EditAttendance = () => {
@@ -46,7 +47,7 @@ const EditAttendance = () => {
       });
     } catch (error) {
       console.error(error);
-      alert("Failed to load attendance");
+      Toast.error("Failed to load attendance");
     } finally {
       setLoading(false);
     }
@@ -88,15 +89,13 @@ const EditAttendance = () => {
         }
       );
 
-      alert(
-        "Attendance resubmitted successfully"
-      );
+      Toast.success("Attendance resubmitted successfully");
 
       navigate("/employee-dashboard");
     } catch (error) {
       console.error(error);
 
-      alert(
+      Toast.error(
         error?.response?.data?.message ||
           "Failed to resubmit attendance"
       );

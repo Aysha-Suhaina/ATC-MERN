@@ -7,7 +7,7 @@ import {toast} from 'react-toastify';
 
 import {
   getEmployeeById,
-  updateEmployee,
+  updateEmployee,getManagers
 } from "../../../api/userApi";
 
 import {
@@ -41,19 +41,23 @@ const UpdateEmployee =
       });
       const [departments, setDepartments] = useState([]);
       const [designations, setDesignations] = useState([]);
+      const [managers, setManagers] = useState([]);
 
-      useEffect(() => {
+useEffect(() => {
   const loadData = async () => {
     try {
-      const deptRes = await getDepartments();
+      const [deptRes, desigRes, managerRes] =
+        await Promise.all([
+          getDepartments(),
+          getDesignationsByDepartment(),
+          getManagers(),
+        ]);
 
-      setDepartments(
-        deptRes.data.departments
-      );
-
-  
+      setDepartments(deptRes.data.departments);
+      setDesignations(desigRes.data.designations);
+      setManagers(managerRes.data.managers);
     } catch (err) {
-      console.log(err);
+      console.error(err);
     }
   };
 
@@ -87,6 +91,8 @@ const UpdateEmployee =
             designation:
               employee.designation?._id ||
               "",
+              manager:
+            employee.manager?._id || "",
           });
           if (employee.department?._id) {
             const res = await getDesignationsByDepartment(
@@ -253,6 +259,25 @@ const UpdateEmployee =
               </option>
             ))}
           </select>
+            <select
+              name="manager"
+              value={form.manager}
+              onChange={handleChange}
+            >
+              <option value="">
+                Select Manager
+              </option>
+
+              {managers.map((manager) => (
+                <option
+                  key={manager._id}
+                  value={manager._id}
+                >
+                  {manager.name}
+                </option>
+              ))}
+            </select>
+
           <button
             type="submit"
           >

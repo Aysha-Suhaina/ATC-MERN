@@ -98,3 +98,12 @@ export const updateAttendance = async (
     }
   );
 };
+
+export const getManagers = async () => {
+  return axios.get(
+    `${API}/managers`,
+    {
+      withCredentials: true,
+    }
+  );
+};
