@@ -8,7 +8,8 @@ import {
   approveAttendance,
   rejectAttendance,
   resubmitAttendance,
-  deleteAttendance,
+  deleteAttendance,getManagerPendingAttendance,
+  getManagerAttendanceHistory
 } from "../controller/attendance.controller.js";
 import { authenticate } from "../middleware/authenticate.middleware.js";
 import { authorize } from "../middleware/authorize.middleware.js";
@@ -48,10 +49,22 @@ router.get(
   "/pending",
   authenticate,
   authorize(
-    "admin",
-    "manager"
+    "admin"
   ),
   getPendingAttendance
+);
+router.get(
+  "/manager/pending",
+  authenticate,
+  authorize("manager"),
+  getManagerPendingAttendance
+);
+
+router.get(
+  "/manager/history",
+  authenticate,
+  authorize("manager"),
+  getManagerAttendanceHistory
 );
 
 router.get(

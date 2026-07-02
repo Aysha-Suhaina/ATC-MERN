@@ -29,6 +29,7 @@ import EditDesignation from "./pages/admin/DesignationManagement/EditDesignation
 import ManagerDashboard from "./pages/manager/ManagerDashboard";
 import AttendanceApproval from "./pages/manager/AttendanceApproval";
 import MyEmployees from "./pages/manager/MyEmployees";
+import AttendanceHistory from "./pages/manager/AttedanceHistory";
 
 //import Profile from "./pages/Profile/Profile";
 //import Profile from "./pages/Profile/Profile";
@@ -80,10 +81,14 @@ function App(){
           element={<AttendanceApproval />}
         />
 
+        <Route 
+          path="manager/my-employees"
+          element={<MyEmployees/>}
+          />
         <Route
-          path="/manager/my-employees"
-          element={<MyEmployees />}
-        />
+  path="/manager/history"
+  element={<AttendanceHistory />}
+/>
 
         <Route
           path="/admin/attendance"

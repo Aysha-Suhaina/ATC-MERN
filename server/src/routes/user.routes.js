@@ -4,7 +4,8 @@ import {
   getProfile,
   updateProfile,getAllEmployees,getEmployeeById,createEmployee,
   updateEmployee,deactivateEmployee,getAllAttendance,deleteAttendance,
-  getManagers,promoteToManager,getMyDepartmentEmployees
+  getManagers,promoteToManager,getMyDepartmentEmployees,
+  reactivateEmployee
 } from "../controller/user.controller.js";
 
 import { authenticate } from "../middleware/authenticate.middleware.js";
@@ -58,6 +59,13 @@ router.patch(
   authenticate,
   authorize("admin"),
   deactivateEmployee
+);
+
+router.patch(
+  "/:id/reactivate",
+  authenticate,
+  authorize("admin"),
+  reactivateEmployee
 );
 
 router.get(
