@@ -20,6 +20,10 @@ const ManagerDashboard = () => {
             <button>My Employees</button>
           </Link>
 
+          <Link to="/manager/history">
+            <button>Attendance History </button>
+          </Link>
+
           {/* Reports will be added later */}
         </div>
       </div>

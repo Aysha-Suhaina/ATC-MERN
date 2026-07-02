@@ -3,13 +3,14 @@ import {
   useEffect,
   useState,
 } from "react";
-
+import Swal from "sweetalert2";
 import { toast } from "react-toastify";
 
 import {
   getEmployees,
   deactivateEmployee,
   promoteEmployee,
+  reactivateEmployee
 } from "../../../api/userApi";
 
 import {
@@ -17,6 +18,7 @@ import {
 } from "react-router-dom";
 
 const EmployeeList = () => {
+
   const [employees, setEmployees] =
     useState([]);
 
@@ -51,25 +53,59 @@ const EmployeeList = () => {
     });
   }, [loadEmployees]);
 
-  const handleDeactivate =
-    async (id) => {
-      try {
-        await deactivateEmployee(
-          id
-        );
+  const handleDeactivate = async (employee) => {
+  const result = await Swal.fire({
+    title: "Deactivate Employee?",
+    text: `Are you sure you want to deactivate ${employee.name}?`,
+    icon: "warning",
+    showCancelButton: true,
+    confirmButtonText: "Deactivate",
+    cancelButtonText: "Cancel",
+    confirmButtonColor: "#d33",
+  });
 
-        toast.success(
-          "Employee deactivated"
-        );
+  if (!result.isConfirmed) return;
 
-        loadEmployees();
-      } catch (error) {
-        toast.error(
-          error.response?.data?.message ||
-            "Failed to deactivate employee"
-        );
-      }
-    };
+  try {
+    await deactivateEmployee(employee._id);
+
+    toast.success("Employee deactivated");
+
+    loadEmployees();
+  } catch (error) {
+    toast.error(
+      error.response?.data?.message ||
+        "Failed to deactivate employee"
+    );
+  }
+};
+
+const handleReactivate = async (employee) => {
+  const result = await Swal.fire({
+    title: "Reactivate Employee?",
+    text: `Are you sure you want to reactivate ${employee.name}?`,
+    icon: "question",
+    showCancelButton: true,
+    confirmButtonText: "Reactivate",
+    cancelButtonText: "Cancel",
+    confirmButtonColor: "#3085d6",
+  });
+
+  if (!result.isConfirmed) return;
+
+  try {
+    await reactivateEmployee(employee._id);
+
+    toast.success("Employee reactivated");
+
+    loadEmployees();
+  } catch (error) {
+    toast.error(
+      error.response?.data?.message ||
+        "Failed to reactivate employee"
+    );
+  }
+};
 
   const handlePromote =
     async (id) => {
@@ -191,15 +227,17 @@ const EmployeeList = () => {
                     </button>
                   )}
 
-                  {employee.isActive && (
+                  {employee.isActive ? (
                     <button
-                      onClick={() =>
-                        handleDeactivate(
-                          employee._id
-                        )
-                      }
+                      onClick={() => handleDeactivate(employee)}
                     >
                       Deactivate
+                    </button>
+                  ) : (
+                    <button
+                      onClick={() => handleReactivate(employee)}
+                    >
+                      Reactivate
                     </button>
                   )}
                 </td>

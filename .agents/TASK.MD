@@ -3,6 +3,7 @@
 # HRMS Project Roadmap & Progress
 
 ---
+  JUMP TO LINE 140
 
 # 📌 Overall Progress
 
@@ -141,12 +142,12 @@
 
 ## Admin Improvements
 
-- ⬜ Add Manager Role Support
-- ⬜ Promote Employee → Manager
+Add Manager Role Support
+ Promote Employee → Manager
 - ⬜ Demote Manager → Employee
 - ⬜ Add Promote/Demote Buttons
-- ⬜ Verify Manager Login Redirect
-- ⬜ Prevent Managers from accessing Admin Routes
+Verify Manager Login Redirect
+Prevent Managers from accessing Admin Routes
 - ⬜ Prevent Employees from accessing Manager Routes
 
 ## Manager Dashboard

@@ -20,6 +20,25 @@ export const getPendingAttendance = async () => {
   });
 };
 
+export const getManagerPendingAttendance =
+  async () => {
+    return axios.get(
+      `${API}/manager/pending`,
+      {
+        withCredentials: true,
+      }
+    );
+  };
+export const getManagerAttendanceHistory =
+async () => {
+  return axios.get(
+    `${API}/manager/history`,
+    {
+      withCredentials: true,
+    }
+  );
+};
+
 export const approveAttendance = async (
   attendanceId,
   remarks

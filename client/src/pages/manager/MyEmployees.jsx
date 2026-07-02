@@ -39,7 +39,6 @@ const MyEmployees = () => {
             <tr>
               <th>Name</th>
               <th>Email</th>
-              <th>Department</th>
               <th>Designation</th>
             </tr>
           </thead>
@@ -58,13 +57,6 @@ const MyEmployees = () => {
 
                   <td>
                     {employee.email}
-                  </td>
-
-                  <td>
-                    {
-                      employee.department
-                        ?.name
-                    }
                   </td>
 
                   <td>

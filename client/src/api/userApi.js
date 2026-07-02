@@ -73,6 +73,15 @@ export const getEmployeeById =
     );
   };
 
+  export const reactivateEmployee = async (id) => {
+  return axios.patch(
+    `${API}/employees/${id}/reactivate`,
+    {},
+    {
+      withCredentials: true,
+    }
+  );
+};
   export const getAllAttendance = async () => {
   return axios.get(`${API}/attendance`, {
     withCredentials: true,

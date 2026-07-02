@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import Navbar from "../../components/Navbar";
 
 import {
-  getPendingAttendance,
+  getManagerPendingAttendance,
   approveAttendance,
   rejectAttendance,
 } from "../../api/attendanceApi";
@@ -14,7 +14,7 @@ const AttendanceApproval = () => {
   const loadData = async () => {
     try {
       const res =
-        await getPendingAttendance();
+        await getManagerPendingAttendance();
 
       setRecords(
         res.data.data

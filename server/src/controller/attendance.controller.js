@@ -1,4 +1,6 @@
 import Attendance from "../model/Attendance.js";
+import Department from "../model/Department.js";
+import User from "../model/User.js";
 import ApiResponse from "../utils/ApiResponse.js";
 
 export const submitAttendance = async (
@@ -219,6 +221,9 @@ export const getAttendanceById = async (
 export const getPendingAttendance =
   async (req, res, next) => {
     try {
+
+
+
       const attendance = await Attendance.find({
         approvalStatus: "pending",
       })
@@ -242,6 +247,120 @@ export const getPendingAttendance =
       next(error);
     }
   };
+
+export const getManagerPendingAttendance = async (
+  req,
+  res,
+  next
+) => {
+  try {
+    const department = await Department.findOne({
+      manager: req.user.id,
+    });
+
+    if (!department) {
+      return res.status(404).json({
+        success: false,
+        message: "No department assigned.",
+      });
+    }
+
+    const employees = await User.find({
+      department: department._id,
+      role: "employee",
+      isActive: true,
+    }).select("_id");
+
+    const employeeIds = employees.map(
+      (emp) => emp._id
+    );
+
+    const attendance = await Attendance.find({
+      approvalStatus: "pending",
+      user: {
+        $in: employeeIds,
+      },
+    })
+      .populate({
+        path: "user",
+        populate: [
+          { path: "department" },
+          { path: "designation" },
+        ],
+      })
+      .sort({ date: -1 });
+
+    return res.status(200).json(
+      new ApiResponse(
+        200,
+        "Pending attendance fetched",
+        attendance
+      )
+    );
+  } catch (error) {
+    next(error);
+  }
+};
+
+export const getManagerAttendanceHistory = async (
+  req,
+  res,
+  next
+) => {
+  try {
+    const department =
+      await Department.findOne({
+        manager: req.user.id,
+      });
+
+    if (!department) {
+      return res.status(404).json({
+        success: false,
+        message:
+          "No department assigned.",
+      });
+    }
+
+    const employees =
+      await User.find({
+        department: department._id,
+        role: "employee",
+      }).select("_id");
+
+    const employeeIds =
+      employees.map(
+        (emp) => emp._id
+      );
+
+    const attendance =
+      await Attendance.find({
+        user: {
+          $in: employeeIds,
+        },
+      })
+        .populate({
+          path: "user",
+          populate: [
+            {
+              path: "department",
+            },
+            {
+              path: "designation",
+            },
+          ],
+        })
+        .sort({
+          date: -1,
+        });
+
+    return res.status(200).json({
+      success: true,
+      attendance,
+    });
+  } catch (error) {
+    next(error);
+  }
+};
 
 export const approveAttendance =
   async (req, res, next) => {
