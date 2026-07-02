@@ -1,4 +1,5 @@
 import { useEffect,useCallback, useState } from "react";
+import {toast} from 'react-toastify';
 import { useNavigate, useParams } from "react-router-dom";
 
 import {
@@ -48,12 +49,12 @@ useEffect(() => {
     try {
       await updateDepartment(id, form);
 
-      alert("Department updated successfully");
+      toast.success("Department updated successfully");
 
       navigate("/admin/departments");
     } catch (error) {
       console.error(error);
-      alert("Failed to update department");
+      toast.error("Failed to update department");
     }
   };
 

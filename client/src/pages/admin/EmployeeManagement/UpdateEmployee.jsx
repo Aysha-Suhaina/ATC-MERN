@@ -41,12 +41,12 @@ const UpdateEmployee =
       });
       const [departments, setDepartments] = useState([]);
       const [designations, setDesignations] = useState([]);
-      const [managers, setManagers] = useState([]);
+      //const [managers, setManagers] = useState([]);
 
 useEffect(() => {
   const loadData = async () => {
     try {
-      const [deptRes, desigRes, managerRes] =
+      const [deptRes, desigRes] = //manageRes
         await Promise.all([
           getDepartments(),
           getDesignationsByDepartment(),
@@ -55,7 +55,7 @@ useEffect(() => {
 
       setDepartments(deptRes.data.departments);
       setDesignations(desigRes.data.designations);
-      setManagers(managerRes.data.managers);
+     // setManagers(managerRes.data.managers);
     } catch (err) {
       console.error(err);
     }
@@ -259,7 +259,7 @@ useEffect(() => {
               </option>
             ))}
           </select>
-            <select
+            {/* <select
               name="manager"
               value={form.manager}
               onChange={handleChange}
@@ -276,7 +276,7 @@ useEffect(() => {
                   {manager.name}
                 </option>
               ))}
-            </select>
+            </select> */}
 
           <button
             type="submit"

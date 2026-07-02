@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import {toast} from 'react-toastify';
 import { createDesignation } from "../../api/designationApi";
 import { getDepartments } from "../../api/departmentApi";
 
@@ -38,7 +39,7 @@ function DesignationForm({ onSuccess }) {
     try {
       await createDesignation(form);
 
-      alert("Designation created successfully");
+      toast.success("Designation created successfully");
 
       setForm({
         name: "",
@@ -48,7 +49,7 @@ function DesignationForm({ onSuccess }) {
       onSuccess();
     } catch (error) {
       console.error(error);
-      alert("Failed to create designation");
+      toast.error("Failed to create designation");
     }
   };
 

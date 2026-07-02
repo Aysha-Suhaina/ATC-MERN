@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import {toast} from 'react-toastify';
 import {
   approveAttendance,
   rejectAttendance,
@@ -42,10 +43,10 @@ function PendingAttendance() {
       )
     );
 
-    alert("Attendance approved");
+    toast.success("Attendance approved");
   } catch (error) {
     console.error(error);
-    alert("Failed to approve attendance");
+    toast.error("Failed to approve attendance");
   }
 };
 
@@ -62,10 +63,10 @@ const handleReject = async (attendanceId) => {
       )
     );
 
-    alert("Attendance rejected");
+    toast.success("Attendance rejected");
   } catch (error) {
     console.error(error);
-    alert("Failed to reject attendance");
+    toast.error("Failed to reject attendance");
   }
 };
 

@@ -8,10 +8,9 @@ import ResetPassword from "./pages/Auth/ResetPassword";
 import Register from "./pages/Auth/Register";
 
 //dashboard - attendance mgmt
-import Dashboard from "./pages/Dashboard/Dashboard";
-import EditAttendance from "./pages/Dashboard/EditAttendance";
-import AdminDashboard from "./pages/Dashboard/AdminDashboard";
-import ManagerDashboard from "./pages/Dashboard/ManagerDashboard";
+import Dashboard from "./pages/employee/Dashboard";
+import EditAttendance from "./pages/employee/EditAttendance";
+import AdminDashboard from "./pages/admin/AdminDashboard";
 import EmployeeList from "./pages/admin/EmployeeManagement/EmployeeList";
 import CreateEmployee from "./pages/admin/EmployeeManagement/CreateEmployee";
 import UpdateEmployee from "./pages/admin/EmployeeManagement/UpdateEmployee";
@@ -25,6 +24,11 @@ import EditDepartment from "./pages/admin/DepartmentManagement/EditDepartment";
 //designation
 import DesignationManagement from "./pages/admin/DesignationManagement/DesignationManagement"
 import EditDesignation from "./pages/admin/DesignationManagement/EditDesignation";
+
+//manager dahsbaird 
+import ManagerDashboard from "./pages/manager/ManagerDashboard";
+import AttendanceApproval from "./pages/manager/AttendanceApproval";
+import MyEmployees from "./pages/manager/MyEmployees";
 
 //import Profile from "./pages/Profile/Profile";
 //import Profile from "./pages/Profile/Profile";
@@ -69,6 +73,16 @@ function App(){
               <ManagerDashboard />
             </ProtectedRoute>
           }
+        />
+
+        <Route
+          path="/manager/attendance"
+          element={<AttendanceApproval />}
+        />
+
+        <Route
+          path="/manager/my-employees"
+          element={<MyEmployees />}
         />
 
         <Route

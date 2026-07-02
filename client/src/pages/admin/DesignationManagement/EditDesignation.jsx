@@ -1,4 +1,5 @@
 import { useEffect, useCallback, useState } from "react";
+import {toast} from 'react-toastify';
 import { useNavigate, useParams } from "react-router-dom";
 
 import {
@@ -61,12 +62,12 @@ function EditDesignation() {
     try {
       await updateDesignation(id, form);
 
-      alert("Designation updated successfully");
+      toast.success("Designation updated successfully");
 
       navigate("/admin/designations");
     } catch (error) {
       console.error(error);
-      alert("Failed to update designation");
+      toast.error("Failed to update designation");
     }
   };
 

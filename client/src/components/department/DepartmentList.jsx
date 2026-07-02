@@ -1,5 +1,7 @@
 import { Link } from "react-router-dom";
 import { deleteDepartment } from "../../api/departmentApi";
+import AssignManager from "./AssignManager";
+import {toast} from 'react-toastify';
 
 function DepartmentList({
   departments,
@@ -15,12 +17,12 @@ function DepartmentList({
     try {
       await deleteDepartment(id);
 
-      alert("Department deleted");
+      toast.success("Department deleted");
 
       refreshDepartments();
     } catch (error) {
       console.error(error);
-      alert("Failed to delete department");
+      toast.error("Failed to delete department");
     }
   };
 
@@ -61,7 +63,6 @@ function DepartmentList({
                 </td>
 
                 <td>
-
                   <Link
                     to={`/admin/departments/edit/${department._id}`}
                   >
@@ -70,12 +71,25 @@ function DepartmentList({
 
                   <button
                     onClick={() =>
-                      handleDelete(department._id)
+                      handleDelete(
+                        department._id
+                      )
                     }
                   >
                     Delete
                   </button>
 
+                  <AssignManager
+                    departmentId={
+                      department._id
+                    }
+                    currentManager={
+                      department.manager
+                    }
+                    onAssigned={
+                      refreshDepartments
+                    }
+                  />
                 </td>
 
               </tr>

@@ -4,9 +4,12 @@ import {
   useState,
 } from "react";
 
+import { toast } from "react-toastify";
+
 import {
   getEmployees,
   deactivateEmployee,
+  promoteEmployee,
 } from "../../../api/userApi";
 
 import {
@@ -14,8 +17,7 @@ import {
 } from "react-router-dom";
 
 const EmployeeList = () => {
-  const [employees,
-    setEmployees] =
+  const [employees, setEmployees] =
     useState([]);
 
   const navigate =
@@ -36,43 +38,18 @@ const EmployeeList = () => {
           employeesList
         );
       } catch (error) {
-        console.error(
-          error
+        toast.error(
+          error.response?.data?.message ||
+            "Failed to load employees"
         );
       }
     }, []);
 
   useEffect(() => {
-    let isCancelled = false;
-
-    const fetchEmployees = async () => {
-      try {
-        const res =
-          await getEmployees();
-
-        if (!isCancelled) {
-          const employeesList =
-            res?.data?.employees ||
-            res?.data?.data ||
-            [];
-
-          setEmployees(
-            employeesList
-          );
-        }
-      } catch (error) {
-        console.error(
-          error
-        );
-      }
-    };
-
-    void fetchEmployees();
-
-    return () => {
-      isCancelled = true;
-    };
-  }, []);
+    queueMicrotask(() => {
+      loadEmployees();
+    });
+  }, [loadEmployees]);
 
   const handleDeactivate =
     async (id) => {
@@ -81,10 +58,33 @@ const EmployeeList = () => {
           id
         );
 
-        await loadEmployees();
+        toast.success(
+          "Employee deactivated"
+        );
+
+        loadEmployees();
       } catch (error) {
-        console.error(
-          error
+        toast.error(
+          error.response?.data?.message ||
+            "Failed to deactivate employee"
+        );
+      }
+    };
+
+  const handlePromote =
+    async (id) => {
+      try {
+        await promoteEmployee(id);
+
+        toast.success(
+          "Employee promoted to Manager"
+        );
+
+        loadEmployees();
+      } catch (error) {
+        toast.error(
+          error.response?.data?.message ||
+            "Promotion failed"
         );
       }
     };
@@ -109,11 +109,19 @@ const EmployeeList = () => {
         <thead>
           <tr>
             <th>Name</th>
+
             <th>Email</th>
+
             <th>Department</th>
+
             <th>Designation</th>
+
+            <th>Role</th>
+
             <th>Manager</th>
+
             <th>Status</th>
+
             <th>Actions</th>
           </tr>
         </thead>
@@ -127,32 +135,31 @@ const EmployeeList = () => {
                 }
               >
                 <td>
-                  {
-                    employee.name
-                  }
+                  {employee.name}
                 </td>
 
                 <td>
-                  {
-                    employee.email
-                  }
+                  {employee.email}
                 </td>
 
                 <td>
-                  {
-                    employee.department?.name
-                  }
+                  {employee.department
+                    ?.name || "-"}
                 </td>
 
                 <td>
-                  {
-                    employee.designation?.name
-                  }
+                  {employee.designation
+                    ?.name || "-"}
                 </td>
 
                 <td>
-                  {employee.manager?.name || "Not Assigned"}
+                  {employee.role}
                 </td>
+
+                <td>
+              {employee.department?.manager?.name ||
+                "Not Assigned"}
+            </td>
 
                 <td>
                   {employee.isActive
@@ -170,6 +177,19 @@ const EmployeeList = () => {
                   >
                     Edit
                   </button>
+
+                  {employee.role ===
+                    "employee" && (
+                    <button
+                      onClick={() =>
+                        handlePromote(
+                          employee._id
+                        )
+                      }
+                    >
+                      Promote
+                    </button>
+                  )}
 
                   {employee.isActive && (
                     <button

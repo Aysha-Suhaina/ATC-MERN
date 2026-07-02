@@ -1,5 +1,6 @@
 import bcrypt from "bcryptjs";
 import User from "../model/User.js";
+import Department from "../model/Department.js";
 import ApiResponse from "../utils/ApiResponse.js";
 
 export const getProfile = async (
@@ -73,9 +74,14 @@ export const updateProfile =
   try {
     const employees = await User.find({
       role: "employee",
-    }).populate("department")
+    }).populate({
+  path: "department",
+  populate: {
+    path: "manager",
+    select: "name email",
+  },
+})
     .populate("designation")
-    .populate("manager", "name email")
     .select("-password");
 
     res.status(200).json({
@@ -127,8 +133,7 @@ export const getEmployeeById =
       await User.findById(
         req.params.id
       ).populate("department")
-    .populate("designation")
-    .populate("manager", "name email").select("-password");
+  .select("-password");
 
     res.status(200).json({
       success: true,
@@ -148,7 +153,6 @@ export const createEmployee = async (
       password,
       department,
       designation,
-      manager
     } = req.body;
 
     if (!name || !email || !password) {
@@ -176,7 +180,7 @@ export const createEmployee = async (
       role: "employee",
       department,
       designation,
-      manager
+      
     });
 
     const employeeResponse = employee.toObject();
@@ -203,7 +207,7 @@ export const updateEmployee = async (
   email,
   department,
   designation,
-  manager
+  
 } = req.body;
 
 const employee =
@@ -214,7 +218,6 @@ const employee =
       email,
       department,
       designation,
-      manager
     },
     {
       new: true,
@@ -223,7 +226,7 @@ const employee =
   )
     .populate("department")
     .populate("designation")
-    .populate("manager", "name email")
+
     .select("-password");
 
 res.status(200).json({
@@ -272,6 +275,97 @@ export const deactivateEmployee =
     res.status(200).json({
       success: true,
       managers,
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
+export const promoteToManager = async (
+  req,
+  res,
+  next
+) => {
+  try {
+    const employee =
+      await User.findById(
+        req.params.id
+      );
+
+    if (!employee) {
+      return res.status(404).json({
+        success: false,
+        message: "Employee not found",
+      });
+    }
+
+    if (employee.role === "admin") {
+      return res.status(400).json({
+        success: false,
+        message:
+          "Admin cannot be promoted",
+      });
+    }
+
+    if (employee.role === "manager") {
+      return res.status(400).json({
+        success: false,
+        message:
+          "User is already a manager",
+      });
+    }
+    if (!employee.isActive) {
+      return res.status(400).json({
+        success: false,
+        message:
+          "Inactive employees cannot be promoted.",
+      });
+    }
+
+    employee.role = "manager";
+
+    await employee.save();
+
+    res.status(200).json({
+      success: true,
+      message:
+        "Employee promoted to manager",
+      employee,
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
+export const getMyDepartmentEmployees = async (
+  req,
+  res,
+  next
+) => {
+  try {
+    const department = await Department.findOne({
+      manager: req.user.id,
+    });
+
+    if (!department) {
+      return res.status(404).json({
+        success: false,
+        message: "No department assigned.",
+      });
+    }
+
+    const employees = await User.find({
+      role: "employee",
+      department: department._id,
+      isActive: true,
+    })
+      .populate("department")
+      .populate("designation")
+      .select("-password");
+
+    return res.status(200).json({
+      success: true,
+      employees,
     });
   } catch (error) {
     next(error);

@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import {toast} from 'react-toastify';
 import {
   getAllAttendance,
   deleteAttendance,
@@ -38,14 +39,10 @@ const handleDelete = async (id) => {
       )
     );
 
-    alert(
-      "Attendance deleted successfully"
-    );
+    toast.success("Attendance deleted successfully");
   } catch (error) {
     console.error(error);
-    alert(
-      "Failed to delete attendance"
-    );
+    toast .error("Failed to delete attendance");
   }
 };
 
