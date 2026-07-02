@@ -1,4 +1,5 @@
 import { Link } from "react-router-dom";
+import {toast} from 'react-toastify';
 import { deleteDesignation } from "../../api/designationApi";
 
 function DesignationList({
@@ -18,7 +19,7 @@ function DesignationList({
 
       await deleteDesignation(id);
 
-      alert("Designation deleted");
+      toast.success("Designation deleted");
 
       refreshDesignations();
 
@@ -26,7 +27,7 @@ function DesignationList({
 
       console.error(error);
 
-      alert("Failed to delete designation");
+      toast.error("Failed to delete designation");
 
     }
 

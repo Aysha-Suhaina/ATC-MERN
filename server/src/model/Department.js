@@ -26,7 +26,7 @@ const departmentSchema = new mongoose.Schema(
   }
 );
 
-export const Department = mongoose.model(
+export default mongoose.model(
   "Department",
   departmentSchema
 );

@@ -1,4 +1,5 @@
 import { useState } from "react";
+import {toast} from 'react-toastify';
 import { createDepartment } from "../../api/departmentApi";
 
 function DepartmentForm({ onSuccess }) {
@@ -20,7 +21,7 @@ function DepartmentForm({ onSuccess }) {
     try {
       await createDepartment(form);
 
-      alert("Department created successfully");
+      toast.success("Department created successfully");
 
       setForm({
         name: "",
@@ -30,7 +31,7 @@ function DepartmentForm({ onSuccess }) {
       onSuccess();
     } catch (error) {
       console.error(error);
-      alert("Failed to create department");
+      toast.error("Failed to create department");
     }
   };
 

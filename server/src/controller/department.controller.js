@@ -1,5 +1,5 @@
-import { Department } from "../model/Department.js";
-import User from '../model/User.js';
+import  Department from "../model/Department.js";
+import User from "../model/User.js";
 
 export const createDepartment = async (
   req,
@@ -16,6 +16,7 @@ export const createDepartment = async (
 
     if (existing) {
       return res.status(400).json({
+        success: false,
         message:
           "Department already exists",
       });
@@ -74,6 +75,7 @@ export const getDepartmentById =
 
       if (!department) {
         return res.status(404).json({
+          success: false,
           message:
             "Department not found",
         });
@@ -88,11 +90,13 @@ export const getDepartmentById =
     }
   };
 
-  export const updateDepartment =
+export const updateDepartment =
   async (req, res, next) => {
     try {
-      const { name, description } =
-        req.body;
+      const {
+        name,
+        description,
+      } = req.body;
 
       const department =
         await Department.findByIdAndUpdate(
@@ -109,6 +113,7 @@ export const getDepartmentById =
 
       if (!department) {
         return res.status(404).json({
+          success: false,
           message:
             "Department not found",
         });
@@ -123,7 +128,7 @@ export const getDepartmentById =
     }
   };
 
-  export const deleteDepartment =
+export const deleteDepartment =
   async (req, res, next) => {
     try {
       const department =
@@ -133,6 +138,7 @@ export const getDepartmentById =
 
       if (!department) {
         return res.status(404).json({
+          success: false,
           message:
             "Department not found",
         });
@@ -150,52 +156,73 @@ export const getDepartmentById =
     }
   };
 
-  export const assignManager = async (
-  req,
-  res,
-  next
-) => {
-  try {
-    const { managerId } = req.body;
+export const assignManager =
+  async (req, res, next) => {
+    try {
+      const { managerId } =
+        req.body;
 
-    const manager =
-      await User.findById(
-        managerId
-      );
+      const manager =
+        await User.findOne({
+          _id: managerId,
+          role: "manager",
+          isActive: true,
+        });
 
-    if (!manager) {
-      return res.status(404).json({
-        message:
-          "Manager not found",
-      });
-    }
+      if (!manager) {
+        return res.status(404).json({
+          success: false,
+          message:
+            "Manager not found or inactive",
+        });
+      }
 
-    if (manager.role !== "manager") {
-      return res.status(400).json({
-        message:
-          "Selected user is not a manager",
-           });
-    }
-
-    const department =
-      await Department.findByIdAndUpdate(
-        req.params.id,
-        {
+      const existingDepartment =
+        await Department.findOne({
           manager: managerId,
-        },
-        {
-          new: true,
-        }
-      ).populate(
-        "manager",
-        "name email"
-      );
+        });
 
-    return res.status(200).json({
-      success: true,
-      department,
-    });
-  } catch (error) {
-    next(error);
-  }
-};
+      if (
+        existingDepartment &&
+        existingDepartment._id.toString() !==
+          req.params.id
+      ) {
+        return res.status(400).json({
+          success: false,
+          message:
+            "Manager is already assigned to another department",
+        });
+      }
+
+      const department =
+        await Department.findByIdAndUpdate(
+          req.params.id,
+          {
+            manager: managerId,
+          },
+          {
+            new: true,
+          }
+        ).populate(
+          "manager",
+          "name email"
+        );
+
+      if (!department) {
+        return res.status(404).json({
+          success: false,
+          message:
+            "Department not found",
+        });
+      }
+
+      return res.status(200).json({
+        success: true,
+        message:
+          "Manager assigned successfully",
+        department,
+      });
+    } catch (error) {
+      next(error);
+    }
+  };
