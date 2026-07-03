@@ -1,5 +1,6 @@
 import { useEffect,useCallback, useState } from "react";
 import {toast} from 'react-toastify';
+import AssignManager from "../../../components/department/AssignManager";
 import { useNavigate, useParams } from "react-router-dom";
 
 import {
@@ -11,7 +12,8 @@ function EditDepartment() {
   const { id } = useParams();
 
   const navigate = useNavigate();
-
+  const [department, setDepartment] =
+  useState(null);
   const [form, setForm] = useState({
     name: "",
     description: "",
@@ -21,10 +23,17 @@ function EditDepartment() {
   try {
     const response = await getDepartment(id);
 
-    setForm({
-      name: response.data.department.name,
-      description: response.data.department.description || "",
-    });
+    setDepartment(
+  response.data.department
+);
+
+setForm({
+  name:
+    response.data.department.name,
+  description:
+    response.data.department
+      .description || "",
+});
   } catch (error) {
     console.error(error);
   }
@@ -86,6 +95,29 @@ useEffect(() => {
             onChange={handleChange}
           />
         </div>
+
+        <hr />
+
+          <h3>Department Manager</h3>
+
+          <p>
+            <strong>Current Manager:</strong>{" "}
+            {department?.manager
+              ? department.manager.name
+              : "Not Assigned"}
+          </p>
+
+          <AssignManager
+            departmentId={id}
+            currentManager={
+              department?.manager
+            }
+            onAssigned={
+              loadDepartment
+            }
+          />
+
+          <hr />
 
         <button type="submit">
           Update Department

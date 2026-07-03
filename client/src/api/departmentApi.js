@@ -29,11 +29,44 @@ export const deleteDepartment = (id) =>
 
 export const assignManager = (
   departmentId,
-  managerId
+  employeeId
 ) =>
   axios.patch(
     `${API}/${departmentId}/assign-manager`,
-    { managerId },
+    { employeeId },
+    {
+      withCredentials: true,
+    }
+  );
+
+  export const getDepartmentEmployees = (
+  departmentId
+) =>
+  axios.get(
+    `${API}/${departmentId}/employees`,
+    {
+      withCredentials: true,
+    }
+  );
+
+export const changeManager = (
+  departmentId,
+  employeeId
+) =>
+  axios.patch(
+    `${API}/${departmentId}/change-manager`,
+    { employeeId },
+    {
+      withCredentials: true,
+    }
+  );
+
+export const removeManager = (
+  departmentId
+) =>
+  axios.patch(
+    `${API}/${departmentId}/remove-manager`,
+    {},
     {
       withCredentials: true,
     }

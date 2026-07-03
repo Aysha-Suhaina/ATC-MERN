@@ -117,17 +117,6 @@ export const getManagers = async () => {
   );
 };
 
-export const promoteEmployee = (
-  id
-) => {
-  return axios.patch(
-    `${API}/employees/${id}/promote`,
-    {},
-    {
-      withCredentials: true,
-    }
-  );
-};
 
 export const getMyDepartmentEmployees = async () => {
   return axios.get(

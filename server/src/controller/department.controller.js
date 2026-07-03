@@ -156,73 +156,243 @@ export const deleteDepartment =
     }
   };
 
-export const assignManager =
+export const assignManager = async (
+  req,
+  res,
+  next
+) => {
+  try {
+    const { employeeId } = req.body;
+
+    const employee = await User.findById(employeeId);
+    if (
+      employee.department?.toString() !==
+      req.params.id
+    ) {
+      return res.status(400).json({
+        success: false,
+        message:
+          "Employee does not belong to this department.",
+      });
+    }
+
+    if (!employee) {
+      return res.status(404).json({
+        success: false,
+        message: "Employee not found",
+      });
+    }
+
+    if (!employee.isActive) {
+      return res.status(400).json({
+        success: false,
+        message: "Inactive employees cannot be assigned as managers.",
+      });
+    }
+
+    if (employee.role === "admin") {
+      return res.status(400).json({
+        success: false,
+        message: "Admins cannot be assigned as department managers.",
+      });
+    }
+
+    const department = await Department.findById(req.params.id)
+      .populate("manager", "name");
+
+    if (!department) {
+      return res.status(404).json({
+        success: false,
+        message: "Department not found",
+      });
+    }
+
+    // Department already has a manager
+    if (department.manager) {
+      return res.status(400).json({
+        success: false,
+        message: `${department.name} is already managed by ${department.manager.name}. Please depromote the current manager first.`,
+      });
+    }
+
+    // Employee already manages another department
+    const existingDepartment = await Department.findOne({
+      manager: employee._id,
+    });
+
+    if (existingDepartment) {
+      return res.status(400).json({
+        success: false,
+        message: `${employee.name} already manages ${existingDepartment.name}.`,
+      });
+    }
+
+    // Promote employee if needed
+    if (employee.role === "employee") {
+      employee.role = "manager";
+      await employee.save();
+    }
+
+    department.manager = employee._id;
+    await department.save();
+
+    await department.populate("manager", "name email");
+
+    return res.status(200).json({
+      success: true,
+      message: `${employee.name} has been assigned as manager of ${department.name}.`,
+      department,
+    });
+
+  } catch (error) {
+    next(error);
+  }
+};
+
+export const getDepartmentEmployees =
   async (req, res, next) => {
     try {
-      const { managerId } =
-        req.body;
-
-      const manager =
-        await User.findOne({
-          _id: managerId,
-          role: "manager",
-          isActive: true,
-        });
-
-      if (!manager) {
-        return res.status(404).json({
-          success: false,
-          message:
-            "Manager not found or inactive",
-        });
-      }
-
-      const existingDepartment =
-        await Department.findOne({
-          manager: managerId,
-        });
-
-      if (
-        existingDepartment &&
-        existingDepartment._id.toString() !==
-          req.params.id
-      ) {
-        return res.status(400).json({
-          success: false,
-          message:
-            "Manager is already assigned to another department",
-        });
-      }
-
-      const department =
-        await Department.findByIdAndUpdate(
-          req.params.id,
-          {
-            manager: managerId,
-          },
-          {
-            new: true,
-          }
-        ).populate(
-          "manager",
-          "name email"
-        );
-
-      if (!department) {
-        return res.status(404).json({
-          success: false,
-          message:
-            "Department not found",
-        });
-      }
+      const employees =
+        await User.find({
+          department: req.params.id,
+          role: "employee",
+        })
+          .select(
+            "name email isActive"
+          )
+          .sort({
+            name: 1,
+          });
 
       return res.status(200).json({
         success: true,
-        message:
-          "Manager assigned successfully",
-        department,
+        employees,
       });
     } catch (error) {
       next(error);
     }
   };
+
+export const changeManager = async (
+  req,
+  res,
+  next
+) => {
+  try {
+    const { employeeId } = req.body;
+
+    const department = await Department.findById(req.params.id);
+
+    if (!department) {
+      return res.status(404).json({
+        success: false,
+        message: "Department not found.",
+      });
+    }
+
+    if (!department.manager) {
+      return res.status(400).json({
+        success: false,
+        message: "No manager assigned to this department.",
+      });
+    }
+
+    const currentManager = await User.findById(
+      department.manager
+    );
+
+    const newManager = await User.findById(
+      employeeId
+    );
+
+    if (!newManager) {
+      return res.status(404).json({
+        success: false,
+        message: "Employee not found.",
+      });
+    }
+
+    if (
+      newManager.department?.toString() !==
+      department._id.toString()
+    ) {
+      return res.status(400).json({
+        success: false,
+        message:
+          "Employee does not belong to this department.",
+      });
+    }
+
+    if (!newManager.isActive) {
+      return res.status(400).json({
+        success: false,
+        message:
+          "Inactive employee cannot become manager.",
+      });
+    }
+
+    currentManager.role = "employee";
+    newManager.role = "manager";
+
+    department.manager = newManager._id;
+
+    await currentManager.save();
+    await newManager.save();
+    await department.save();
+
+    return res.status(200).json({
+      success: true,
+      message: "Manager changed successfully.",
+    });
+
+  } catch (error) {
+    next(error);
+  }
+};
+
+export const removeManager = async (
+  req,
+  res,
+  next
+) => {
+  try {
+    const department =
+      await Department.findById(
+        req.params.id
+      );
+
+    if (!department) {
+      return res.status(404).json({
+        success: false,
+        message: "Department not found.",
+      });
+    }
+
+    if (!department.manager) {
+      return res.status(400).json({
+        success: false,
+        message: "No manager assigned.",
+      });
+    }
+
+    const manager =
+      await User.findById(
+        department.manager
+      );
+
+    manager.role = "employee";
+
+    department.manager = null;
+
+    await manager.save();
+    await department.save();
+
+    return res.status(200).json({
+      success: true,
+      message: "Manager removed successfully.",
+    });
+
+  } catch (error) {
+    next(error);
+  }
+};
