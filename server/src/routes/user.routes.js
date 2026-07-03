@@ -4,7 +4,7 @@ import {
   getProfile,
   updateProfile,getAllEmployees,getEmployeeById,createEmployee,
   updateEmployee,deactivateEmployee,getAllAttendance,deleteAttendance,
-  getManagers,promoteToManager,getMyDepartmentEmployees,
+  getManagers,getMyDepartmentEmployees,
   reactivateEmployee
 } from "../controller/user.controller.js";
 
@@ -62,7 +62,7 @@ router.patch(
 );
 
 router.patch(
-  "/:id/reactivate",
+  "/employees/:id/reactivate",
   authenticate,
   authorize("admin"),
   reactivateEmployee
@@ -83,12 +83,6 @@ router.get(
   getManagers
 );
 
-router.patch(
-  "/employees/:id/promote",
-  authenticate,
-  authorize("admin"),
-  promoteToManager
-);
 
 router.get(
   "/manager/my-employees",

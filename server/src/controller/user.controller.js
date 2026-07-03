@@ -302,97 +302,6 @@ export const reactivateEmployee = async (req, res, next) => {
   }
 };
 
-export const promoteToManager = async (
-  req,
-  res,
-  next
-) => {
-  try {
-    const { departmentId } = req.body;
-
-    if (!departmentId) {
-      return res.status(400).json({
-        success: false,
-        message: "Please select a department.",
-      });
-    }
-
-    const employee = await User.findById(req.params.id);
-
-    if (!employee) {
-      return res.status(404).json({
-        success: false,
-        message: "Employee not found",
-      });
-    }
-
-    if (!employee.isActive) {
-      return res.status(400).json({
-        success: false,
-        message: "Inactive employees cannot be promoted.",
-      });
-    }
-
-    if (employee.role === "manager") {
-      return res.status(400).json({
-        success: false,
-        message: "User is already a manager.",
-      });
-    }
-
-    if (employee.role === "admin") {
-      return res.status(400).json({
-        success: false,
-        message: "Admins cannot be promoted.",
-      });
-    }
-
-    const department = await Department.findById(departmentId)
-      .populate("manager", "name");
-
-    if (!department) {
-      return res.status(404).json({
-        success: false,
-        message: "Department not found.",
-      });
-    }
-
-    // Employee already manages another department?
-    const existingDepartment = await Department.findOne({
-      manager: employee._id,
-    });
-
-    if (existingDepartment) {
-      return res.status(400).json({
-        success: false,
-        message: `${employee.name} already manages ${existingDepartment.name}.`,
-      });
-    }
-
-    // Department already has a manager?
-    if (department.manager) {
-      return res.status(400).json({
-        success: false,
-        message: `${department.name} is already managed by ${department.manager.name}. Please depromote the current manager before assigning a new one.`,
-      });
-    }
-
-    employee.role = "manager";
-    department.manager = employee._id;
-
-    await employee.save();
-    await department.save();
-
-    return res.status(200).json({
-      success: true,
-      message: `${employee.name} has been promoted to Manager and assigned to ${department.name}.`,
-      employee,
-    });
-
-  } catch (error) {
-    next(error);
-  }
-};
 export const getMyDepartmentEmployees = async (
   req,
   res,
@@ -427,3 +336,5 @@ export const getMyDepartmentEmployees = async (
     next(error);
   }
 };
+
+

@@ -6,7 +6,8 @@ import {
   getDepartmentById,
   updateDepartment,
   deleteDepartment,
-  assignManager,
+  assignManager,getDepartmentEmployees,changeManager,
+removeManager,
 } from "../controller/department.controller.js";
 
 const router = express.Router();
@@ -39,6 +40,22 @@ router.delete(
 router.patch(
   "/:id/assign-manager",
   assignManager
+);
+
+
+router.get(
+  "/:id/employees",
+  getDepartmentEmployees
+);
+
+router.patch(
+  "/:id/change-manager",
+  changeManager
+);
+
+router.patch(
+  "/:id/remove-manager",
+  removeManager
 );
 
 export default router;

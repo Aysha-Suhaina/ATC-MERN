@@ -1,6 +1,5 @@
 import { Link } from "react-router-dom";
 import { deleteDepartment } from "../../api/departmentApi";
-import AssignManager from "./AssignManager";
 import {toast} from 'react-toastify';
 
 function DepartmentList({
@@ -79,17 +78,6 @@ function DepartmentList({
                     Delete
                   </button>
 
-                  <AssignManager
-                    departmentId={
-                      department._id
-                    }
-                    currentManager={
-                      department.manager
-                    }
-                    onAssigned={
-                      refreshDepartments
-                    }
-                  />
                 </td>
 
               </tr>

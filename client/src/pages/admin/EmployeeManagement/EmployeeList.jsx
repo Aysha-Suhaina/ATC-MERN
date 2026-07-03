@@ -9,7 +9,6 @@ import { toast } from "react-toastify";
 import {
   getEmployees,
   deactivateEmployee,
-  promoteEmployee,
   reactivateEmployee
 } from "../../../api/userApi";
 
@@ -107,23 +106,6 @@ const handleReactivate = async (employee) => {
   }
 };
 
-  const handlePromote =
-    async (id) => {
-      try {
-        await promoteEmployee(id);
-
-        toast.success(
-          "Employee promoted to Manager"
-        );
-
-        loadEmployees();
-      } catch (error) {
-        toast.error(
-          error.response?.data?.message ||
-            "Promotion failed"
-        );
-      }
-    };
 
   return (
     <div>
@@ -214,18 +196,6 @@ const handleReactivate = async (employee) => {
                     Edit
                   </button>
 
-                  {employee.role ===
-                    "employee" && (
-                    <button
-                      onClick={() =>
-                        handlePromote(
-                          employee._id
-                        )
-                      }
-                    >
-                      Promote
-                    </button>
-                  )}
 
                   {employee.isActive ? (
                     <button
