@@ -1,4 +1,6 @@
 import Designation from "../model/Designation.js";
+import Department from "../model/Department.js";
+import User from "../model/User.js";
 
 // Create Designation
 export const createDesignation = async (req, res) => {
@@ -129,7 +131,47 @@ export const updateDesignation = async (req, res) => {
       msg: error.message,
     });
   }
-};
+}
+
+export const getMyDepartmentDesignations =
+  async (req, res) => {
+    try {
+      const department =
+        await Department.findOne({
+          manager: req.user._id,
+        });
+
+      if (!department) {
+        return res.status(404).json({
+          success: false,
+          msg: "You are not managing any department.",
+        });
+      }
+
+      const designations =
+        await Designation.find({
+          department: department._id,
+        })
+          .populate(
+            "department",
+            "name"
+          )
+          .sort({
+            name: 1,
+          });
+
+      res.json({
+        success: true,
+        designations,
+      });
+
+    } catch (error) {
+      res.status(500).json({
+        success: false,
+        msg: error.message,
+      });
+    }
+  };
 
 // Delete
 export const deleteDesignation = async (req, res) => {

@@ -90,6 +90,85 @@ export const getDepartmentById =
     }
   };
 
+export const getMyDepartment = async (
+  req,
+  res,
+  next
+) => {
+  try {
+    const department =
+      await Department.findOne({
+        manager: req.user._id,
+      }).populate(
+        "manager",
+        "name email"
+      );
+
+    if (!department) {
+      return res.status(404).json({
+        success: false,
+        message:
+          "You are not managing any department.",
+      });
+    }
+
+    return res.status(200).json({
+      success: true,
+      department,
+    });
+
+  } catch (error) {
+    next(error);
+  }
+};
+
+export const updateMyDepartment = async (
+  req,
+  res,
+  next
+) => {
+  try {
+    const { description } = req.body;
+
+    const department = await Department.findOne({
+      manager: req.user._id
+    }).populate("manager", "name email");
+
+    if (!user.department) {
+      return res.status(404).json({
+        success: false,
+        message: "You are not assigned to any department.",
+      });
+    }
+
+
+    if (!department) {
+      return res.status(404).json({
+        success: false,
+        message: "Department not found.",
+      });
+    }
+
+    department.description = description;
+
+    await department.save();
+
+    await department.populate(
+      "manager",
+      "name email"
+    );
+
+    return res.status(200).json({
+      success: true,
+      message: "Department updated successfully.",
+      department,
+    });
+
+  } catch (error) {
+    next(error);
+  }
+};
+
 export const updateDepartment =
   async (req, res, next) => {
     try {
@@ -226,16 +305,18 @@ export const assignManager = async (
         message: `${employee.name} already manages ${existingDepartment.name}.`,
       });
     }
+   // Promote employee if needed
+      if (employee.role === "employee") {
+        employee.role = "manager";
+      }
 
-    // Promote employee if needed
-    if (employee.role === "employee") {
-      employee.role = "manager";
+      // Make sure the manager belongs to this department
+      employee.department = department._id;
+
       await employee.save();
-    }
 
-    department.manager = employee._id;
-    await department.save();
-
+      department.manager = employee._id;
+      await department.save();
     await department.populate("manager", "name email");
 
     return res.status(200).json({

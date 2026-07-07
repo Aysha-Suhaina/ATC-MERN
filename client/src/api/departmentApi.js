@@ -71,3 +71,12 @@ export const removeManager = (
       withCredentials: true,
     }
   );
+export const getMyDepartment = () =>
+axios.get(`${API}/my`, {
+  withCredentials: true,
+});
+
+export const updateMyDepartment = (data) =>
+  axios.put(`${API}/my`, data, {
+    withCredentials: true,
+  });

@@ -1,39 +1,45 @@
 import axios from "axios";
 
-const API = axios.create({
-  baseURL: "http://localhost:4000/api/designations",
-});
-
-API.interceptors.request.use((config) => {
-  const token = localStorage.getItem("token");
-
-  if (token) {
-    config.headers.Authorization = `Bearer ${token}`;
-  }
-
-  return config;
-});
+const API = "/api/designations";
 
 // Get all
 export const getAllDesignations = () =>
-  API.get("/");
+  axios.get(API, {
+    withCredentials: true,
+  });
 
 // Get one
 export const getDesignationById = (id) =>
-  API.get(`/${id}`);
+  axios.get(`${API}/${id}`, {
+    withCredentials: true,
+  });
 
 // Get Designations By Department
 export const getDesignationsByDepartment = (departmentId) =>
-  API.get(`/department/${departmentId}`);
+  axios.get(`${API}/department/${departmentId}`, {
+    withCredentials: true,
+  });
 
 // Create
 export const createDesignation = (data) =>
-  API.post("/", data);
+  axios.post(API, data, {
+    withCredentials: true,
+  });
 
 // Update
 export const updateDesignation = (id, data) =>
-  API.put(`/${id}`, data);
+  axios.put(`${API}/${id}`, data, {
+    withCredentials: true,
+  });
 
 // Delete
 export const deleteDesignation = (id) =>
-  API.delete(`/${id}`);
+  axios.delete(`${API}/${id}`, {
+    withCredentials: true,
+  });
+
+// Manager
+export const getMyDepartmentDesignations = () =>
+  axios.get(`${API}/my`, {
+    withCredentials: true,
+  });
