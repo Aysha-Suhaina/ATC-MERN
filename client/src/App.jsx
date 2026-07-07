@@ -30,6 +30,8 @@ import ManagerDashboard from "./pages/manager/ManagerDashboard";
 import AttendanceApproval from "./pages/manager/AttendanceApproval";
 import MyEmployees from "./pages/manager/MyEmployees";
 import AttendanceHistory from "./pages/manager/AttedanceHistory";
+import ManagerDepartment from "./pages/manager/ManagerDepartment";
+import ManagerDesignation from "./pages/manager/ManagerDesignation";
 
 //import Profile from "./pages/Profile/Profile";
 //import Profile from "./pages/Profile/Profile";
@@ -164,6 +166,26 @@ function App(){
           path="/admin/designations/edit/:id"
           element={<EditDesignation />}
       />
+
+      <Route
+  path="/manager/my-department"
+  element={
+    <ProtectedRoute allowedRoles={["manager"]}>
+      <ManagerDepartment />
+    </ProtectedRoute>
+  }
+/>
+
+<Route
+  path="/manager/designations"
+  element={
+    <ProtectedRoute
+      allowedRoles={["manager"]}
+    >
+      <ManagerDesignation />
+    </ProtectedRoute>
+  }
+/>
         
 
       </Routes>

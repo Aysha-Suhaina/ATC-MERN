@@ -6,7 +6,7 @@ import {
   getDesignationById,
   getDesignationsByDepartment,
   updateDesignation,
-  deleteDesignation,
+  deleteDesignation,getMyDepartmentDesignations
 } from "../controller/designation.controller.js";
 
 import { authenticate } from "../middleware/authenticate.middleware.js";
@@ -27,6 +27,13 @@ router.get(
   "/",
   //authenticate,
   getAllDesignations
+);
+
+router.get(
+  "/my",
+  authenticate,
+  authorize("manager"),
+  getMyDepartmentDesignations
 );
 
 router.get(
