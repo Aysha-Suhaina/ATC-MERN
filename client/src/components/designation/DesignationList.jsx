@@ -57,6 +57,8 @@ function DesignationList({
 
               <th>Actions</th>
 
+              <th>Employees</th>
+
             </tr>
 
           </thead>
@@ -88,6 +90,8 @@ function DesignationList({
                   </button>
 
                 </td>
+
+                <td>{designation.employeeCount}</td>
 
               </tr>
 

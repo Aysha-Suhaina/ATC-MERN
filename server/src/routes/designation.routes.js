@@ -6,7 +6,9 @@ import {
   getDesignationById,
   getDesignationsByDepartment,
   updateDesignation,
-  deleteDesignation,getMyDepartmentDesignations
+  deleteDesignation,getMyDepartmentDesignations,
+  createMyDepartmentDesignation,updateMyDepartmentDesignation,
+  deleteMyDepartmentDesignation
 } from "../controller/designation.controller.js";
 
 import { authenticate } from "../middleware/authenticate.middleware.js";
@@ -36,6 +38,13 @@ router.get(
   getMyDepartmentDesignations
 );
 
+router.post(
+  "/my",
+  authenticate,
+  authorize("manager"),
+  createMyDepartmentDesignation
+);
+
 router.get(
   "/department/:departmentId",
   //authenticate,
@@ -62,6 +71,20 @@ router.delete(
   //authenticate,
   //authorize("admin"),
   deleteDesignation
+);
+
+router.put(
+  "/my/:id",
+  authenticate,
+  authorize("manager"),
+  updateMyDepartmentDesignation
+);
+
+router.delete(
+  "/my/:id",
+  authenticate,
+  authorize("manager"),
+  deleteMyDepartmentDesignation
 );
 
 export default router;

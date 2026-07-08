@@ -3,7 +3,8 @@
 # HRMS Project Roadmap & Progress
 
 ---
-chatgpt has the rest of the work
+added employee count for designation 
+test it and move to next 
 
 # 📌 Overall Progress
 
