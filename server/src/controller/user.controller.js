@@ -2,7 +2,7 @@ import bcrypt from "bcryptjs";
 import User from "../model/User.js";
 import Department from "../model/Department.js";
 import ApiResponse from "../utils/ApiResponse.js";
-
+import Designation from "../model/Designation.js";
 export const getProfile = async (
   req,
   res,
@@ -336,5 +336,80 @@ export const getMyDepartmentEmployees = async (
     next(error);
   }
 };
+export const assignDesignationByManager =
+  async (req, res) => {
+    try {
+      const { designationId } = req.body;
+
+      const department =
+        await Department.findOne({
+          manager: req.user._id,
+        });
+
+      if (!department) {
+        return res.status(404).json({
+          success: false,
+          message:
+            "You are not managing any department.",
+        });
+      }
+
+      const employee =
+        await User.findById(
+          req.params.employeeId
+        );
+
+      if (!employee) {
+        return res.status(404).json({
+          success: false,
+          message:
+            "Employee not found.",
+        });
+      }
+
+      if (
+        employee.department.toString() !==
+        department._id.toString()
+      ) {
+        return res.status(403).json({
+          success: false,
+          message:
+            "Employee does not belong to your department.",
+        });
+      }
+
+      const designation =
+        await Designation.findOne({
+          _id: designationId,
+          department: department._id,
+        });
+
+      if (!designation) {
+        return res.status(404).json({
+          success: false,
+          message:
+            "Designation not found in your department.",
+        });
+      }
+
+      employee.designation =
+        designation._id;
+
+      await employee.save();
+
+      res.json({
+        success: true,
+        message:
+          "Designation updated successfully.",
+      });
+
+    } catch (error) {
+      res.status(500).json({
+        success: false,
+        message: error.message,
+      });
+    }
+  };
+
 
 

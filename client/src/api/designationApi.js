@@ -43,3 +43,27 @@ export const getMyDepartmentDesignations = () =>
   axios.get(`${API}/my`, {
     withCredentials: true,
   });
+
+export const createMyDepartmentDesignation =
+  (data) =>
+    axios.post(
+      "/api/designations/my",
+      data,
+      {
+        withCredentials: true,
+      }
+    );
+export const updateMyDepartmentDesignation = (
+  id,
+  data
+) =>
+  axios.put(`${API}/my/${id}`, data, {
+    withCredentials: true,
+  });
+
+export const deleteMyDepartmentDesignation = (
+  id
+) =>
+  axios.delete(`${API}/my/${id}`, {
+    withCredentials: true,
+  });

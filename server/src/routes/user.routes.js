@@ -5,7 +5,7 @@ import {
   updateProfile,getAllEmployees,getEmployeeById,createEmployee,
   updateEmployee,deactivateEmployee,getAllAttendance,deleteAttendance,
   getManagers,getMyDepartmentEmployees,
-  reactivateEmployee
+  reactivateEmployee,assignDesignationByManager
 } from "../controller/user.controller.js";
 
 import { authenticate } from "../middleware/authenticate.middleware.js";
@@ -89,6 +89,13 @@ router.get(
   authenticate,
   authorize("manager"),
   getMyDepartmentEmployees
+);
+
+router.patch(
+  "/manager/employees/:employeeId/designation",
+  authenticate,
+  authorize("manager"),
+  assignDesignationByManager
 );
 
 export default router;

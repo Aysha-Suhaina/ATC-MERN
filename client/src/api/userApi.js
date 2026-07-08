@@ -126,3 +126,17 @@ export const getMyDepartmentEmployees = async () => {
     }
   );
 };
+
+export const assignDesignationByManager = (
+  employeeId,
+  designationId
+) =>
+  axios.patch(
+    `/api/users/manager/employees/${employeeId}/designation`,
+    {
+      designationId,
+    },
+    {
+      withCredentials: true,
+    }
+  );

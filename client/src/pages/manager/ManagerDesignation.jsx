@@ -3,13 +3,23 @@ import Navbar from "../../components/Navbar";
 import { toast } from "react-toastify";
 
 import {
-  getMyDepartmentDesignations,
+  getMyDepartmentDesignations,createMyDepartmentDesignation,
+  updateMyDepartmentDesignation,deleteMyDepartmentDesignation
 } from "../../api/designationApi";
 
+
 const ManagerDesignation = () => {
+ // console.log(updateMyDepartmentDesignation);
   const [designations, setDesignations] =
     useState([]);
+    const [name, setName] = useState("");
 
+
+const [editingId, setEditingId] =
+  useState(null);
+
+const [editingName, setEditingName] =
+  useState("");
   const loadDesignations =
     async () => {
       try {
@@ -27,9 +37,35 @@ const ManagerDesignation = () => {
       }
     };
 
+    
+
   useEffect(() => {
     loadDesignations();
   }, []);
+
+  const handleSubmit = async (e) => {
+  e.preventDefault();
+
+  try {
+    await createMyDepartmentDesignation({
+      name,
+    });
+
+    toast.success(
+      "Designation created."
+    );
+
+    setName("");
+
+    loadDesignations();
+
+  } catch (err) {
+    toast.error(
+      err.response?.data?.msg ||
+      "Failed"
+    );
+  }
+};
 
   return (
     <>
@@ -39,6 +75,26 @@ const ManagerDesignation = () => {
         <h1>
           Department Designations
         </h1>
+
+        <form onSubmit={handleSubmit}>
+
+  <input
+    type="text"
+    placeholder="Designation name"
+    value={name}
+    onChange={(e) =>
+      setName(e.target.value)
+    }
+    required
+  />
+
+  <button type="submit">
+    Add Designation
+  </button>
+
+</form>
+
+<hr />
 
         {designations.length === 0 ? (
           <p>
@@ -53,6 +109,8 @@ const ManagerDesignation = () => {
               <tr>
                 <th>Name</th>
                 <th>Department</th>
+                <th>Employees</th>
+                <th>Actions</th>
               </tr>
             </thead>
 
@@ -64,11 +122,21 @@ const ManagerDesignation = () => {
                       designation._id
                     }
                   >
-                    <td>
-                      {
-                        designation.name
-                      }
-                    </td>
+                   <td>
+                    {editingId ===
+                    designation._id ? (
+                      <input
+                        value={editingName}
+                        onChange={(e) =>
+                          setEditingName(
+                            e.target.value
+                          )
+                        }
+                      />
+                    ) : (
+                      designation.name
+                    )}
+                  </td>
 
                     <td>
                       {
@@ -77,6 +145,96 @@ const ManagerDesignation = () => {
                           ?.name
                       }
                     </td>
+
+                    <td>{designation.employeeCount}</td>
+
+                    <td>
+  <>
+  {editingId === designation._id ? (
+    <>
+      <button
+        onClick={async () => {
+          try {
+            await updateMyDepartmentDesignation(
+              designation._id,
+              {
+                name: editingName,
+              }
+            );
+
+            toast.success("Updated");
+
+            setEditingId(null);
+
+            loadDesignations();
+
+          } catch (err) {
+            toast.error(
+              err.response?.data?.msg
+            );
+          }
+        }}
+      >
+        Save
+      </button>
+
+      <button
+        onClick={() =>
+          setEditingId(null)
+        }
+      >
+        Cancel
+      </button>
+    </>
+  ) : (
+    <>
+      <button
+        onClick={() => {
+          setEditingId(
+            designation._id
+          );
+
+          setEditingName(
+            designation.name
+          );
+        }}
+      >
+        Edit
+      </button>
+
+      <button
+        onClick={async () => {
+          if (
+            !window.confirm(
+              "Delete this designation?"
+            )
+          )
+            return;
+
+          try {
+            await deleteMyDepartmentDesignation(
+              designation._id
+            );
+
+            toast.success(
+              "Designation deleted."
+            );
+
+            loadDesignations();
+
+          } catch (err) {
+            toast.error(
+              err.response?.data?.msg
+            );
+          }
+        }}
+      >
+        Delete
+      </button>
+    </>
+  )}
+</>
+</td>
                   </tr>
                 )
               )}
