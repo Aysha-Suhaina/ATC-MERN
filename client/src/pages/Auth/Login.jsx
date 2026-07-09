@@ -6,6 +6,7 @@ import "./Login.css"
 import { useNavigate } from 'react-router-dom';
 import {assets} from "../../assets/assets"
 import {toast} from 'react-toastify';
+import socket from "../../socket/socket";
 
 const Login = () => {
   const navigate = useNavigate();
