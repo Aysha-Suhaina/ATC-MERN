@@ -1,6 +1,7 @@
 import {Routes,Route} from "react-router-dom";
 import ProtectedRoute from "./ProtectedRoute";
-
+import { useEffect } from "react";
+import socket from "./socket/socket";
 //auth
 import Home from "./pages/Auth/Home";
 import Login from "./pages/Auth/Login";
@@ -39,6 +40,14 @@ import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
 function App(){
+  useEffect(() => {
+  socket.connect();
+
+  return () => {
+    socket.disconnect();
+  };
+}, []);
+
   return (
     <>
       <Routes>
