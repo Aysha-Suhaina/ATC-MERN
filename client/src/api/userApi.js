@@ -140,3 +140,12 @@ export const assignDesignationByManager = (
       withCredentials: true,
     }
   );
+
+export const getChatUsers = () => {
+  return axios.get(
+    `${API}/chat-users`,
+    {
+      withCredentials: true,
+    }
+  );
+};

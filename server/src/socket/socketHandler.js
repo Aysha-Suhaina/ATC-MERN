@@ -1,15 +1,14 @@
-export const registerSocketEvents = (io) => {
-  io.on("connection", (socket) => {
-    console.log(
-      "🟢 User Connected:",
-      socket.id
-    );
+import { registerConnection } from "./events/connection.js";
+import { registerPrivateChat } from "./events/privateChat.js";
 
-    socket.on("disconnect", () => {
-      console.log(
-        "🔴 User Disconnected:",
-        socket.id
-      );
-    });
+export const registerSocketEvents = (io) => {
+
+  io.on("connection", (socket) => {
+
+    registerConnection(io, socket);
+
+    registerPrivateChat(io, socket);
+
   });
+
 };

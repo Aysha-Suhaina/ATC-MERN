@@ -39,6 +39,13 @@ const Login = () => {
       // console.log("RAW:", userId);
       // console.log("TYPE:", typeof userId);
 
+      socket.connect();
+
+      socket.emit(
+        "register_user",
+        res.data.userId
+      );
+
         
         if (role === "admin") {
           navigate("/admin-dashboard");

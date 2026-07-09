@@ -1,5 +1,6 @@
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import socket from "../socket/socket";
 
 import "./Logout.css";
 function Logout({ close }) {
@@ -9,6 +10,7 @@ function Logout({ close }) {
     await axios.post("http://localhost:4000/api/auth/logout", {}, { withCredentials: true });
     localStorage.removeItem("userId");
     localStorage.removeItem("userRole");
+    socket.disconnect();
     navigate("/");
   };
 

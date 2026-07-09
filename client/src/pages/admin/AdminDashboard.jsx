@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { getProfile } from "../../api/userApi";
 import { useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import Navbar from "../../components/Navbar";
 
 const AdminDashboard = () => {
@@ -49,7 +50,13 @@ const AdminDashboard = () => {
           </>
         )}
 
+        <Link to="/chat">
+          <button>Chat</button>
+        </Link>
+
         <hr />
+
+
 
         <p>
           Manage employees, attendance, departments,
