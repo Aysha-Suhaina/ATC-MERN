@@ -5,7 +5,7 @@ import {
   updateProfile,getAllEmployees,getEmployeeById,createEmployee,
   updateEmployee,deactivateEmployee,getAllAttendance,deleteAttendance,
   getManagers,getMyDepartmentEmployees,
-  reactivateEmployee,assignDesignationByManager
+  reactivateEmployee,assignDesignationByManager,getChatUsers
 } from "../controller/user.controller.js";
 
 import { authenticate } from "../middleware/authenticate.middleware.js";
@@ -32,6 +32,14 @@ router.get(
   authenticate,
   authorize("admin"),
   getAllEmployees
+);
+
+//chat routes 
+
+router.get(
+  "/chat-users",
+  authenticate,
+  getChatUsers
 );
 
 router.get(
@@ -97,5 +105,7 @@ router.patch(
   authorize("manager"),
   assignDesignationByManager
 );
+
+
 
 export default router;

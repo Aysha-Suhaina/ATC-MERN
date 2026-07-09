@@ -411,5 +411,34 @@ export const assignDesignationByManager =
     }
   };
 
+  // chat controllers
+
+export const getChatUsers = async (
+  req,
+  res
+) => {
+  try {
+    const users = await User.find({
+      _id: { $ne: req.user._id },
+      isActive: true,
+    })
+      .select(
+        "name role department designation"
+      )
+      .populate("department", "name")
+      .sort({ name: 1 });
+
+    res.json({
+      success: true,
+      users,
+    });
+  } catch (err) {
+    res.status(500).json({
+      success: false,
+      msg: err.message,
+    });
+  }
+};
+
 
 

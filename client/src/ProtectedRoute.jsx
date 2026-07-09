@@ -4,7 +4,6 @@ const ProtectedRoute = ({
   children,
   allowedRoles,
 }) => {
-
   const role =
     localStorage.getItem("userRole")?.toLowerCase();
 
@@ -13,7 +12,12 @@ const ProtectedRoute = ({
   }
 
   if (
-    !allowedRoles.map((allowedRole) => allowedRole.toLowerCase()).includes(role)
+    allowedRoles &&
+    !allowedRoles
+      .map((allowedRole) =>
+        allowedRole.toLowerCase()
+      )
+      .includes(role)
   ) {
     return <Navigate to="/" />;
   }

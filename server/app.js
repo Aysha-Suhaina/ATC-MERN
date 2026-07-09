@@ -8,6 +8,9 @@ import authRouter from './src/routes/auth.routes.js'
 import attendanceRoutes from "./src/routes/attendance.routes.js";
 import userRoutes from "./src/routes/user.routes.js";
 
+import chatRoutes from "./src/routes/conversation.routes.js";
+import conversationRoutes from "./src/routes/conversation.routes.js";
+
 import departmentRoutes from "./src/routes/department.routes.js";
 import designationRoutes from "./src/routes/designation.routes.js";
 
@@ -48,6 +51,12 @@ app.use(
 app.use(
   "/api/designations",
   designationRoutes
+);
+
+app.use("/api/chat", chatRoutes);
+app.use(
+  "/api/conversations",
+  conversationRoutes
 );
 
 

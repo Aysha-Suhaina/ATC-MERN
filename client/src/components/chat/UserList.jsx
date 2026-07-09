@@ -1,0 +1,63 @@
+import { useEffect, useState } from "react";
+import { toast } from "react-toastify";
+import { getChatUsers } from "../../api/userApi";
+
+const UserList  = ({
+  selectedUser,
+  setSelectedUser,
+}) =>{
+  const [users, setUsers] = useState([]);
+
+  const loadUsers = async () => {
+    try {
+      const res = await getChatUsers();
+
+      console.log(res.data);
+      setUsers(res.data.users);
+    } catch (err) {
+      toast.error(
+        err.response?.data?.msg ||
+        "Failed to load users"
+      );
+    }
+  };
+
+  useEffect(() => {
+    loadUsers();
+  }, []);
+
+  return (
+  <div>
+    <h3>Users</h3>
+
+    {users.map((user) => (
+      <div
+        key={user._id}
+        onClick={() => setSelectedUser(user)}
+        style={{
+          border: "1px solid #ddd",
+          padding: "10px",
+          marginBottom: "8px",
+          cursor: "pointer",
+          backgroundColor:
+            selectedUser?._id === user._id
+              ? "#eee"
+              : "white",
+        }}
+      >
+        <strong>{user.name}</strong>
+
+        <br />
+
+        <small>{user.role}</small>
+
+        <br />
+
+        <small>{user.department?.name}</small>
+      </div>
+    ))}
+  </div>
+);
+};
+
+export default UserList;

@@ -1,7 +1,5 @@
 import {Routes,Route} from "react-router-dom";
 import ProtectedRoute from "./ProtectedRoute";
-import { useEffect } from "react";
-import socket from "./socket/socket";
 //auth
 import Home from "./pages/Auth/Home";
 import Login from "./pages/Auth/Login";
@@ -34,19 +32,13 @@ import AttendanceHistory from "./pages/manager/AttedanceHistory";
 import ManagerDepartment from "./pages/manager/ManagerDepartment";
 import ManagerDesignation from "./pages/manager/ManagerDesignation";
 
+import Chat from "./pages/chat/Chat";
 //import Profile from "./pages/Profile/Profile";
 //import Profile from "./pages/Profile/Profile";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
 function App(){
-  useEffect(() => {
-  socket.connect();
-
-  return () => {
-    socket.disconnect();
-  };
-}, []);
 
   return (
     <>
@@ -83,6 +75,15 @@ function App(){
           element={
             <ProtectedRoute allowedRoles={["manager","admin"]}>
               <ManagerDashboard />
+            </ProtectedRoute>
+          }
+        />
+
+        <Route
+          path="/chat"
+          element={
+            <ProtectedRoute>
+              <Chat />
             </ProtectedRoute>
           }
         />

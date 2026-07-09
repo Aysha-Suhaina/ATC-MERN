@@ -2,9 +2,7 @@
 
 # HRMS Project Roadmap & Progress
 
----
-added employee count for designation 
-test it and move to next 
+last addd some codes in it - check chat page and implemetnfeatures
 
 # 📌 Overall Progress
 
