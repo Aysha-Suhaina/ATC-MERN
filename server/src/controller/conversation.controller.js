@@ -3,6 +3,8 @@ import {
   getConversationMessages,
 } from "../services/chat.service.js";
 
+import Conversation from "../model/Conversation.js";
+
 export const getConversations = async (req, res) => {
   try {
     const conversations = await getUserConversations(req.user._id);
@@ -68,10 +70,14 @@ export const openConversation = async (
       conversation,
     });
 
-  } catch (error) {
-    res.status(500).json({
-      success: false,
-      msg: error.message,
-    });
-  }
+ } catch (error) {
+  console.error("====== OPEN CONVERSATION ERROR ======");
+  console.error(error);
+  console.error(error.stack);
+
+  return res.status(500).json({
+    success: false,
+    msg: error.message,
+  });
+}
 };

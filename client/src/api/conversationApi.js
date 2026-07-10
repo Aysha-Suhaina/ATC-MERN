@@ -1,10 +1,9 @@
 import axios from "axios";
 
 const API = axios.create({
-  baseURL: "/api/conversations",
+  baseURL: "http://localhost:4000/api/conversations",
   withCredentials: true,
 });
-
 
 export const getConversations = () =>
   API.get("/");
@@ -12,15 +11,7 @@ export const getConversations = () =>
 export const getMessages = (id) =>
   API.get(`/${id}/messages`);
 
-
-
-export const openConversation = (
-  receiverId
-) =>
-  axios.post(
-    `${API}/open`,
-    { receiverId },
-    {
-      withCredentials: true,
-    }
-  );
+export const openConversation = (receiverId) =>
+  API.post("/open", {
+    receiverId,
+  });
