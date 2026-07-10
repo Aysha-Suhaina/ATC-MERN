@@ -24,7 +24,7 @@ const messageSchema =
         required: true,
       },
 
-      message: {
+      content: {
         type: String,
         required: true,
         trim: true,

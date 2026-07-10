@@ -14,6 +14,8 @@ import conversationRoutes from "./src/routes/conversation.routes.js";
 import departmentRoutes from "./src/routes/department.routes.js";
 import designationRoutes from "./src/routes/designation.routes.js";
 
+import messageRoutes from "./src/routes/message.routes.js";
+
 const app = express();
 
 app.use(cors({
@@ -59,6 +61,10 @@ app.use(
   conversationRoutes
 );
 
+app.use(
+  "/api/messages",
+  messageRoutes
+);
 
 //sample route for the app
 app.get("/", (req, res) => {

@@ -2,7 +2,9 @@
 
 # HRMS Project Roadmap & Progress
 
-last addd some codes in it - check chat page and implemetnfeatures
+# bug list at line - 335 
+
+last added some codes in it - check chat page and implemet features
 
 # 📌 Overall Progress
 
@@ -326,3 +328,12 @@ Prevent Managers from accessing Admin Routes
 - Settings
 - Profile
 - Logout
+
+
+
+
+# bug list 
+
+two manager for same department
+
+employee count error - for deleting designation.

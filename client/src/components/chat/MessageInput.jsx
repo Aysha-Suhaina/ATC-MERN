@@ -1,19 +1,46 @@
-const MessageInput = () => {
+import { useState } from "react";
+
+const MessageInput = ({
+  onSend,
+}) => {
+  const [text, setText] =
+    useState("");
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+
+    if (!text.trim()) return;
+
+    onSend(text);
+
+    setText("");
+  };
+
   return (
-    <div
+    <form
+      onSubmit={handleSubmit}
       style={{
-        borderTop: "1px solid #ddd",
-        padding: "10px",
+        display: "flex",
+        gap: "10px",
+        marginTop: "15px",
       }}
     >
       <input
         type="text"
         placeholder="Type a message..."
-        style={{ width: "80%" }}
+        value={text}
+        onChange={(e) =>
+          setText(e.target.value)
+        }
+        style={{
+          flex: 1,
+        }}
       />
 
-      <button>Send</button>
-    </div>
+      <button type="submit">
+        Send
+      </button>
+    </form>
   );
 };
 

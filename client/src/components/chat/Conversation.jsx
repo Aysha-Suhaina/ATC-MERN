@@ -1,8 +1,38 @@
 import MessageInput from "./MessageInput";
-
+import { sendMessage } from "../../api/messageApi";
 const Conversation = ({
   selectedUser,
+  currentConversation,
+  messages,
 }) => {
+
+  const handleSend = async (
+  text
+) => {
+  if (
+    !currentConversation ||
+    !selectedUser
+  )
+    return;
+
+  try {
+    const res =
+      await sendMessage({
+        conversationId:
+          currentConversation._id,
+        receiverId:
+          selectedUser._id,
+        content: text,
+      });
+
+    console.log(
+      res.data.message
+    );
+
+  } catch (err) {
+    console.error(err);
+  }
+};
   return (
     <div
       style={{
@@ -32,9 +62,28 @@ const Conversation = ({
         }}
       >
         {selectedUser ? (
-          <p>
-            Conversation goes here...
-          </p>
+          <div>
+  {messages.length === 0 ? (
+    <p>No messages yet.</p>
+  ) : (
+    messages.map((message) => (
+      <div
+        key={message._id}
+        style={{
+          marginBottom: "10px",
+        }}
+      >
+        <strong>
+          {message.sender?.name}
+        </strong>
+
+        <br />
+
+        {message.content}
+      </div>
+    ))
+  )}
+</div>
         ) : (
           <p>
             Choose a user to start chatting.
@@ -43,7 +92,9 @@ const Conversation = ({
       </div>
 
       {selectedUser && (
-        <MessageInput />
+        <MessageInput
+  onSend={handleSend}
+/>
       )}
     </div>
   );
