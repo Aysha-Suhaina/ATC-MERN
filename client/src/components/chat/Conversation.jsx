@@ -1,10 +1,15 @@
+import { useEffect, useRef } from "react";
+import socket  from "../../socket/socket";
 import MessageInput from "./MessageInput";
 import { sendMessage } from "../../api/messageApi";
 const Conversation = ({
   selectedUser,
   currentConversation,
   messages,
+  setMessages
 }) => {
+
+  const messagesEndRef = useRef(null);
 
   const handleSend = async (
   text
@@ -24,6 +29,16 @@ const Conversation = ({
           selectedUser._id,
         content: text,
       });
+      setMessages((prev) => [
+        ...prev,
+        res.data.message,
+      ]);
+
+      socket.emit("send_message", {
+        senderId: localStorage.getItem("userId"),
+        receiverId: selectedUser._id,
+        message: res.data.message,
+      });
 
     console.log(
       res.data.message
@@ -32,7 +47,13 @@ const Conversation = ({
   } catch (err) {
     console.error(err);
   }
+  
 };
+useEffect(() => {
+  messagesEndRef.current?.scrollIntoView({
+    behavior: "smooth",
+  });
+}, [messages]);
   return (
     <div
       style={{
@@ -59,6 +80,7 @@ const Conversation = ({
         style={{
           flex: 1,
           padding: "20px",
+          overflowY: "auto",
         }}
       >
         {selectedUser ? (
@@ -66,23 +88,53 @@ const Conversation = ({
   {messages.length === 0 ? (
     <p>No messages yet.</p>
   ) : (
-    messages.map((message) => (
+    messages.map((message) => {
+  const myId = localStorage.getItem("userId");
+  const isMe =
+    message.sender?._id === myId ||
+    message.sender === myId;
+
+  return (
+    <div
+      key={message._id}
+      style={{
+        display: "flex",
+        justifyContent: isMe
+          ? "flex-end"
+          : "flex-start",
+        marginBottom: "10px",
+      }}
+    >
       <div
-        key={message._id}
         style={{
-          marginBottom: "10px",
+          maxWidth: "60%",
+          padding: "10px 15px",
+          borderRadius: "12px",
+          backgroundColor: isMe
+            ? "#4f46e5"
+            : "#e5e7eb",
+          color: isMe
+            ? "#fff"
+            : "#000",
         }}
       >
-        <strong>
-          {message.sender?.name}
-        </strong>
-
-        <br />
+        <div
+          style={{
+            fontSize: "12px",
+            marginBottom: "4px",
+            opacity: 0.8,
+          }}
+        >
+          {message.sender?.name || "You"}
+        </div>
 
         {message.content}
       </div>
-    ))
+    </div>
+  );
+})
   )}
+  <div ref={messagesEndRef}></div>
 </div>
         ) : (
           <p>

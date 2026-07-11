@@ -33,7 +33,10 @@ const Login = () => {
         //localStorage.setItem("user", JSON.stringify(res.data));
         const role = res.data.userRole?.toLowerCase();
 
-        localStorage.setItem("userId",JSON.stringify(res.data.userId))  ;
+        localStorage.setItem(
+          "userId",
+          res.data.userId
+        );
         localStorage.setItem("userRole", role);
 
       // console.log("RAW:", userId);
