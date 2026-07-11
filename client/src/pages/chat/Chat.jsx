@@ -1,5 +1,6 @@
-import { useState } from "react";
+import { useState,useEffect } from "react";
 
+import socket from "../../socket/socket";
 import Sidebar from "../../components/chat/Sidebar";
 import Conversation from "../../components/chat/Conversation";
 import { openConversation } from "../../api/conversationApi";
@@ -15,6 +16,41 @@ const Chat = () => {
 
   const [messages, setMessages] =
     useState([]);
+
+    const [onlineUsers, setOnlineUsers] =
+  useState([]);
+    useEffect(() => {
+      console.log("Chat mounted");
+      socket.on("test_event", (msg) => {
+  console.log("TEST:", msg);
+});
+  socket.on("online_users", (users) => {
+    console.log("ONLINE USERS:", users);
+    setOnlineUsers(users);
+  });
+  socket.on(
+    "receive_message",
+    (message) => {
+      setMessages((prev) => [
+        ...prev,
+        message.message,
+      ]);
+    }
+  );
+
+  socket.on(
+    "online_users",
+    (users) => {
+      console.log("ONLINE USERS:", users);
+      setOnlineUsers(users);
+    }
+  );
+
+  return () => {
+    socket.off("receive_message");
+    socket.off("online_users");
+  };
+}, []);
 
   const handleSelectUser = async (user) => {
   setSelectedUser(user);
@@ -58,14 +94,14 @@ const Chat = () => {
         setSelectedUser={
           handleSelectUser
         }
+        onlineUsers={onlineUsers}
       />
 
       <Conversation
         selectedUser={selectedUser}
-        currentConversation={
-          currentConversation
-        }
+        currentConversation={currentConversation}
         messages={messages}
+        setMessages={setMessages}
       />
     </div>
   );

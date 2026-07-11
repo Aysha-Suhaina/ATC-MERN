@@ -112,6 +112,10 @@ const ManagerDashboard = () => {
         <h1>Manager Dashboard</h1>
 
         <h2>Welcome, {profile?.name}</h2>
+
+        <Link to="/chat">
+          <button>Chat</button>
+        </Link>
         
 
         <h2>

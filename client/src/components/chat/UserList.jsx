@@ -5,6 +5,7 @@ import { getChatUsers } from "../../api/userApi";
 const UserList  = ({
   selectedUser,
   setSelectedUser,
+  onlineUsers,
 }) =>{
   const [users, setUsers] = useState([]);
 
@@ -30,32 +31,55 @@ const UserList  = ({
   <div>
     <h3>Users</h3>
 
-    {users.map((user) => (
+    {users.map((user) => {
+  const isOnline =
+    onlineUsers.includes(user._id);
+
+  return (
+    <div
+      key={user._id}
+      onClick={() => setSelectedUser(user)}
+      style={{
+        border: "1px solid #ddd",
+        padding: "10px",
+        marginBottom: "8px",
+        cursor: "pointer",
+        backgroundColor:
+          selectedUser?._id === user._id
+            ? "#eee"
+            : "white",
+      }}
+    >
       <div
-        key={user._id}
-        onClick={() => setSelectedUser(user)}
         style={{
-          border: "1px solid #ddd",
-          padding: "10px",
-          marginBottom: "8px",
-          cursor: "pointer",
-          backgroundColor:
-            selectedUser?._id === user._id
-              ? "#eee"
-              : "white",
+          display: "flex",
+          alignItems: "center",
+          gap: "8px",
         }}
       >
+        <span
+          style={{
+            width: "10px",
+            height: "10px",
+            borderRadius: "50%",
+            backgroundColor: isOnline
+              ? "green"
+              : "gray",
+            display: "inline-block",
+          }}
+        />
+
         <strong>{user.name}</strong>
-
-        <br />
-
-        <small>{user.role}</small>
-
-        <br />
-
-        <small>{user.department?.name}</small>
       </div>
-    ))}
+
+      <small>{user.role}</small>
+
+      <br />
+
+      <small>{user.department?.name}</small>
+    </div>
+  );
+})}
   </div>
 );
 };

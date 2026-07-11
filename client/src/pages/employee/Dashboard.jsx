@@ -1,5 +1,6 @@
 import { useCallback, useEffect, useState } from "react";
 import { getProfile } from "../../api/userApi";
+import {Link } from 'react-router-dom';
 import {
   submitAttendance,
   getMyAttendance,
@@ -161,6 +162,9 @@ const canResubmit =
           </p>
         </div>
       )}
+      <Link to="/chat">
+          <button>Chat</button>
+        </Link>
 
       <hr />
 

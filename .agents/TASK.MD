@@ -4,7 +4,6 @@
 
 # bug list at line - 335 
 
-last added some codes in it - check chat page and implemet features
 
 # 📌 Overall Progress
 
@@ -13,7 +12,7 @@ last added some codes in it - check chat page and implemet features
 - ✅ Designation Management
 - ✅ Employee Management
 - ✅ Attendance Management
-- 🔄 Manager Module
+- ✅ Manager Module
 LINE 200:- ⏳ Live Chat (WebSocket) ⭐ Core Project Fe
 - ⏳ Notifications
 - ⏳ Dashboard
@@ -197,33 +196,14 @@ Prevent Managers from accessing Admin Routes
 
 ---
 
-# 7. Live Chat (WebSocket) ⭐ CORE FEATURE
 
-## Backend
+🔄 Live Chat (WebSocket) -CORE FEATURE
 
-- ⬜ Configure Socket.IO
-- ⬜ Authenticate Socket Connections
-- ⬜ User Presence (Online / Offline)
-
-## Features
-
-- ⬜ One-to-One Chat
-- ⬜ Employee ↔ Manager Chat
-- ⬜ Manager ↔ Admin Chat
-- ⬜ Typing Indicator
-- ⬜ Read Receipts
-- ⬜ Message Notifications
-- ⬜ Chat History
-- ⬜ File Sharing (Optional)
-
-
-🔄 Live Chat (WebSocket)
-
-☐ Socket.IO Setup
-☐ React Socket Connection
-☐ Private Messaging
-☐ Save Messages
-☐ Conversation History
+ Socket.IO Setup
+React Socket Connection
+ Private Messaging
+ Save Messages
+ Conversation History
 ☐ Online Users
 ☐ Read / Unread
 ☐ Recent Conversations

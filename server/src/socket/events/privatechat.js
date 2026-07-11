@@ -30,7 +30,7 @@ export const registerPrivateChat = (
         return;
 
       }
-
+      io.emit("test_event", "HELLO");
       io.to(receiverSocket).emit(
         "receive_message",
         {
@@ -38,8 +38,6 @@ export const registerPrivateChat = (
           message,
         }
       );
-
     }
   );
-
 };

@@ -2,6 +2,7 @@ import {
   userToSocket,
   socketToUser,
 } from "../utils/socketStore.js";
+import { emitOnlineUsers } from "./onlineUsers.js";
 
 export const registerConnection = (
   io,
@@ -13,21 +14,14 @@ export const registerConnection = (
     socket.id
   );
 
-  socket.on(
-    "register_user",
-    (userId) => {
+ socket.on("register_user", (userId) => {
+  console.log("REGISTER:", userId, socket.id);
 
-      userToSocket.set(userId, socket.id);
+  userToSocket.set(userId, socket.id);
+  socketToUser.set(socket.id, userId);
 
-socketToUser.set(socket.id, userId);
-
-      console.log(
-        "Online Users:",
-        [...userToSocket]
-      );
-
-    }
-  );
+  emitOnlineUsers(io, userToSocket);
+});
 
   socket.on(
     "disconnect",
@@ -41,6 +35,7 @@ socketToUser.set(socket.id, userId);
 
         socketToUser.delete(socket.id);
         }
+        emitOnlineUsers(io, userToSocket);
 
         console.log(
         "Online Users:",

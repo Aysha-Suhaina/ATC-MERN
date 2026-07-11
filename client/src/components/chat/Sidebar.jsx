@@ -5,6 +5,7 @@ import UserList from "./UserList";
 const Sidebar = ({
   selectedUser,
   setSelectedUser,
+   onlineUsers,
 }) =>  {
   return (
     <div
@@ -25,6 +26,8 @@ const Sidebar = ({
       <UserList
   selectedUser={selectedUser}
   setSelectedUser={setSelectedUser}
+  
+  onlineUsers={onlineUsers}
 />
     </div>
   );
