@@ -15,3 +15,9 @@ export const sendMessage = (
   data
 ) =>
   API.post("/", data);
+  export const markAsRead = (
+  conversationId
+) =>
+  API.patch(
+    `/${conversationId}/read`
+  );

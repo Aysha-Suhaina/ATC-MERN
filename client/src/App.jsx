@@ -43,19 +43,28 @@ import "react-toastify/dist/ReactToastify.css";
 function App(){
 
   useEffect(() => {
-    const userId = localStorage.getItem("userId");
+  const userId = localStorage.getItem("userId");
 
-    if (!userId) return;
+  if (!userId) return;
 
-    socket.connect();
+  const handleConnect = () => {
+    console.log("Connected:", socket.id);
 
-    socket.on("connect", () => {
-        socket.emit("register_user", userId);
-    });
+    socket.emit("register_user", userId);
+  };
 
-    return () => {
-        socket.off("connect");
-    };
+  socket.on("connect", handleConnect);
+
+  socket.connect();
+
+  // If already connected, register immediately.
+  if (socket.connected) {
+    handleConnect();
+  }
+
+  return () => {
+    socket.off("connect", handleConnect);
+  };
 }, []);
 
   return (

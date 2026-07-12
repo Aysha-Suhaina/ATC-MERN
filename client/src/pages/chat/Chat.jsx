@@ -4,7 +4,7 @@ import socket from "../../socket/socket";
 import Sidebar from "../../components/chat/Sidebar";
 import Conversation from "../../components/chat/Conversation";
 import { openConversation } from "../../api/conversationApi";
-import { getMessages } from "../../api/messageApi";
+import { getMessages,markAsRead } from "../../api/messageApi";
 const Chat = () => {
   const [selectedUser, setSelectedUser] =
     useState(null);
@@ -36,11 +36,29 @@ const Chat = () => {
       ]);
     }
   );
+  socket.on(
+  "message_read",
+  ({ messageId }) => {
+
+    setMessages((prev) =>
+      prev.map((msg) =>
+        msg._id === messageId
+          ? {
+              ...msg,
+              isRead: true,
+            }
+          : msg
+      )
+    );
+
+  }
+);
 
 
   return () => {
     socket.off("receive_message");
     socket.off("online_users");
+    socket.off("message_read");
   };
 }, []);
 
@@ -68,6 +86,17 @@ const Chat = () => {
     setMessages(
       messagesRes.data.messages
     );
+    await markAsRead(
+  conversation._id
+);
+const updatedMessages =
+  await getMessages(
+    conversation._id
+  );
+
+setMessages(
+  updatedMessages.data.messages
+);
 
   } catch (err) {
     console.error(err);

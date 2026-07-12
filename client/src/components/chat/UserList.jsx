@@ -6,6 +6,7 @@ const UserList  = ({
   selectedUser,
   setSelectedUser,
   onlineUsers,
+  search
 }) =>{
   const [users, setUsers] = useState([]);
 
@@ -29,11 +30,20 @@ const UserList  = ({
 
   console.log("ONLINE USERS STATE:", onlineUsers);
 
+  const filteredUsers =
+  users.filter((user) =>
+    user.name
+      .toLowerCase()
+      .includes(
+        search.toLowerCase()
+      )
+  );
+
   return (
   <div>
     <h3>Users</h3>
 
-    {users.map((user) => {
+    {filteredUsers.map((user) => {
   const isOnline =
     onlineUsers.includes(user._id);
 

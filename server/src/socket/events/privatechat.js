@@ -39,4 +39,61 @@ export const registerPrivateChat = (
       );
     }
   );
+
+  socket.on(
+  "message_read",
+  ({ senderId, receiverId }) => {
+
+    const senderSocket =
+      userToSocket.get(senderId);
+
+    if (!senderSocket) return;
+
+    io.to(senderSocket).emit(
+      "message_read",
+      {
+        receiverId,
+      }
+    );
+
+  }
+);
+
+  socket.on(
+  "typing",
+  ({ senderId, receiverId }) => {
+
+    const receiverSocket =
+      userToSocket.get(receiverId);
+
+    if (!receiverSocket) return;
+
+    io.to(receiverSocket).emit(
+      "user_typing",
+      {
+        senderId,
+      }
+    );
+
+  }
+);
+
+socket.on(
+  "stop_typing",
+  ({ senderId, receiverId }) => {
+
+    const receiverSocket =
+      userToSocket.get(receiverId);
+
+    if (!receiverSocket) return;
+
+    io.to(receiverSocket).emit(
+      "user_stop_typing",
+      {
+        senderId,
+      }
+    );
+
+  }
+);
 };
