@@ -44,10 +44,12 @@ const Login = () => {
 
       socket.connect();
 
-      socket.emit(
-        "register_user",
-        res.data.userId
-      );
+      socket.once("connect", () => {
+        socket.emit(
+          "register_user",
+          res.data.userId
+        );
+      });
 
         
         if (role === "admin") {

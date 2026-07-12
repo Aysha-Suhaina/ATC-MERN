@@ -21,13 +21,12 @@ const Chat = () => {
   useState([]);
     useEffect(() => {
       console.log("Chat mounted");
-      socket.on("test_event", (msg) => {
-  console.log("TEST:", msg);
-});
   socket.on("online_users", (users) => {
-    console.log("ONLINE USERS:", users);
-    setOnlineUsers(users);
-  });
+  console.log("ONLINE USERS EVENT RECEIVED");
+  console.log(users);
+
+  setOnlineUsers(users);
+});
   socket.on(
     "receive_message",
     (message) => {
@@ -38,13 +37,6 @@ const Chat = () => {
     }
   );
 
-  socket.on(
-    "online_users",
-    (users) => {
-      console.log("ONLINE USERS:", users);
-      setOnlineUsers(users);
-    }
-  );
 
   return () => {
     socket.off("receive_message");

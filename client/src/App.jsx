@@ -1,5 +1,7 @@
 import {Routes,Route} from "react-router-dom";
 import ProtectedRoute from "./ProtectedRoute";
+import socket from "./socket/socket";
+import {useEffect} from 'react';
 //auth
 import Home from "./pages/Auth/Home";
 import Login from "./pages/Auth/Login";
@@ -39,6 +41,22 @@ import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
 function App(){
+
+  useEffect(() => {
+    const userId = localStorage.getItem("userId");
+
+    if (!userId) return;
+
+    socket.connect();
+
+    socket.on("connect", () => {
+        socket.emit("register_user", userId);
+    });
+
+    return () => {
+        socket.off("connect");
+    };
+}, []);
 
   return (
     <>

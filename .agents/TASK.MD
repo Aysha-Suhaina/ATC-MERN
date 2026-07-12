@@ -2,6 +2,9 @@
 
 # HRMS Project Roadmap & Progress
 
+ONLINE USER NOT SHOWING GREEN BUTTON
+MESSAGE INISTANT UPDATE NOT WORKING-NEEDS REFRESH.
+
 # bug list at line - 335 
 
 

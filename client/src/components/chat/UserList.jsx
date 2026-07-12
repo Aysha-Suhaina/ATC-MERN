@@ -27,6 +27,8 @@ const UserList  = ({
     loadUsers();
   }, []);
 
+  console.log("ONLINE USERS STATE:", onlineUsers);
+
   return (
   <div>
     <h3>Users</h3>
