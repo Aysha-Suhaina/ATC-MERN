@@ -1,5 +1,7 @@
 import Message from "../model/Message.js";
 import Conversation from "../model/Conversation.js";
+import { getIO } from "../socket/socket.js";
+import { userToSocket } from "../socket/utils/socketStore.js";
 export const getMessages = async (
   req,
   res
@@ -81,4 +83,68 @@ export const sendMessage = async (
     msg: error.message,
   });
 }
+};
+export const markAsRead = async (
+  req,
+  res
+) => {
+  try {
+
+    const unreadMessages =
+      await Message.find({
+        conversation:
+          req.params.conversationId,
+        receiver: req.user._id,
+        isRead: false,
+      });
+
+    await Message.updateMany(
+      {
+        conversation:
+          req.params.conversationId,
+        receiver: req.user._id,
+        isRead: false,
+      },
+      {
+        isRead: true,
+      }
+    );
+
+    const io = getIO();
+
+    unreadMessages.forEach(
+      (message) => {
+
+        const senderSocket =
+          userToSocket.get(
+            message.sender.toString()
+          );
+
+        if (senderSocket) {
+
+          io.to(senderSocket).emit(
+            "message_read",
+            {
+              messageId:
+                message._id.toString(),
+            }
+          );
+
+        }
+
+      }
+    );
+
+    res.json({
+      success: true,
+    });
+
+  } catch (error) {
+
+    res.status(500).json({
+      success: false,
+      msg: error.message,
+    });
+
+  }
 };

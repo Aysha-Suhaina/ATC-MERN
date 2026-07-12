@@ -1,4 +1,4 @@
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import socket  from "../../socket/socket";
 import MessageInput from "./MessageInput";
 import { sendMessage } from "../../api/messageApi";
@@ -10,6 +10,8 @@ const Conversation = ({
 }) => {
 
   const messagesEndRef = useRef(null);
+  const [isTyping, setIsTyping] =
+  useState(false);
 
   const handleSend = async (
   text
@@ -49,6 +51,29 @@ const Conversation = ({
   }
   
 };
+
+useEffect(() => {
+
+  socket.on(
+    "user_typing",
+    () => {
+      setIsTyping(true);
+    }
+  );
+
+  socket.on(
+    "user_stop_typing",
+    () => {
+      setIsTyping(false);
+    }
+  );
+
+  return () => {
+    socket.off("user_typing");
+    socket.off("user_stop_typing");
+  };
+
+}, []);
 useEffect(() => {
   messagesEndRef.current?.scrollIntoView({
     behavior: "smooth",
@@ -129,6 +154,33 @@ useEffect(() => {
         </div>
 
         {message.content}
+        <div
+  style={{
+    display: "flex",
+    justifyContent: "space-between",
+    alignItems: "center",
+    marginTop: "5px",
+    fontSize: "11px",
+    opacity: 0.75,
+  }}
+>
+  <span>
+    {new Date(
+      message.createdAt
+    ).toLocaleTimeString([], {
+      hour: "2-digit",
+      minute: "2-digit",
+    })}
+  </span>
+
+  {isMe && (
+    <span>
+      {message.isRead
+        ? "✓✓ Read"
+        : "✓ Sent"}
+    </span>
+  )}
+</div>
       </div>
     </div>
   );
@@ -142,10 +194,22 @@ useEffect(() => {
           </p>
         )}
       </div>
+      {isTyping && (
+  <p
+    style={{
+      marginLeft: "15px",
+      color: "#666",
+      fontStyle: "italic",
+    }}
+  >
+    {selectedUser.name} is typing...
+  </p>
+)}
 
       {selectedUser && (
         <MessageInput
   onSend={handleSend}
+   receiverId={selectedUser._id}
 />
       )}
     </div>

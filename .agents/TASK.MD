@@ -2,6 +2,9 @@
 
 # HRMS Project Roadmap & Progress
 
+SENDT SINGE TICK DONE- 
+DEBUG LEFT IN CHATHPT
+
 # bug list at line - 335 
 
 
