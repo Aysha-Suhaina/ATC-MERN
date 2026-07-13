@@ -23,57 +23,77 @@ const Conversation = ({
     return;
 
   try {
-    const res =
-      await sendMessage({
-        conversationId:
-          currentConversation._id,
-        receiverId:
-          selectedUser._id,
-        content: text,
-      });
-      setMessages((prev) => [
-        ...prev,
-        res.data.message,
-      ]);
+    const res = await sendMessage({
+  conversationId: currentConversation._id,
+  receiverId: selectedUser._id,
+  content: text,
+});
 
-      socket.emit("send_message", {
-        senderId: localStorage.getItem("userId"),
-        receiverId: selectedUser._id,
-        message: res.data.message,
-      });
+setMessages((prev) => [
+  ...prev,
+  res.data.message,
+]);
 
-    console.log(
-      res.data.message
-    );
+socket.emit("send_message", {
+  senderId: localStorage.getItem("userId"),
+  receiverId: selectedUser._id,
+  message: res.data.message,
+});
 
   } catch (err) {
     console.error(err);
   }
   
 };
-
 useEffect(() => {
+
+  const handleTyping = ({ senderId }) => {
+
+    if (
+      selectedUser &&
+      senderId === selectedUser._id
+    ) {
+      setIsTyping(true);
+    }
+
+  };
+
+  const handleStopTyping = ({ senderId }) => {
+
+    if (
+      selectedUser &&
+      senderId === selectedUser._id
+    ) {
+      setIsTyping(false);
+    }
+
+  };
 
   socket.on(
     "user_typing",
-    () => {
-      setIsTyping(true);
-    }
+    handleTyping
   );
 
   socket.on(
     "user_stop_typing",
-    () => {
-      setIsTyping(false);
-    }
+    handleStopTyping
   );
 
   return () => {
-    socket.off("user_typing");
-    socket.off("user_stop_typing");
+
+    socket.off(
+      "user_typing",
+      handleTyping
+    );
+
+    socket.off(
+      "user_stop_typing",
+      handleStopTyping
+    );
+
   };
 
-}, []);
+}, [selectedUser]);
 useEffect(() => {
   messagesEndRef.current?.scrollIntoView({
     behavior: "smooth",

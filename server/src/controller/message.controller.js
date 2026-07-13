@@ -121,6 +121,12 @@ export const markAsRead = async (
           );
 
         if (senderSocket) {
+          console.log(
+            "EMITTING READ:",
+            message._id.toString(),
+            "to socket:",
+            senderSocket
+          );
 
           io.to(senderSocket).emit(
             "message_read",

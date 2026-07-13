@@ -19,27 +19,42 @@ const Chat = () => {
 
     const [onlineUsers, setOnlineUsers] =
   useState([]);
-    useEffect(() => {
-      console.log("Chat mounted");
-  socket.on("online_users", (users) => {
-  console.log("ONLINE USERS EVENT RECEIVED");
-  console.log(users);
+useEffect(() => {
+  console.log("Chat mounted");
 
-  setOnlineUsers(users);
-});
-  socket.on(
-    "receive_message",
-    (message) => {
-      setMessages((prev) => [
-        ...prev,
-        message.message,
-      ]);
+  const handleOnlineUsers = (users) => {
+    setOnlineUsers(users);
+  };
+
+  const handleReceiveMessage = async (data) => {
+    setMessages((prev) => [
+      ...prev,
+      data.message,
+    ]);
+
+    if (
+      currentConversation &&
+      data.message.conversation ===
+        currentConversation._id
+    ) {
+      await markAsRead(
+        currentConversation._id
+      );
+
+      const updated =
+        await getMessages(
+          currentConversation._id
+        );
+
+      setMessages(
+        updated.data.messages
+      );
     }
-  );
-  socket.on(
-  "message_read",
-  ({ messageId }) => {
+  };
 
+  const handleMessageRead = ({
+    messageId,
+  }) => {
     setMessages((prev) =>
       prev.map((msg) =>
         msg._id === messageId
@@ -50,17 +65,40 @@ const Chat = () => {
           : msg
       )
     );
+  };
 
-  }
-);
+  socket.on(
+    "online_users",
+    handleOnlineUsers
+  );
 
+  socket.on(
+    "receive_message",
+    handleReceiveMessage
+  );
+
+  socket.on(
+    "message_read",
+    handleMessageRead
+  );
 
   return () => {
-    socket.off("receive_message");
-    socket.off("online_users");
-    socket.off("message_read");
+    socket.off(
+      "online_users",
+      handleOnlineUsers
+    );
+
+    socket.off(
+      "receive_message",
+      handleReceiveMessage
+    );
+
+    socket.off(
+      "message_read",
+      handleMessageRead
+    );
   };
-}, []);
+}, [currentConversation]);
 
   const handleSelectUser = async (user) => {
   setSelectedUser(user);

@@ -2,7 +2,7 @@
 
 # HRMS Project Roadmap & Progress
 
-SENDT SINGE TICK DONE- 
+ 
 DEBUG LEFT IN CHATHPT
 
 # bug list at line - 335 
@@ -207,12 +207,12 @@ React Socket Connection
  Private Messaging
  Save Messages
  Conversation History
-☐ Online Users
+Online Users
 ☐ Read / Unread
-☐ Recent Conversations
+Recent Conversations
 ☐ Search Users
 ☐ Department Group Chat
-☐ Typing Indicator
+Typing Indicator
 ☐ Final Testing
 ---
 
