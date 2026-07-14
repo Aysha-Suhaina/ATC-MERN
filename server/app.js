@@ -16,6 +16,8 @@ import designationRoutes from "./src/routes/designation.routes.js";
 
 import messageRoutes from "./src/routes/message.routes.js";
 
+import dashboardRoutes from "./src/routes/dashboard.routes.js";
+
 const app = express();
 
 app.use(cors({
@@ -64,6 +66,11 @@ app.use(
 app.use(
   "/api/messages",
   messageRoutes
+);
+
+app.use(
+  "/api/dashboard",
+  dashboardRoutes
 );
 
 //sample route for the app
