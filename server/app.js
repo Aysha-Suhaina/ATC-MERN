@@ -18,6 +18,9 @@ import messageRoutes from "./src/routes/message.routes.js";
 
 import dashboardRoutes from "./src/routes/dashboard.routes.js";
 
+import reportRoutes
+from "./src/routes/report.routes.js";
+
 const app = express();
 
 app.use(cors({
@@ -71,6 +74,11 @@ app.use(
 app.use(
   "/api/dashboard",
   dashboardRoutes
+);
+
+app.use(
+  "/api/reports",
+  reportRoutes
 );
 
 //sample route for the app
