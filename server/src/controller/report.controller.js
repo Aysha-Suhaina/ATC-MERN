@@ -1,0 +1,227 @@
+import {
+  getAttendanceReport,
+} from "../services/report.service.js";
+
+import {
+  convertToCSV,
+} from "../utils/csvExporter.js";
+
+import {
+  exportAttendanceExcel,
+} from "../utils/excelExporter.js";
+
+import {
+  buildReportFilter,
+} from "../utils/reportFilters.js";
+
+// export const exportDailyCSV = async (
+//   req,
+//   res
+// ) => {
+
+//   try {
+
+//     const today = new Date();
+
+//     today.setHours(
+//       0,
+//       0,
+//       0,
+//       0
+//     );
+
+//     const tomorrow = new Date(today);
+
+//     tomorrow.setDate(
+//       tomorrow.getDate() + 1
+//     );
+
+//     const report =
+//       await getAttendanceReport({
+
+//         date: {
+
+//           $gte: today,
+
+//           $lt: tomorrow,
+
+//         },
+
+//       });
+
+//     const csv =
+//       convertToCSV(report);
+
+//     res.header(
+//       "Content-Type",
+//       "text/csv"
+//     );
+
+//     res.attachment(
+//       "daily-attendance.csv"
+//     );
+
+//     return res.send(csv);
+
+//   }
+
+//   catch (error) {
+
+//     return res.status(500).json({
+
+//       success: false,
+
+//       msg: error.message,
+
+//     });
+
+//   }
+
+// };
+
+export const exportCSV =
+  async (
+    req,
+    res
+  ) => {
+
+    try {
+
+      const filter =
+        buildReportFilter(
+
+          req.params.type,
+
+          {
+
+            userId:
+              req.params.id,
+
+          }
+
+        );
+
+      let report =
+        await getAttendanceReport(
+          filter
+        );
+
+      if (
+        req.params.type ===
+        "department"
+      ) {
+
+        report =
+          report.filter(
+
+            (item) =>
+
+              item.user?.department?._id.toString() ===
+              req.params.id
+
+          );
+
+      }
+
+      const csv =
+        convertToCSV(
+          report
+        );
+
+      res.setHeader(
+
+        "Content-Type",
+
+        "text/csv"
+
+      );
+
+      res.setHeader(
+
+        "Content-Disposition",
+
+        `attachment; filename=${req.params.type}.csv`
+
+      );
+
+      return res.send(csv);
+
+    }
+
+    catch (error) {
+
+      return res.status(500).json({
+
+        success: false,
+
+        msg: error.message,
+
+      });
+
+    }
+
+  };
+
+
+export const exportDailyExcel = async (
+    req,
+    res
+  ) => {
+
+    try {
+
+      const today =
+        new Date();
+
+      today.setHours(
+        0,
+        0,
+        0,
+        0
+      );
+
+      const tomorrow =
+        new Date(today);
+
+      tomorrow.setDate(
+        tomorrow.getDate() + 1
+      );
+
+      const report =
+        await getAttendanceReport({
+
+          date: {
+
+            $gte: today,
+
+            $lt: tomorrow,
+
+          },
+
+        });
+
+      await exportAttendanceExcel(
+
+  report,
+
+  res,
+
+  req.params.type
+
+);
+
+    }
+
+    catch (error) {
+
+      res.status(500).json({
+
+        success: false,
+
+        msg: error.message,
+
+      });
+
+    }
+
+  };

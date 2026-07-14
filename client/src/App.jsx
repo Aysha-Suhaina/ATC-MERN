@@ -2,6 +2,8 @@ import {Routes,Route} from "react-router-dom";
 import ProtectedRoute from "./ProtectedRoute";
 import socket from "./socket/socket";
 import {useEffect} from 'react';
+
+import AdminLayout from "./layouts/AdminLayout";
 //auth
 import Home from "./pages/Auth/Home";
 import Login from "./pages/Auth/Login";
@@ -116,15 +118,67 @@ useEffect(() => {
           element={<EditAttendance />}
         />
 
-
+        {/* admin routes  */}
         <Route
-          path="/admin-dashboard"
-          element={
-            <ProtectedRoute allowedRoles={["Admin"]}>
-              <AdminDashboard />
-            </ProtectedRoute>
-          }
-        />
+  element={
+    <ProtectedRoute allowedRoles={["admin"]}>
+      <AdminLayout />
+    </ProtectedRoute>
+  }
+>
+
+  <Route
+    path="/admin-dashboard"
+    element={<AdminDashboard />}
+  />
+
+  <Route
+    path="/admin/attendance"
+    element={<AdminAttendanceMgmt />}
+  />
+
+  <Route
+    path="/admin/pending-attendance"
+    element={<PendingAttendance />}
+  />
+
+  <Route
+    path="/admin/employees"
+    element={<EmployeeList />}
+  />
+
+  <Route
+    path="/admin/employees/create"
+    element={<CreateEmployee />}
+  />
+
+  <Route
+    path="/admin/employees/edit/:id"
+    element={<UpdateEmployee />}
+  />
+
+  <Route
+    path="/admin/departments"
+    element={<DepartmentManagement />}
+  />
+
+  <Route
+    path="/admin/departments/edit/:id"
+    element={<EditDepartment />}
+  />
+
+  <Route
+    path="/admin/designations"
+    element={<DesignationManagement />}
+  />
+
+  <Route
+    path="/admin/designations/edit/:id"
+    element={<EditDesignation />}
+  />
+
+</Route>
+
         <Route
           path="/manager-dashboard"
           element={
@@ -157,23 +211,6 @@ useEffect(() => {
   element={<AttendanceHistory />}
 />
 
-        <Route
-          path="/admin/attendance"
-          element={
-            <ProtectedRoute allowedRoles={["admin"]}>
-              <AdminAttendanceMgmt />
-            </ProtectedRoute>
-          }
-        />
-
-        <Route
-          path="/admin/pending-attendance"
-          element={
-            <ProtectedRoute allowedRoles={["admin"]}>
-              <PendingAttendance />
-            </ProtectedRoute>
-          }
-        />
 
         {/* <Route
           path="/profile"
@@ -185,52 +222,6 @@ useEffect(() => {
             </ProtectedRoute>
           }
         /> */}
-
-        <Route
-          path="/admin/employees"
-          element={
-            <ProtectedRoute allowedRoles={['admin']}>
-              <EmployeeList />
-            </ProtectedRoute>
-          }
-        />
-
-        <Route
-          path="/admin/employees/create"
-          element={
-            <ProtectedRoute allowedRoles={['admin']}>
-              <CreateEmployee />
-            </ProtectedRoute>
-          }
-        />
-
-        <Route
-          path="/admin/employees/edit/:id"
-          element={
-            <ProtectedRoute allowedRoles={['admin']}>
-              <UpdateEmployee />
-            </ProtectedRoute>
-          }
-        />
-        <Route
-          path="/admin/departments"
-          element={<DepartmentManagement />}
-      />
-
-      <Route
-          path="/admin/departments/edit/:id"
-          element={<EditDepartment />}
-      />
-
-      <Route
-          path="/admin/designations"
-          element={<DesignationManagement />}
-      />
-
-      <Route
-          path="/admin/designations/edit/:id"
-          element={<EditDesignation />}
-      />
 
       <Route
   path="/manager/my-department"

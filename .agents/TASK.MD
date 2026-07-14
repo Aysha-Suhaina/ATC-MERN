@@ -173,7 +173,7 @@ Prevent Managers from accessing Admin Routes
 - ⬜ Approve Attendance
 - ⬜ Reject Attendance
 
-## Permission Testing
+## Permission Testing -✅ COMPLETED
 
 - ⬜ Manager cannot create employees
 - ⬜ Manager cannot edit employees
@@ -200,7 +200,7 @@ Prevent Managers from accessing Admin Routes
 ---
 
 
-🔄 Live Chat (WebSocket) -CORE FEATURE
+🔄 Live Chat (WebSocket) -CORE FEATURE - ✅ COMPLETED
 
  Socket.IO Setup
 React Socket Connection
@@ -324,3 +324,17 @@ employee count error - for deleting designation.
 wrong password hit for admin  doesnt have any effect
 
 new chat wont be apeared in recent chat unless refreshed - fix:move recetnchat.jsx int o chat.jsx
+
+-----
+for returning daily getdailyreports : 
+Right now you're returning the entire Attendance document, including:
+
+"_id"
+"__v"
+"updatedAt"
+
+The frontend doesn't need all of that. Since this is a report API, it's cleaner to return only the fields you'll actually display or export.
+
+refactor this 
+------
+

@@ -1,14 +1,15 @@
 import { useEffect, useState } from "react";
 import { getProfile } from "../../api/userApi";
+import { getAdminDashboardStats } from "../../api/dashboardApi";
 import { useNavigate } from "react-router-dom";
 import { Link } from "react-router-dom";
-import Navbar from "../../components/Navbar";
 
 const AdminDashboard = () => {
   const navigate = useNavigate();
 
   const [profile, setProfile] =
     useState(null);
+    const [stats, setStats] = useState(null);
 
   useEffect(() => {
   const fetchProfile = async () => {
@@ -19,6 +20,13 @@ const AdminDashboard = () => {
         res.data?.data ??
         res.data
       );
+
+      const statsRes =
+  await getAdminDashboardStats();
+
+setStats(
+  statsRes.data.stats
+);
     } catch (error) {
       console.log(error);
     }
@@ -29,8 +37,7 @@ const AdminDashboard = () => {
 
   return (
     <>
-    
-      <Navbar />
+      {/* welcome admin */}
 
       <div style={{ padding: "25px" }}>
         <h1>Admin Dashboard</h1>
@@ -50,21 +57,188 @@ const AdminDashboard = () => {
           </>
         )}
 
+        {/* --------------------- */}
+
         <Link to="/chat">
           <button>Chat</button>
         </Link>
 
         <hr />
 
+           <p
+  style={{
+    color: "#666",
+    marginBottom: "30px",
+  }}
+>
+  Monitor your organization, manage employees,
+  review attendance requests and oversee company
+  operations from one dashboard.
+</p>
 
+        {/* overall organisation statistics  */}
 
-        <p>
-          Manage employees, attendance, departments,
-          designations, reports and organizational
-          settings from a single place.
-        </p>
+        {stats && (
+  <div
+    style={{
+      display: "grid",
+      gridTemplateColumns:
+        "repeat(auto-fit,minmax(220px,1fr))",
+      gap: "20px",
+      marginBottom: "30px",
+    }}
+  >
+    <div
+      style={{
+        border: "1px solid #ddd",
+        padding: "20px",
+        borderRadius: "10px",
+      }}
+    >
+      <h3>Total Employees</h3>
+      <h1>{stats.totalEmployees}</h1>
+    </div>
 
+    <div
+      style={{
+        border: "1px solid #ddd",
+        padding: "20px",
+        borderRadius: "10px",
+      }}
+    >
+      <h3>Total Managers</h3>
+      <h1>{stats.totalManagers}</h1>
+    </div>
+
+    <div
+      style={{
+        border: "1px solid #ddd",
+        padding: "20px",
+        borderRadius: "10px",
+      }}
+    >
+      <h3>Departments</h3>
+      <h1>{stats.totalDepartments}</h1>
+    </div>
+
+    <div
+      style={{
+        border: "1px solid #ddd",
+        padding: "20px",
+        borderRadius: "10px",
+      }}
+    >
+      <h3>Designations</h3>
+      <h1>{stats.totalDesignations}</h1>
+    </div>
+
+    <div
+      style={{
+        border: "1px solid #ddd",
+        padding: "20px",
+        borderRadius: "10px",
+      }}
+    >
+      <h3>Present Today</h3>
+      <h1>{stats.presentToday}</h1>
+    </div>
+
+    <div
+      style={{
+        border: "1px solid #ddd",
+        padding: "20px",
+        borderRadius: "10px",
+      }}
+    >
+      <h3>Absent Today</h3>
+      <h1>{stats.absentToday}</h1>
+    </div>
+
+    <div
+      style={{
+        border: "1px solid #ddd",
+        padding: "20px",
+        borderRadius: "10px",
+        background: "#fff3cd",
+      }}
+    >
+      <h3>Pending Attendance</h3>
+      <h1>{stats.pendingAttendance}</h1>
+    </div>
+  </div>
+)}
+
+   {/* ------------------ */}
+
+  {/* attendance summary for today */}
+
+{stats && (
+  <div
+    style={{
+      marginTop: "30px",
+      border: "1px solid #ddd",
+      borderRadius: "10px",
+      padding: "20px",
+    }}
+  >
+    <h2>Today's Attendance</h2>
+
+    <div
+      style={{
+        display: "grid",
+        gridTemplateColumns:
+          "repeat(auto-fit,minmax(150px,1fr))",
+        gap: "15px",
+      }}
+    >
+      <div>
+        <strong>Present</strong>
+        <h3>
+          {stats.dailySummary.present}
+        </h3>
+      </div>
+
+      <div>
+        <strong>Late</strong>
+        <h3>
+          {stats.dailySummary.late}
+        </h3>
+      </div>
+
+      <div>
+        <strong>Half Day</strong>
+        <h3>
+          {stats.dailySummary.halfDay}
+        </h3>
+      </div>
+
+      <div>
+        <strong>Leave</strong>
+        <h3>
+          {stats.dailySummary.leave}
+        </h3>
+      </div>
+
+      <div>
+        <strong>Absent</strong>
+        <h3>
+          {stats.dailySummary.absent}
+        </h3>
+      </div>
+
+      <div>
+        <strong>Attendance %</strong>
+        <h3>
+          {stats.dailySummary.attendanceRate}%
+        </h3>
+      </div>
+    </div>
+  </div>
+)}
+
+{/* --------------- */}
         <hr />
+        {/* attendance mgmt */}
 
         <h2>Attendance Management</h2>
 
@@ -72,15 +246,12 @@ const AdminDashboard = () => {
           Review attendance records and approve or
           reject attendance submissions.
         </p>
-
         <button
           onClick={() =>
             navigate("/admin/attendance")
           }
-        >
-          View Attendance
+        > View Attendance
         </button>
-
         <button
           onClick={() =>
             navigate("/admin/pending-attendance")
@@ -92,6 +263,7 @@ const AdminDashboard = () => {
 
         <hr />
 
+{/* Employee Management */}
         <h2>Employee Management</h2>
 
         <p>
@@ -117,7 +289,7 @@ const AdminDashboard = () => {
         </button>
 
         <hr />
-
+        {/* Organization Management */}
         <h2>Organization Management</h2>
 
         <p>
@@ -150,50 +322,7 @@ const AdminDashboard = () => {
           Generate attendance and employee reports and
           export them in multiple formats.
         </p>
-
-        <button disabled>
-          Attendance Reports (Coming Soon)
-        </button>
-
-        <button
-          disabled
-          style={{ marginLeft: "10px" }}
-        >
-          Employee Reports (Coming Soon)
-        </button>
-
-        <hr />
-
-        <h2>Communication</h2>
-
-        <p>
-          Access private messaging and department group
-          chats.
-        </p>
-
-        <button disabled>
-          Private Chat (Coming Soon)
-        </button>
-
-        <button
-          disabled
-          style={{ marginLeft: "10px" }}
-        >
-          Department Chat (Coming Soon)
-        </button>
-
-        <hr />
-
-        <h2>Account</h2>
-
-        <p>
-          Manage your administrator account and
-          personal settings.
-        </p>
-
-        <button disabled>
-          My Profile (Coming Soon)
-        </button>
+    
       </div>
     </>
   );
