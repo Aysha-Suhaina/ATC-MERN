@@ -30,14 +30,30 @@ const UserList  = ({
 
   console.log("ONLINE USERS STATE:", onlineUsers);
 
-  const filteredUsers =
-  users.filter((user) =>
-    user.name
+  const filteredUsers = users.filter((user) => {
+  if (!search.trim()) return true;
+
+  const query = search.toLowerCase();
+
+  return (
+    (user.name || "")
       .toLowerCase()
-      .includes(
-        search.toLowerCase()
-      )
+      .includes(query) ||
+
+    (user.email || "")
+      .toLowerCase()
+      .includes(query) ||
+
+    (user.role || "")
+      .toLowerCase()
+      .includes(query) ||
+
+    (user.department?.name || "")
+      .toLowerCase()
+      .includes(query)
   );
+});
+
 
   return (
   <div>

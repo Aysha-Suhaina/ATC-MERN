@@ -4,7 +4,7 @@ import { authenticate } from "../middleware/authenticate.middleware.js";
 
 import {
   getConversations,
-  getMessages,openConversation
+  getMessages,openConversation,getMyConversations
 } from "../controller/conversation.controller.js";
 
 const router = express.Router();
@@ -27,6 +27,11 @@ router.get(
   getMessages
 );
 
+router.get(
+  "/my",
+  authenticate,
+  getMyConversations
+);
 
 
 export default router;

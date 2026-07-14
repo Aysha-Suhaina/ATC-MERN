@@ -81,3 +81,42 @@ export const openConversation = async (
   });
 }
 };
+
+export const getMyConversations = async (
+  req,
+  res
+) => {
+  try {
+    const conversations =
+      await Conversation.find({
+        participants: req.user._id,
+      })
+        .populate(
+          "participants",
+          "name role department"
+        )
+        .populate({
+          path: "lastMessage",
+          populate: {
+            path: "sender",
+            select: "name",
+          },
+        })
+        .sort({
+          updatedAt: -1,
+        });
+
+    res.json({
+      success: true,
+      conversations,
+    });
+
+  } catch (error) {
+
+    res.status(500).json({
+      success: false,
+      msg: error.message,
+    });
+
+  }
+};

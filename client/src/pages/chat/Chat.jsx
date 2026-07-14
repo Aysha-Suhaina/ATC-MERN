@@ -26,31 +26,46 @@ useEffect(() => {
     setOnlineUsers(users);
   };
 
-  const handleReceiveMessage = async (data) => {
+ const handleReceiveMessage = async (data) => {
+  // Only update the UI if this message belongs
+  // to the conversation currently open.
+  if (
+    currentConversation &&
+    data.message.conversation === currentConversation._id
+  ) {
     setMessages((prev) => [
       ...prev,
       data.message,
     ]);
 
-    if (
-      currentConversation &&
-      data.message.conversation ===
-        currentConversation._id
-    ) {
-      await markAsRead(
+    await markAsRead(
+      currentConversation._id
+    );
+
+    const updated =
+      await getMessages(
         currentConversation._id
       );
 
-      const updated =
-        await getMessages(
-          currentConversation._id
-        );
+    setMessages(updated.data.messages);
+  }
 
-      setMessages(
-        updated.data.messages
-      );
-    }
-  };
+  console.log(
+  "Listener for:",
+  currentConversation?._id
+);
+
+console.log(
+  "Incoming:",
+  data.message.conversation
+);
+
+  // Otherwise do nothing.
+  // The message is already saved in MongoDB.
+  // When this conversation is opened later,
+  // getMessages() will load it.
+};
+
 
   const handleMessageRead = ({
     messageId,
@@ -99,6 +114,20 @@ useEffect(() => {
     );
   };
 }, [currentConversation]);
+useEffect(() => {
+  console.log("Chat mounted");
+
+  socket.on("online_users", (users) => {
+    console.log("ONLINE USERS RECEIVED");
+    console.log(users);
+
+    setOnlineUsers(users);
+  });
+
+  return () => {
+    socket.off("online_users");
+  };
+}, []);
 
   const handleSelectUser = async (user) => {
   setSelectedUser(user);

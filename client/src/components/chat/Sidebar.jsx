@@ -25,16 +25,34 @@ const Sidebar = ({
 
       <hr />
 
-      <RecentChats />
+      {search.trim() ? (
 
-      <hr />
+  <UserList
+    selectedUser={selectedUser}
+    setSelectedUser={setSelectedUser}
+    onlineUsers={onlineUsers}
+    search={search}
+  />
 
-      <UserList
-  selectedUser={selectedUser}
-  setSelectedUser={setSelectedUser}
-  onlineUsers={onlineUsers}
-  search={search}
-/>
+) : (
+
+  <>
+    <RecentChats
+      onSelectConversation={setSelectedUser}
+      onlineUsers={onlineUsers}
+    />
+
+    <hr />
+
+    <UserList
+      selectedUser={selectedUser}
+      setSelectedUser={setSelectedUser}
+      onlineUsers={onlineUsers}
+      search=""
+    />
+  </>
+
+)}
     </div>
   );
 };

@@ -12,7 +12,6 @@ const SearchBar = ({
       }
       style={{
         width: "100%",
-        padding: "8px",
       }}
     />
   );
