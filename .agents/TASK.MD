@@ -320,3 +320,7 @@ Typing Indicator
 two manager for same department
 
 employee count error - for deleting designation.
+
+wrong password hit for admin  doesnt have any effect
+
+new chat wont be apeared in recent chat unless refreshed - fix:move recetnchat.jsx int o chat.jsx

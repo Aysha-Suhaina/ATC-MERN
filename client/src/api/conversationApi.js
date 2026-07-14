@@ -15,3 +15,5 @@ export const openConversation = (receiverId) =>
   API.post("/open", {
     receiverId,
   });
+export const getMyConversations =
+  () => API.get("/my");

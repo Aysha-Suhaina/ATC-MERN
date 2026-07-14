@@ -62,6 +62,34 @@ function App(){
     handleConnect();
   }
 
+  console.log("Socket Connected");
+console.log("Socket ID:", socket.id);
+console.log("User ID:", userId);
+console.log("Connected:", socket.connected);
+
+  return () => {
+    socket.off("connect", handleConnect);
+  };
+}, []);
+useEffect(() => {
+  const userId = localStorage.getItem("userId");
+
+  if (!userId) return;
+
+  console.log("App mounted");
+
+  const handleConnect = () => {
+    console.log("CONNECTED EVENT");
+    console.log(socket.id);
+
+    socket.emit("register_user", userId);
+  };
+
+  socket.on("connect", handleConnect);
+
+  console.log("Calling connect...");
+  socket.connect();
+
   return () => {
     socket.off("connect", handleConnect);
   };
