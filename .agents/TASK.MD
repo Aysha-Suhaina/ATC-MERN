@@ -3,7 +3,7 @@
 # HRMS Project Roadmap & Progress
 
  
-DEBUG LEFT IN CHATHPT
+test excel adn csv exports for various category 
 
 # bug list at line - 335 
 
@@ -16,110 +16,15 @@ DEBUG LEFT IN CHATHPT
 - ✅ Employee Management
 - ✅ Attendance Management
 - ✅ Manager Module
-LINE 200:- ⏳ Live Chat (WebSocket) ⭐ Core Project Fe
+  ✅Live Chat (WebSocket) 
 - ⏳ Notifications
 - ⏳ Dashboard
-- ⏳ Reports (PDF / Excel)
+- ⏳ Reports (PDF / Excel) - 
 - ⏳ UI / UX Polish
 - ⏳ Final Testing
 
----
 
-# 1. Authentication ✅ COMPLETED
-
-## Features
-
-- ✅ Admin Login
-- ✅ Logout
-- ✅ Protected Routes
-- ✅ Role-based Authentication
-- ✅ Unauthorized Redirect
-- ✅ Inactive User Login Restriction
-
----
-
-# 2. Department Management ✅ COMPLETED
-
-## CRUD
-
-- ✅ Add Department
-- ✅ Edit Department
-- ✅ Delete Department
-- ✅ View Departments
-
-## Future Improvements
-
-- ⏳ Search
-- ⏳ Pagination
-
----
-
-# 3. Designation Management ✅ COMPLETED
-
-## CRUD
-
-- ✅ Add Designation
-- ✅ Edit Designation
-- ✅ Delete Designation
-- ✅ View Designations
-
-## Improvements
-
-- ✅ Department-wise Designation Mapping
-- ✅ Dynamic Designation Dropdown
-
----
-
-# 4. Employee Management ✅ COMPLETED
-
-## Create Employee
-
-- ✅ Department dropdown loads correctly
-- ✅ Department-wise designation dropdown
-- ✅ Employee created successfully
-- ✅ Employee appears in Employee List
-- ✅ Department ObjectId stored
-- ✅ Designation ObjectId stored
-
-## Update Employee  ✅ COMPLETED
-
-- ✅ Employee details prefilled
-- ✅ Change Department
-- ✅ Change Designation
-- ✅ Employee updated successfully
-- ✅ Success notification
-- ✅ MongoDB updates correctly
-
-## Employee List  ✅ COMPLETED
-
-- ✅ Department displayed correctly
-- ✅ Designation displayed correctly
-- ✅ Active / Inactive Status
-- ✅ Activate / Deactivate Employee
-
-## Future Improvements
-
-- ⏳ Search
-- ⏳ Filters
-- ⏳ Pagination
-- ⏳ Employee Profile
-
----
-
-# 5. Attendance Management ✅ COMPLETED
-
-## Employee
-
-- ✅ Submit Attendance
-- ✅ View Own Attendance
-- ✅ Resubmit Rejected Attendance
-
-## Admin  ✅ COMPLETED
-
-- ✅ View Attendance
-- ✅ View Pending Attendance
-- ✅ Approve Attendance
-- ✅ Reject Attendance
+## admin 
 
 ## Future Improvements
 
@@ -134,56 +39,13 @@ LINE 200:- ⏳ Live Chat (WebSocket) ⭐ Core Project Fe
 - ⏳ Employee
 - ⏳ Status
 
-### Export
 
-- ⏳ PDF
-- ⏳ Excel
-
----
-
-# 6. Manager Module  ✅ COMPLETED
-
-## Admin Improvements ✅ COMPLETED
-
-Add Manager Role Support
- Promote Employee → Manager
-- ⬜ Demote Manager → Employee
-- ⬜ Add Promote/Demote Buttons
-Verify Manager Login Redirect
-Prevent Managers from accessing Admin Routes
-- ⬜ Prevent Employees from accessing Manager Routes
 
 ## Manager Dashboard
 
 - ⬜ Dashboard
 - ⬜ Sidebar
 
-## Employee Management ✅ COMPLETED
-
-- ⬜ Backend API: Get Department Employees
-- ⬜ View Department Employees
-- ⬜ Restrict to Own Department
-
-## Attendance  ✅ COMPLETED
-
-- ⬜ Backend API: Pending Attendance
-- ⬜ Pending Attendance Page
-- ⬜ Backend API: Attendance History
-- ⬜ Attendance History Page
-- ⬜ Approve Attendance
-- ⬜ Reject Attendance
-
-## Permission Testing -✅ COMPLETED
-
-- ⬜ Manager cannot create employees
-- ⬜ Manager cannot edit employees
-- ⬜ Manager cannot delete employees
-- ⬜ Manager cannot manage departments
-- ⬜ Manager cannot manage designations
-- ⬜ Manager cannot approve other departments' attendance
-- ⬜ Employee cannot access Manager Pages
-- ⬜ Employee cannot access Admin Pages
-- ⬜ Admin access verified
 
 ## Final Testing
 
@@ -202,18 +64,8 @@ Prevent Managers from accessing Admin Routes
 
 🔄 Live Chat (WebSocket) -CORE FEATURE - ✅ COMPLETED
 
- Socket.IO Setup
-React Socket Connection
- Private Messaging
- Save Messages
- Conversation History
-Online Users
-☐ Read / Unread
-Recent Conversations
-☐ Search Users
 ☐ Department Group Chat
-Typing Indicator
-☐ Final Testing
+
 ---
 
 # 8. Notifications ⏳ TO BUILD
@@ -225,7 +77,7 @@ Typing Indicator
 
 ---
 
-# 9. Dashboard ⏳ TO BUILD
+# 9. Dashboard  ✅ COMPLETED
 
 ## Cards
 
@@ -291,50 +143,3 @@ Typing Indicator
 - ⬜ UI Testing
 - ⬜ Permission Testing
 - ⬜ End-to-End Testing
-
----
-
-# Admin Sidebar
-
-- Dashboard
-- Employees
-  - Employee List
-  - Add Employee
-- Managers
-- Team Leads
-- Departments
-- Designations
-- Teams
-- Attendance
-- Reports
-- Notifications
-- Settings
-- Profile
-- Logout
-
-
-
-
-# bug list 
-
-two manager for same department
-
-employee count error - for deleting designation.
-
-wrong password hit for admin  doesnt have any effect
-
-new chat wont be apeared in recent chat unless refreshed - fix:move recetnchat.jsx int o chat.jsx
-
------
-for returning daily getdailyreports : 
-Right now you're returning the entire Attendance document, including:
-
-"_id"
-"__v"
-"updatedAt"
-
-The frontend doesn't need all of that. Since this is a report API, it's cleaner to return only the fields you'll actually display or export.
-
-refactor this 
-------
-

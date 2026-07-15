@@ -1,12 +1,8 @@
 import express from "express";
 
 import 
-  {exportCSV}
+  {exportCSV,exportExcel}
  from "../controller/report.controller.js";
-
-import {
-  exportDailyExcel,
-} from "../controller/report.controller.js";
 import { authenticate } from "../middleware/authenticate.middleware.js";
 import { authorize } from "../middleware/authorize.middleware.js";
 
@@ -33,7 +29,7 @@ router.get(
 
   authorize("admin"),
 
-  exportDailyExcel
+  exportExcel
 
 );
 
@@ -58,7 +54,7 @@ router.get(
 
   authorize("admin"),
 
-  exportDailyExcel
+  exportExcel
 
 );
 export default router;
