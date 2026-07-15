@@ -104,8 +104,7 @@ export const buildReportFilter = (
       return {};
 
     default:
-
-      return {};
+  throw new Error("Invalid report type");
 
   }
 

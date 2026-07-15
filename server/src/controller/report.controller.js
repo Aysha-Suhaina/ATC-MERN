@@ -144,6 +144,23 @@ export const exportCSV =
 
       );
 
+      const allowed = [
+  "daily",
+  "weekly",
+  "monthly",
+  "user",
+  "department",
+];
+
+if (
+  !allowed.includes(req.params.type)
+) {
+  return res.status(400).json({
+    success: false,
+    msg: "Invalid report type",
+  });
+}
+
       return res.send(csv);
 
     }
@@ -161,67 +178,97 @@ export const exportCSV =
     }
 
   };
+export const exportExcel = async (req, res) => {
+  console.log(req.params);
 
+    const filter = buildReportFilter(
+        req.params.type,
+        {
+            userId: req.params.id,
+        }
+    );
+    console.log(filter);
 
-export const exportDailyExcel = async (
-    req,
-    res
-  ) => {
+    let report =
+        await getAttendanceReport(filter);
 
-    try {
+    if (req.params.type === "department") {
 
-      const today =
-        new Date();
-
-      today.setHours(
-        0,
-        0,
-        0,
-        0
-      );
-
-      const tomorrow =
-        new Date(today);
-
-      tomorrow.setDate(
-        tomorrow.getDate() + 1
-      );
-
-      const report =
-        await getAttendanceReport({
-
-          date: {
-
-            $gte: today,
-
-            $lt: tomorrow,
-
-          },
-
-        });
-
-      await exportAttendanceExcel(
-
-  report,
-
-  res,
-
-  req.params.type
-
-);
+        report = report.filter(
+            item =>
+                item.user?.department?._id.toString() ===
+                req.params.id
+        );
 
     }
 
-    catch (error) {
+    await exportAttendanceExcel(
+        report,
+        res,
+        req.params.type
+    );
 
-      res.status(500).json({
+};
 
-        success: false,
+// export const exportdailyExcel = async (
+//     req,
+//     res
+//   ) => {
 
-        msg: error.message,
+//     try {
 
-      });
+//       const today =
+//         new Date();
 
-    }
+//       today.setHours(
+//         0,
+//         0,
+//         0,
+//         0
+//       );
 
-  };
+//       const tomorrow =
+//         new Date(today);
+
+//       tomorrow.setDate(
+//         tomorrow.getDate() + 1
+//       );
+
+//       const report =
+//         await getAttendanceReport({
+
+//           date: {
+
+//             $gte: today,
+
+//             $lt: tomorrow,
+
+//           },
+
+//         });
+
+//       await exportAttendanceExcel(
+
+//   report,
+
+//   res,
+
+//   req.params.type
+
+// );
+
+//     }
+
+//     catch (error) {
+
+//       res.status(500).json({
+
+//         success: false,
+
+//         msg: error.message,
+
+//       });
+
+//     }
+
+//   };

@@ -39,6 +39,10 @@ const AdminSidebar = () => {
           Designations
         </NavLink>
 
+        <NavLink to="/admin/reports">
+          Reports
+        </NavLink>
+
         <NavLink to="/chat">
           Chat
         </NavLink>

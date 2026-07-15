@@ -73,6 +73,8 @@ export const exportAttendanceExcel = async (
     vertical: "middle",
     horizontal: "center",
   };
+  console.log(attendance.length);
+  console.log(attendance[0]);
 
   attendance.forEach((item) => {
 

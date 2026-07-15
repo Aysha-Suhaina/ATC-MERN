@@ -4,6 +4,7 @@ import socket from "./socket/socket";
 import {useEffect} from 'react';
 
 import AdminLayout from "./layouts/AdminLayout";
+import Reports from "./pages/admin/Reports";
 //auth
 import Home from "./pages/Auth/Home";
 import Login from "./pages/Auth/Login";
@@ -126,6 +127,14 @@ useEffect(() => {
     </ProtectedRoute>
   }
 >
+  <Route
+  path="/admin/reports"
+  element={
+    <ProtectedRoute allowedRoles={["admin"]}>
+      <Reports />
+    </ProtectedRoute>
+  }
+/>
 
   <Route
     path="/admin-dashboard"
