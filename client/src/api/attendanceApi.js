@@ -64,10 +64,55 @@ export const rejectAttendance = async (
     }
   );
 };
-export const getAllAttendance = async () => {
-  return axios.get(API, {
-    withCredentials: true,
-  });
+export const getAllAttendance = (
+  filters = {}
+) => {
+
+  const params =
+    new URLSearchParams();
+
+  if (filters.search) {
+    params.append(
+      "search",
+      filters.search
+    );
+  }
+
+  if (filters.department) {
+    params.append(
+      "department",
+      filters.department
+    );
+  }
+
+  if (filters.status) {
+    params.append(
+      "status",
+      filters.status
+    );
+  }
+
+  if (filters.approval) {
+    params.append(
+      "approval",
+      filters.approval
+    );
+  }
+
+  if (filters.date) {
+    params.append(
+      "date",
+      filters.date
+    );
+  }
+
+  return axios.get(
+    `${API}?${params.toString()}`,
+    {
+      withCredentials: true,
+    }
+  );
+
 };
 
 

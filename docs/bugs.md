@@ -19,3 +19,4 @@ The frontend doesn't need all of that. Since this is a report API, it's cleaner 
 refactor this 
 ------
 
+in employee search - when i choose dpet finance - the designations shows all designation from different dept too- it should only be the designation from selected department only . 

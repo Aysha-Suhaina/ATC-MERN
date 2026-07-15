@@ -66,28 +66,82 @@ export const updateProfile =
 
   //admin only controlers
 
-  export const getAllEmployees = async (
+export const getAllEmployees = async (
   req,
   res,
   next
 ) => {
   try {
-    const employees = await User.find({
+
+    const {
+      search,
+      department,
+      designation,
+      active,
+    } = req.query;
+
+    const filter = {
       role: "employee",
-    }).populate({
-  path: "department",
-  populate: {
-    path: "manager",
-    select: "name email",
-  },
-})
-    .populate("designation")
-    .select("-password");
+    };
+
+    if (department) {
+      filter.department =
+        department;
+    }
+
+    if (designation) {
+      filter.designation =
+        designation;
+    }
+
+    if (
+      active !== undefined &&
+      active !== ""
+    ) {
+      filter.isActive =
+        active === "true";
+    }
+
+    if (search) {
+
+      filter.$or = [
+
+        {
+          name: {
+            $regex: search,
+            $options: "i",
+          },
+        },
+
+        {
+          email: {
+            $regex: search,
+            $options: "i",
+          },
+        },
+
+      ];
+
+    }
+
+    const employees =
+      await User.find(filter)
+        .populate({
+          path: "department",
+          populate: {
+            path: "manager",
+            select:
+              "name email",
+          },
+        })
+        .populate("designation")
+        .select("-password");
 
     res.status(200).json({
       success: true,
       employees,
     });
+
   } catch (error) {
     next(error);
   }
