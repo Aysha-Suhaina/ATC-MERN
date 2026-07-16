@@ -1,38 +1,25 @@
 import { Link } from "react-router-dom";
 import {toast} from 'react-toastify';
 import { deleteDesignation } from "../../api/designationApi";
-
+import Button from "../ui/Button";
 function DesignationList({
   designations,
   refreshDesignations,
 }) {
-
   const handleDelete = async (id) => {
-
     const confirmDelete = window.confirm(
       "Delete this designation?"
     );
-
     if (!confirmDelete) return;
-
     try {
-
       await deleteDesignation(id);
-
       toast.success("Designation deleted");
-
       refreshDesignations();
-
     } catch (error) {
-
       console.error(error);
-
       toast.error("Failed to delete designation");
-
     }
-
   };
-
   return (
 
     <div>

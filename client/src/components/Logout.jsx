@@ -25,6 +25,7 @@ function Logout({ close }) {
         <p>Are you sure?</p>
 
         <Button onClick={logout}>Yes</Button>
+        
         <Button onClick={close}>No</Button>
       </div>
     </div>

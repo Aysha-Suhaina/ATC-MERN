@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import {toast} from 'react-toastify';
 import { createDesignation } from "../../api/designationApi";
 import { getDepartments } from "../../api/departmentApi";
+import Button from "../ui/Button";
 
 function DesignationForm({ onSuccess }) {
   const [departments, setDepartments] = useState([]);
