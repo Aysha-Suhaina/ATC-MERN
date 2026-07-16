@@ -1,14 +1,12 @@
 import { Link } from "react-router-dom";
 import { deleteDepartment } from "../../api/departmentApi";
-import {toast} from 'react-toastify';
+import { toast } from "react-toastify";
+import Button from "../ui/Button";
 
-function DepartmentList({
-  departments,
-  refreshDepartments,
-}) {
+function DepartmentList({ departments, refreshDepartments }) {
   const handleDelete = async (id) => {
     const confirmDelete = window.confirm(
-      "Are you sure you want to delete this department?"
+      "Are you sure you want to delete this department?",
     );
 
     if (!confirmDelete) return;
@@ -27,14 +25,12 @@ function DepartmentList({
 
   return (
     <div>
-
       <h2>Departments</h2>
 
       {departments.length === 0 ? (
         <p>No departments available.</p>
       ) : (
         <table border="1" cellPadding="10">
-
           <thead>
             <tr>
               <th>Name</th>
@@ -45,15 +41,11 @@ function DepartmentList({
           </thead>
 
           <tbody>
-
             {departments.map((department) => (
               <tr key={department._id}>
-
                 <td>{department.name}</td>
 
-                <td>
-                  {department.description || "-"}
-                </td>
+                <td>{department.description || "-"}</td>
 
                 <td>
                   {department.manager
@@ -62,32 +54,19 @@ function DepartmentList({
                 </td>
 
                 <td>
-                  <Link
-                    to={`/admin/departments/edit/${department._id}`}
-                  >
-                    <button>Edit</button>
+                  <Link to={`/admin/departments/edit/${department._id}`}>
+                    <Button>Edit</Button>
                   </Link>
 
-                  <button
-                    onClick={() =>
-                      handleDelete(
-                        department._id
-                      )
-                    }
-                  >
+                  <Button onClick={() => handleDelete(department._id)}>
                     Delete
-                  </button>
-
+                  </Button>
                 </td>
-
               </tr>
             ))}
-
           </tbody>
-
         </table>
       )}
-
     </div>
   );
 }

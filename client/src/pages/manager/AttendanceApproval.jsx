@@ -6,19 +6,16 @@ import {
   approveAttendance,
   rejectAttendance,
 } from "../../api/attendanceApi";
+import Button from "../../components/ui/Button";
 
 const AttendanceApproval = () => {
-  const [records, setRecords] =
-    useState([]);
+  const [records, setRecords] = useState([]);
 
   const loadData = async () => {
     try {
-      const res =
-        await getManagerPendingAttendance();
+      const res = await getManagerPendingAttendance();
 
-      setRecords(
-        res.data.data
-      );
+      setRecords(res.data.data);
     } catch (error) {
       console.error(error);
     }
@@ -44,33 +41,27 @@ const AttendanceApproval = () => {
             <div key={item._id}>
               <h3>{item.user?.name}</h3>
 
-              <p>
-                {item.attendanceStatus}
-              </p>
+              <p>{item.attendanceStatus}</p>
 
-              <button
+              <Button
                 onClick={async () => {
-                  await approveAttendance(
-                    item._id
-                  );
+                  await approveAttendance(item._id);
 
                   loadData();
                 }}
               >
                 Approve
-              </button>
+              </Button>
 
-              <button
+              <Button
                 onClick={async () => {
-                  await rejectAttendance(
-                    item._id
-                  );
+                  await rejectAttendance(item._id);
 
                   loadData();
                 }}
               >
                 Reject
-              </button>
+              </Button>
             </div>
           ))
         )}

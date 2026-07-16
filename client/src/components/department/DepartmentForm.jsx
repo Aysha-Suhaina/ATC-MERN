@@ -1,7 +1,7 @@
 import { useState } from "react";
-import {toast} from 'react-toastify';
+import { toast } from "react-toastify";
 import { createDepartment } from "../../api/departmentApi";
-
+import Button from "../ui/Button";
 function DepartmentForm({ onSuccess }) {
   const [form, setForm] = useState({
     name: "",
@@ -37,11 +37,9 @@ function DepartmentForm({ onSuccess }) {
 
   return (
     <div>
-
       <h2>Create Department</h2>
 
       <form onSubmit={handleSubmit}>
-
         <div>
           <label>Department Name</label>
 
@@ -64,12 +62,8 @@ function DepartmentForm({ onSuccess }) {
           />
         </div>
 
-        <button type="submit">
-          Create Department
-        </button>
-
+        <Button type="submit">Create Department</Button>
       </form>
-
     </div>
   );
 }

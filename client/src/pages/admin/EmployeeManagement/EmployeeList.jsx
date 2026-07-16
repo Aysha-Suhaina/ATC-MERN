@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import Swal from "sweetalert2";
 import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
+import Button from "../../../components/ui/Button";
 
 import {
   getEmployees,
@@ -98,9 +99,9 @@ const EmployeeList = () => {
     <div>
       <h1>Employee Management</h1>
 
-      <button onClick={() => navigate("/admin/employees/create")}>
+      <Button onClick={() => navigate("/admin/employees/create")}>
         Create Employee
-      </button>
+      </Button>
 
       <div
         style={{
@@ -151,7 +152,7 @@ const EmployeeList = () => {
         ))}
       </select>
 
-      <button
+      <Button
         onClick={() => {
           setSearch("");
 
@@ -163,7 +164,7 @@ const EmployeeList = () => {
         }}
       >
         Reset
-      </button>
+      </Button>
 
       <table border="1">
         <thead>
@@ -190,22 +191,22 @@ const EmployeeList = () => {
               <td>{employee.department?.manager?.name || "Not Assigned"}</td>
               <td>{employee.isActive ? "Active" : "Inactive"}</td>
               <td>
-                <button
+                <Button
                   onClick={() =>
                     navigate(`/admin/employees/edit/${employee._id}`)
                   }
                 >
                   Edit
-                </button>
+                </Button>
 
                 {employee.isActive ? (
-                  <button onClick={() => handleDeactivate(employee)}>
+                  <Button onClick={() => handleDeactivate(employee)}>
                     Deactivate
-                  </button>
+                  </Button>
                 ) : (
-                  <button onClick={() => handleReactivate(employee)}>
+                  <Button onClick={() => handleReactivate(employee)}>
                     Reactivate
-                  </button>
+                  </Button>
                 )}
               </td>
             </tr>

@@ -9,26 +9,25 @@ function DesignationManagement() {
   const [loading, setLoading] = useState(true);
 
   const loadDesignations = async () => {
-  try {
-    const response = await getAllDesignations();
-    setDesignations(response.data.designations);
-  } finally {
-    setLoading(false);
-  }
-};
+    try {
+      const response = await getAllDesignations();
+      setDesignations(response.data.designations);
+    } finally {
+      setLoading(false);
+    }
+  };
 
-useEffect(() => {
-  queueMicrotask(() => {
-    loadDesignations();
-  });
-}, []);
+  useEffect(() => {
+    queueMicrotask(() => {
+      loadDesignations();
+    });
+  }, []);
   if (loading) {
     return <h2>Loading Designations...</h2>;
   }
 
   return (
     <div className="designation-management">
-
       <h1>Designation Management</h1>
 
       <DesignationForm onSuccess={loadDesignations} />
@@ -37,7 +36,6 @@ useEffect(() => {
         designations={designations}
         refreshDesignations={loadDesignations}
       />
-
     </div>
   );
 }

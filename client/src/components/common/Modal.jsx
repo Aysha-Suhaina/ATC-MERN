@@ -1,30 +1,18 @@
 import "./Modal.css";
-function Modal({
-  isOpen,
-  title,
-  children,
-  onClose,
-}) {
+import Button from "../ui/Button";
+function Modal({ isOpen, title, children, onClose }) {
   if (!isOpen) return null;
 
   return (
     <div className="modal-overlay">
       <div className="modal">
-
         <div className="modal-header">
           <h2>{title}</h2>
 
-          <button
-            onClick={onClose}
-          >
-            ✕
-          </button>
+          <Button onClick={onClose}>✕</Button>
         </div>
 
-        <div className="modal-body">
-          {children}
-        </div>
-
+        <div className="modal-body">{children}</div>
       </div>
     </div>
   );

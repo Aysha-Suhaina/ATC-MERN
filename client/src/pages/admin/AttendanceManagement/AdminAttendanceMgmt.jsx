@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { toast } from "react-toastify";
 import { getAllAttendance, deleteAttendance } from "../../../api/attendanceApi";
 import { getDepartments } from "../../../api/departmentApi";
+import Button from "../../../components/ui/Button";
 
 const AdminAttendanceMgmt = () => {
   const [records, setRecords] = useState([]);
@@ -133,7 +134,7 @@ const AdminAttendanceMgmt = () => {
           onChange={(e) => setDate(e.target.value)}
         />
 
-        <button
+        <Button
           onClick={() => {
             setSearch("");
 
@@ -147,7 +148,7 @@ const AdminAttendanceMgmt = () => {
           }}
         >
           Reset
-        </button>
+        </Button>
       </div>
 
       <table>
@@ -175,7 +176,7 @@ const AdminAttendanceMgmt = () => {
                   record.approvalStatus.slice(1)}
               </td>
               <td>
-                <button onClick={() => handleDelete(record._id)}>Delete</button>
+                <Button onClick={() => handleDelete(record._id)}>Delete</Button>
               </td>
             </tr>
           ))}

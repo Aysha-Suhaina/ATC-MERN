@@ -104,9 +104,9 @@ function DesignationForm({ onSuccess }) {
 
         </div>
 
-        <button type="submit">
+        <Button  type="submit">
           Create Designation
-        </button>
+        </Button >
 
       </form>
 
