@@ -1,36 +1,27 @@
 import { useEffect, useState } from "react";
 import Navbar from "../../components/Navbar";
-import {
-  getMyDepartment,
-  updateMyDepartment,
-} from "../../api/departmentApi";
+import { getMyDepartment, updateMyDepartment } from "../../api/departmentApi";
 import { toast } from "react-toastify";
+import Button from "../../components/ui/Button";
 
 const ManagerDepartment = () => {
-  const [department, setDepartment] =
-    useState(null);
+  const [department, setDepartment] = useState(null);
 
-  const [description, setDescription] =
-    useState("");
+  const [description, setDescription] = useState("");
 
   useEffect(() => {
     const fetchDepartment = async () => {
       try {
-        const res =
-          await getMyDepartment();
+        const res = await getMyDepartment();
 
-        const dept =
-          res.data.department;
+        const dept = res.data.department;
 
         setDepartment(dept);
 
-        setDescription(
-          dept.description || ""
-        );
+        setDescription(dept.description || "");
       } catch (err) {
         toast.error(
-          err.response?.data?.message ||
-            "Failed to load department."
+          err.response?.data?.message || "Failed to load department.",
         );
       }
     };
@@ -51,14 +42,9 @@ const ManagerDepartment = () => {
         description,
       }));
 
-      toast.success(
-        "Department updated successfully."
-      );
+      toast.success("Department updated successfully.");
     } catch (err) {
-      toast.error(
-        err.response?.data?.message ||
-          "Update failed."
-      );
+      toast.error(err.response?.data?.message || "Update failed.");
     }
   };
 
@@ -79,61 +65,42 @@ const ManagerDepartment = () => {
         <h1>My Department</h1>
 
         <form onSubmit={handleSubmit}>
-          <label>
-            Department Name
-          </label>
+          <label>Department Name</label>
+
+          <br />
+
+          <input type="text" value={department.name} readOnly />
+
+          <br />
+          <br />
+
+          <label>Manager</label>
 
           <br />
 
           <input
             type="text"
-            value={department.name}
+            value={department.manager?.name || "Not Assigned"}
             readOnly
           />
 
           <br />
           <br />
 
-          <label>
-            Manager
-          </label>
-
-          <br />
-
-          <input
-            type="text"
-            value={
-              department.manager?.name ||
-              "Not Assigned"
-            }
-            readOnly
-          />
-
-          <br />
-          <br />
-
-          <label>
-            Description
-          </label>
+          <label>Description</label>
 
           <br />
 
           <textarea
             value={description}
-            onChange={(e) =>
-              setDescription(
-                e.target.value
-              )
-            }
+            onChange={(e) => setDescription(e.target.value)}
             rows={5}
           />
 
           <br />
           <br />
 
-          <button type="submit">
-            Save Changes
-          </button>
+          <Button type="submit">Save Changes</Button>
         </form>
       </div>
     </>

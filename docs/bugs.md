@@ -20,3 +20,6 @@ refactor this
 ------
 
 in employee search - when i choose dpet finance - the designations shows all designation from different dept too- it should only be the designation from selected department only . 
+
+--------
+search and filteirnfg is done only dfro admin - manager needs that fucntionality too. 

@@ -1,74 +1,61 @@
 import { useEffect, useState } from "react";
-import {toast} from 'react-toastify';
+import { toast } from "react-toastify";
 import {
   approveAttendance,
   rejectAttendance,
-  getPendingAttendance
+  getPendingAttendance,
 } from "../../../api/attendanceApi";
+import Button from "../../../components/ui/Button";
 
 function PendingAttendance() {
   const [attendanceList, setAttendanceList] = useState([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-  const fetchPendingAttendance = async () => {
-    try {
-      const response =
-        await getPendingAttendance();
+    const fetchPendingAttendance = async () => {
+      try {
+        const response = await getPendingAttendance();
 
-      setAttendanceList(response.data.data);
-    } catch (error) {
-      console.error(
-        "Failed to fetch pending attendance",
-        error
+        setAttendanceList(response.data.data);
+      } catch (error) {
+        console.error("Failed to fetch pending attendance", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchPendingAttendance();
+  }, []);
+
+  const handleApprove = async (attendanceId) => {
+    try {
+      await approveAttendance(attendanceId, "Approved by admin");
+
+      setAttendanceList((prev) =>
+        prev.filter((item) => item._id !== attendanceId),
       );
-    } finally {
-      setLoading(false);
+
+      toast.success("Attendance approved");
+    } catch (error) {
+      console.error(error);
+      toast.error("Failed to approve attendance");
     }
   };
 
-  fetchPendingAttendance();
-}, []);
+  const handleReject = async (attendanceId) => {
+    try {
+      await rejectAttendance(attendanceId, "Rejected by admin");
 
-  const handleApprove = async (attendanceId) => {
-  try {
-    await approveAttendance(
-      attendanceId,
-      "Approved by admin"
-    );
+      setAttendanceList((prev) =>
+        prev.filter((item) => item._id !== attendanceId),
+      );
 
-    setAttendanceList((prev) =>
-      prev.filter(
-        (item) => item._id !== attendanceId
-      )
-    );
-
-    toast.success("Attendance approved");
-  } catch (error) {
-    console.error(error);
-    toast.error("Failed to approve attendance");
-  }
-};
-
-const handleReject = async (attendanceId) => {
-  try {
-    await rejectAttendance(
-      attendanceId,
-      "Rejected by admin"
-    );
-
-    setAttendanceList((prev) =>
-      prev.filter(
-        (item) => item._id !== attendanceId
-      )
-    );
-
-    toast.success("Attendance rejected");
-  } catch (error) {
-    console.error(error);
-    toast.error("Failed to reject attendance");
-  }
-};
+      toast.success("Attendance rejected");
+    } catch (error) {
+      console.error(error);
+      toast.error("Failed to reject attendance");
+    }
+  };
 
   if (loading) {
     return <h2>Loading...</h2>;
@@ -101,41 +88,29 @@ const handleReject = async (attendanceId) => {
 
                 <td>{record.user?.email}</td>
 
-                <td>
-                  {new Date(
-                    record.date
-                  ).toLocaleDateString()}
-                </td>
+                <td>{new Date(record.date).toLocaleDateString()}</td>
 
                 <td>{record.attendanceStatus}</td>
 
                 <td>
                   {record.checkInTime
-                    ? new Date(
-                        record.checkInTime
-                      ).toLocaleTimeString()
+                    ? new Date(record.checkInTime).toLocaleTimeString()
                     : "-"}
                 </td>
 
                 <td>
                   {record.checkOutTime
-                    ? new Date(
-                        record.checkOutTime
-                      ).toLocaleTimeString()
+                    ? new Date(record.checkOutTime).toLocaleTimeString()
                     : "-"}
                 </td>
                 <td>
-                  <button
-                    onClick={() => handleApprove(record._id)}
-                  >
+                  <Button onClick={() => handleApprove(record._id)}>
                     Approve
-                  </button>
+                  </Button>
 
-                  <button
-                    onClick={() => handleReject(record._id)}
-                  >
+                  <Button onClick={() => handleReject(record._id)}>
                     Reject
-                  </button>
+                  </Button>
                 </td>
               </tr>
             ))}

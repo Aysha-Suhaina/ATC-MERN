@@ -2,8 +2,9 @@ import { useState } from "react";
 import axios from "axios";
 import { Link, useNavigate } from "react-router-dom";
 import "./Register.css";
-import {assets} from '../../assets/assets'
-import {toast} from 'react-toastify';
+import { assets } from "../../assets/assets";
+import { toast } from "react-toastify";
+import Button from "../../components/ui/Button";
 
 const Register = () => {
   const navigate = useNavigate();
@@ -11,7 +12,7 @@ const Register = () => {
   const [formData, setFormData] = useState({
     name: "",
     email: "",
-    password: ""
+    password: "",
   });
 
   const [confirmPassword, setConfirmPassword] = useState("");
@@ -20,12 +21,17 @@ const Register = () => {
     e.preventDefault();
     setFormData({
       ...formData,
-      [e.target.name]: e.target.value
+      [e.target.name]: e.target.value,
     });
-  }
-  const handleSubmit = async (e) =>{
+  };
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    if(!formData.name || !formData.email || !formData.password || !confirmPassword){
+    if (
+      !formData.name ||
+      !formData.email ||
+      !formData.password ||
+      !confirmPassword
+    ) {
       toast.warning("Please fill all fields");
       return;
     }
@@ -33,20 +39,22 @@ const Register = () => {
     if (formData.password !== confirmPassword) {
       toast.error("Passwords do not match");
       return;
-    }    
+    }
     try {
       setLoading(true);
       // console.log(formData);
-      const res = await axios.post("http://localhost:4000/api/auth/register",formData);
+      const res = await axios.post(
+        "http://localhost:4000/api/auth/register",
+        formData,
+      );
       toast.success(res.data.msg);
       navigate("/");
-    }catch (err) {
+    } catch (err) {
       console.log(err);
       toast.error("Registration failed");
+    } finally {
+      setLoading(false);
     }
-    finally {
-    setLoading(false); 
-  }
   };
   return (
     <div className="register">
@@ -54,22 +62,49 @@ const Register = () => {
         <div className="registerLeft">
           <h2>Create Account</h2>
           <form onSubmit={handleSubmit} className="registerForm">
+            <input
+              type="text"
+              name="name"
+              placeholder="Name"
+              value={formData.name}
+              onChange={handleChange}
+            />
+            <input
+              type="email"
+              name="email"
+              placeholder="Email"
+              value={formData.email}
+              onChange={handleChange}
+            />
 
-            <input type="text" name="name" placeholder="Name" value={formData.name} onChange={handleChange} />
-            <input type="email" name="email" placeholder="Email" value={formData.email} onChange={handleChange}/>
+            <input
+              type="password"
+              name="password"
+              placeholder="Password"
+              value={formData.password}
+              onChange={handleChange}
+            />
+            <input
+              type="password"
+              placeholder="Confirm Password"
+              value={confirmPassword}
+              onChange={(e) => setConfirmPassword(e.target.value)}
+            />
+            {confirmPassword &&
+              (formData.password === confirmPassword ? (
+                <p style={{ color: "green" }}>Passwords match</p>
+              ) : (
+                <p style={{ color: "red" }}>Passwords do not match</p>
+              ))}
 
-            <input type="password" name="password" placeholder="Password" value={formData.password} onChange={handleChange}/>
-            <input type="password" placeholder="Confirm Password" value={confirmPassword} onChange={(e) => setConfirmPassword(e.target.value)}/>
-            {confirmPassword && (
-              formData.password === confirmPassword
-                ? <p style={{ color: "green" }}>Passwords match</p>
-                : <p style={{ color: "red" }}>Passwords do not match</p>
-            )}
-
-            <button type="submit" disabled={loading} >{loading ? "Loading..." : "Register"}</button>
+            <Button type="submit" disabled={loading}>
+              {loading ? "Loading..." : "Register"}
+            </Button>
             {/* disabled={formData.password !== confirmPassword} */}
 
-            <p>Already have an account? <Link to="/">Login</Link> </p>
+            <p>
+              Already have an account? <Link to="/">Login</Link>{" "}
+            </p>
           </form>
         </div>
         <div className="registerRight">

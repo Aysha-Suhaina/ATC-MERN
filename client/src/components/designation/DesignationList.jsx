@@ -78,16 +78,16 @@ function DesignationList({
                   <Link
                     to={`/admin/designations/edit/${designation._id}`}
                   >
-                    <button>Edit</button>
+                    <Button >Edit</Button >
                   </Link>
 
-                  <button
+                  <Button 
                     onClick={() =>
                       handleDelete(designation._id)
                     }
                   >
                     Delete
-                  </button>
+                  </Button >
 
                 </td>
 

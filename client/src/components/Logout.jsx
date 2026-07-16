@@ -2,12 +2,17 @@ import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import socket from "../socket/socket";
 
+import Button from "../components/ui/Button";
 import "./Logout.css";
 function Logout({ close }) {
   const navigate = useNavigate();
 
   const logout = async () => {
-    await axios.post("http://localhost:4000/api/auth/logout", {}, { withCredentials: true });
+    await axios.post(
+      "http://localhost:4000/api/auth/logout",
+      {},
+      { withCredentials: true },
+    );
     localStorage.removeItem("userId");
     localStorage.removeItem("userRole");
     socket.disconnect();
@@ -19,8 +24,8 @@ function Logout({ close }) {
       <div className="box">
         <p>Are you sure?</p>
 
-        <button onClick={logout}>Yes</button>
-        <button onClick={close}>No</button>
+        <Button onClick={logout}>Yes</Button>
+        <Button onClick={close}>No</Button>
       </div>
     </div>
   );

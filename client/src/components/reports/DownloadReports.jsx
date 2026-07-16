@@ -74,7 +74,7 @@ return(
 
     <h4>Daily</h4>
 
-    <button
+    <Button 
       onClick={() =>
         downloadReport(
           "/daily/csv",
@@ -83,9 +83,9 @@ return(
       }
     >
       CSV
-    </button>
+    </Button >
 
-    <button
+    <Button 
       onClick={() =>
         downloadReport(
           "/daily/excel",
@@ -94,11 +94,11 @@ return(
       }
     >
       Excel
-    </button>
+    </Button >
 
     <h4>Weekly</h4>
 
-    <button
+    <Button 
       onClick={() =>
         downloadReport(
           "/weekly/csv",
@@ -107,9 +107,9 @@ return(
       }
     >
       CSV
-    </button>
+    </Button >
 
-    <button
+    <Button 
       onClick={() =>
         downloadReport(
           "/weekly/excel",
@@ -118,11 +118,11 @@ return(
       }
     >
       Excel
-    </button>
+    </Button >
 
     <h4>Monthly</h4>
 
-    <button
+    <Button 
       onClick={() =>
         downloadReport(
           "/monthly/csv",
@@ -131,9 +131,9 @@ return(
       }
     >
       CSV
-    </button>
+    </Button >
 
-    <button
+    <Button 
       onClick={() =>
         downloadReport(
           "/monthly/excel",
@@ -142,7 +142,7 @@ return(
       }
     >
       Excel
-    </button>
+    </Button >
 
     <hr />
 
@@ -172,7 +172,7 @@ return(
     <br />
     <br />
 
-    <button
+    <Button 
       disabled={!department}
       onClick={() =>
         downloadReport(
@@ -182,9 +182,9 @@ return(
       }
     >
       CSV
-    </button>
+    </Button >
 
-    <button
+    <Button 
       disabled={!department}
       onClick={() =>
         downloadReport(
@@ -194,7 +194,7 @@ return(
       }
     >
       Excel
-    </button>
+    </Button >
 
     <hr />
 
@@ -223,7 +223,7 @@ return(
     <br />
     <br />
 
-    <button
+    <Button 
       disabled={!employee}
       onClick={() =>
         downloadReport(
@@ -233,9 +233,9 @@ return(
       }
     >
       CSV
-    </button>
+    </Button >
 
-    <button
+    <Button 
       disabled={!employee}
       onClick={() =>
         downloadReport(
@@ -245,7 +245,7 @@ return(
       }
     >
       Excel
-    </button>
+    </Button >
     </div>
      </>
 

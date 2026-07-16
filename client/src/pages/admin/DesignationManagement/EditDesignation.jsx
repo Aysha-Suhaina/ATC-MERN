@@ -1,15 +1,13 @@
 import { useEffect, useCallback, useState } from "react";
-import {toast} from 'react-toastify';
+import { toast } from "react-toastify";
 import { useNavigate, useParams } from "react-router-dom";
-
+import Button from "../../../components/ui/Button";
 import {
   getDesignationById,
   updateDesignation,
 } from "../../../api/designationApi";
 
-import {
-  getDepartments,
-} from "../../../api/departmentApi";
+import { getDepartments } from "../../../api/departmentApi";
 
 function EditDesignation() {
   const { id } = useParams();
@@ -35,8 +33,7 @@ function EditDesignation() {
 
       setForm({
         name: designationResponse.data.designation.name,
-        department:
-          designationResponse.data.designation.department?._id || "",
+        department: designationResponse.data.designation.department?._id || "",
       });
     } catch (error) {
       console.error(error);
@@ -100,19 +97,14 @@ function EditDesignation() {
             <option value="">Select Department</option>
 
             {departments.map((department) => (
-              <option
-                key={department._id}
-                value={department._id}
-              >
+              <option key={department._id} value={department._id}>
                 {department.name}
               </option>
             ))}
           </select>
         </div>
 
-        <button type="submit">
-          Update Designation
-        </button>
+        <Button type="submit">Update Designation</Button>
       </form>
     </div>
   );

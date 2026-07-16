@@ -1,49 +1,40 @@
-import { useEffect,useCallback, useState } from "react";
-import {toast} from 'react-toastify';
+import { useEffect, useCallback, useState } from "react";
+import { toast } from "react-toastify";
 import AssignManager from "../../../components/department/AssignManager";
 import { useNavigate, useParams } from "react-router-dom";
-
-import {
-  getDepartment,
-  updateDepartment,
-} from "../../../api/departmentApi";
+import Button from "../../../components/ui/Button";
+import { getDepartment, updateDepartment } from "../../../api/departmentApi";
 
 function EditDepartment() {
   const { id } = useParams();
 
   const navigate = useNavigate();
-  const [department, setDepartment] =
-  useState(null);
+  const [department, setDepartment] = useState(null);
   const [form, setForm] = useState({
     name: "",
     description: "",
   });
 
   const loadDepartment = useCallback(async () => {
-  try {
-    const response = await getDepartment(id);
+    try {
+      const response = await getDepartment(id);
 
-    setDepartment(
-  response.data.department
-);
+      setDepartment(response.data.department);
 
-setForm({
-  name:
-    response.data.department.name,
-  description:
-    response.data.department
-      .description || "",
-});
-  } catch (error) {
-    console.error(error);
-  }
-}, [id]);
+      setForm({
+        name: response.data.department.name,
+        description: response.data.department.description || "",
+      });
+    } catch (error) {
+      console.error(error);
+    }
+  }, [id]);
 
-useEffect(() => {
-  queueMicrotask(() => {
-    loadDepartment();
-  });
-}, [loadDepartment]);
+  useEffect(() => {
+    queueMicrotask(() => {
+      loadDepartment();
+    });
+  }, [loadDepartment]);
 
   const handleChange = (e) => {
     setForm((prev) => ({
@@ -69,11 +60,9 @@ useEffect(() => {
 
   return (
     <div>
-
       <h2>Edit Department</h2>
 
       <form onSubmit={handleSubmit}>
-
         <div>
           <label>Department Name</label>
 
@@ -98,33 +87,23 @@ useEffect(() => {
 
         <hr />
 
-          <h3>Department Manager</h3>
+        <h3>Department Manager</h3>
 
-          <p>
-            <strong>Current Manager:</strong>{" "}
-            {department?.manager
-              ? department.manager.name
-              : "Not Assigned"}
-          </p>
+        <p>
+          <strong>Current Manager:</strong>{" "}
+          {department?.manager ? department.manager.name : "Not Assigned"}
+        </p>
 
-          <AssignManager
-            departmentId={id}
-            currentManager={
-              department?.manager
-            }
-            onAssigned={
-              loadDepartment
-            }
-          />
+        <AssignManager
+          departmentId={id}
+          currentManager={department?.manager}
+          onAssigned={loadDepartment}
+        />
 
-          <hr />
+        <hr />
 
-        <button type="submit">
-          Update Department
-        </button>
-
+        <Button type="submit">Update Department</Button>
       </form>
-
     </div>
   );
 }

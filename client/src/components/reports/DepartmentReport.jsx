@@ -31,7 +31,7 @@ const DepartmentReport = ({
       <br />
       <br />
 
-      <button
+      <Button 
         disabled={!department}
         onClick={() =>
           downloadReport(
@@ -41,9 +41,9 @@ const DepartmentReport = ({
         }
       >
         CSV
-      </button>
+      </Button >
 
-      <button
+      <Button 
         disabled={!department}
         onClick={() =>
           downloadReport(
@@ -53,7 +53,7 @@ const DepartmentReport = ({
         }
       >
         Excel
-      </button>
+      </Button >
     </>
   );
 };

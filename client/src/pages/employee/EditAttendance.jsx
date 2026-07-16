@@ -1,7 +1,8 @@
 import { useCallback, useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import {toast} from 'react-toastify';
+import { toast } from "react-toastify";
 import axios from "axios";
+import Button from "../../components/ui/Button";
 
 const EditAttendance = () => {
   const { id } = useParams();
@@ -9,8 +10,7 @@ const EditAttendance = () => {
 
   const [loading, setLoading] = useState(true);
 
-  const [attendance, setAttendance] =
-    useState(null);
+  const [attendance, setAttendance] = useState(null);
 
   const [formData, setFormData] = useState({
     checkInTime: "",
@@ -20,28 +20,20 @@ const EditAttendance = () => {
 
   const fetchAttendance = useCallback(async () => {
     try {
-      const res = await axios.get(
-        `/api/attendance/${id}`,
-        {
-          withCredentials: true,
-        }
-      );
+      const res = await axios.get(`/api/attendance/${id}`, {
+        withCredentials: true,
+      });
 
-      const data =
-        res.data.attendance || res.data.data;
+      const data = res.data.attendance || res.data.data;
 
       setAttendance(data);
 
       setFormData({
         checkInTime: data.checkInTime
-          ? new Date(data.checkInTime)
-              .toISOString()
-              .slice(11, 16)
+          ? new Date(data.checkInTime).toISOString().slice(11, 16)
           : "",
         checkOutTime: data.checkOutTime
-          ? new Date(data.checkOutTime)
-              .toISOString()
-              .slice(11, 16)
+          ? new Date(data.checkOutTime).toISOString().slice(11, 16)
           : "",
         remarks: data.remarks || "",
       });
@@ -72,8 +64,7 @@ const EditAttendance = () => {
   const handleChange = (e) => {
     setFormData({
       ...formData,
-      [e.target.name]:
-        e.target.value,
+      [e.target.name]: e.target.value,
     });
   };
 
@@ -81,13 +72,9 @@ const EditAttendance = () => {
     e.preventDefault();
 
     try {
-      await axios.put(
-        `/api/attendance/${id}/resubmit`,
-        formData,
-        {
-          withCredentials: true,
-        }
-      );
+      await axios.put(`/api/attendance/${id}/resubmit`, formData, {
+        withCredentials: true,
+      });
 
       toast.success("Attendance resubmitted successfully");
 
@@ -96,8 +83,7 @@ const EditAttendance = () => {
       console.error(error);
 
       toast.error(
-        error?.response?.data?.message ||
-          "Failed to resubmit attendance"
+        error?.response?.data?.message || "Failed to resubmit attendance",
       );
     }
   };
@@ -111,51 +97,33 @@ const EditAttendance = () => {
       <h2>Edit Attendance</h2>
 
       {attendance?.rejectionReason && (
-        <div
-          className="alert alert-danger"
-          role="alert"
-        >
-          <strong>
-            Rejection Reason:
-          </strong>{" "}
-          {attendance.rejectionReason}
+        <div className="alert alert-danger" role="alert">
+          <strong>Rejection Reason:</strong> {attendance.rejectionReason}
         </div>
       )}
 
       <form onSubmit={handleSubmit}>
         <div className="mb-3">
-          <label>
-            Check In Time
-          </label>
+          <label>Check In Time</label>
 
           <input
             type="time"
             name="checkInTime"
-            value={
-              formData.checkInTime
-            }
-            onChange={
-              handleChange
-            }
+            value={formData.checkInTime}
+            onChange={handleChange}
             className="form-control"
             required
           />
         </div>
 
         <div className="mb-3">
-          <label>
-            Check Out Time
-          </label>
+          <label>Check Out Time</label>
 
           <input
             type="time"
             name="checkOutTime"
-            value={
-              formData.checkOutTime
-            }
-            onChange={
-              handleChange
-            }
+            value={formData.checkOutTime}
+            onChange={handleChange}
             className="form-control"
             required
           />
@@ -167,20 +135,15 @@ const EditAttendance = () => {
           <textarea
             name="remarks"
             value={formData.remarks}
-            onChange={
-              handleChange
-            }
+            onChange={handleChange}
             className="form-control"
             rows="4"
           />
         </div>
 
-        <button
-          type="submit"
-          className="btn btn-primary"
-        >
+        <Button type="submit" className="btn btn-primary">
           Resubmit Attendance
-        </button>
+        </Button>
       </form>
     </div>
   );

@@ -2,8 +2,6 @@
 
 # HRMS Project Roadmap & Progress
 
- 
-test excel adn csv exports for various category 
 
 # bug list at line - 335 
 

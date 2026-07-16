@@ -115,34 +115,125 @@ export const getAllAttendance = async (
   next
 ) => {
   try {
-    const attendance = await Attendance.find()
-      .populate({
-    path: "user",
-    select: "name email role department designation",
-    populate: [
-        { path: "department" },
-        { path: "designation" }
-    ]
-})
-      .sort({ date: -1 });
 
-      attendance.sort((a, b) => {
-        // Pending comes first
-        if (
-          a.approvalStatus === "pending" &&
-          b.approvalStatus !== "pending"
-        )
-          return -1;
+    const {
+      search,
+      department,
+      status,
+      approval,
+      date,
+    } = req.query;
 
-        if (
-          a.approvalStatus !== "pending" &&
-          b.approvalStatus === "pending"
-        )
-          return 1;
+    const filter = {};
 
-        // Otherwise newest date first
-        return new Date(b.date) - new Date(a.date);
-      });
+    if (status) {
+      filter.attendanceStatus =
+        status;
+    }
+
+    if (approval) {
+      filter.approvalStatus =
+        approval;
+    }
+
+    if (date) {
+
+      const selected =
+        new Date(date);
+
+      selected.setHours(
+        0,
+        0,
+        0,
+        0
+      );
+
+      const nextDate =
+        new Date(selected);
+
+      nextDate.setDate(
+        nextDate.getDate() + 1
+      );
+
+      filter.date = {
+
+        $gte: selected,
+
+        $lt: nextDate,
+
+      };
+
+    }
+
+    let attendance =
+      await Attendance.find(filter)
+        .populate({
+          path: "user",
+          select:
+            "name email role department designation",
+          populate: [
+            {
+              path: "department",
+            },
+            {
+              path: "designation",
+            },
+          ],
+        });
+
+    if (department) {
+
+      attendance =
+        attendance.filter(
+          (item) =>
+            item.user?.department?._id.toString() ===
+            department
+        );
+
+    }
+
+    if (search) {
+
+      const keyword =
+        search.toLowerCase();
+
+      attendance =
+        attendance.filter(
+          (item) =>
+            item.user?.name
+              ?.toLowerCase()
+              .includes(keyword) ||
+            item.user?.email
+              ?.toLowerCase()
+              .includes(keyword)
+        );
+
+    }
+
+    attendance.sort((a, b) => {
+
+      if (
+        a.approvalStatus ===
+          "pending" &&
+        b.approvalStatus !==
+          "pending"
+      )
+        return -1;
+
+      if (
+        a.approvalStatus !==
+          "pending" &&
+        b.approvalStatus ===
+          "pending"
+      )
+        return 1;
+
+      return (
+        new Date(b.date) -
+        new Date(a.date)
+      );
+
+    });
 
     return res.status(200).json(
       new ApiResponse(
@@ -151,8 +242,11 @@ export const getAllAttendance = async (
         attendance
       )
     );
+
   } catch (error) {
+
     next(error);
+
   }
 };
 
