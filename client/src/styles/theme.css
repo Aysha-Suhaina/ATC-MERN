@@ -294,3 +294,31 @@ select {
 
   color: white;
 }
+.info-card {
+  text-align: center;
+
+  padding: 18px;
+}
+
+.info-title {
+  font-size: 0.9rem;
+
+  color: var(--text-light);
+
+  margin-bottom: 10px;
+}
+
+.info-value {
+  font-size: 1.6rem;
+
+  font-weight: 700;
+
+  color: var(--text);
+}
+.grid-6 {
+  display: grid;
+
+  grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+
+  gap: 20px;
+}

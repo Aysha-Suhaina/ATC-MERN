@@ -7,6 +7,7 @@ import { Link } from "react-router-dom";
 import StatCard from "../../components/ui/StatCard";
 import Button from "../../components/ui/Button";
 import Section from "../../components/ui/Section";
+import InfoCard from "../../components/ui/InfoCard";
 
 import PageHeader from "../../components/ui/PageHeader";
 
@@ -15,13 +16,11 @@ import {
   FiUserCheck,
   FiBriefcase,
   FiLayers,
-  FiCalendar,
   FiClock,
   FiXCircle,
+  FiCheckCircle,
+  FiTrendingUp,
 } from "react-icons/fi";
-
-import DashboardCard from "../../components/admin/DashboardCard";
-import DashboardMiniCard from "../../components/admin/DashboardMiniCard";
 
 const AdminDashboard = () => {
   const navigate = useNavigate();
@@ -48,7 +47,7 @@ const AdminDashboard = () => {
   }, []);
 
   return (
-    <div style={{ padding: "30px" }}>
+    <div className="page">
       {/* ================= HERO ================= */}
 
       <PageHeader
@@ -56,112 +55,112 @@ const AdminDashboard = () => {
         subtitle="Monitor your organization, review attendance and manage employees."
         action={
           <Link to="/chat">
-            <Button className="btn btn-primary">Open Chat</Button>
+            <Button variant="primary">Open Chat</Button>
           </Link>
         }
       />
-
       {/* ================= ORGANIZATION ================= */}
 
-      <h2>Organization Overview</h2>
+      <Section
+        title="Organization Overview"
+        description="Current organization statistics."
+      >
+        {stats && (
+          <div className="grid-4">
+            <StatCard
+              title="Employees"
+              value={stats.totalEmployees}
+              icon={<FiUsers />}
+            />
 
-      {stats && (
-        <div
-          style={{
-            display: "grid",
-            gridTemplateColumns: "repeat(auto-fit,minmax(220px,1fr))",
-            gap: "20px",
-            marginTop: "20px",
-            marginBottom: "40px",
-          }}
-        >
-          <DashboardCard title="Employees" value={stats.totalEmployees} />
+            <StatCard
+              title="Managers"
+              value={stats.totalManagers}
+              icon={<FiUserCheck />}
+              color="#16A34A"
+            />
 
-          <DashboardCard title="Managers" value={stats.totalManagers} />
+            <StatCard
+              title="Departments"
+              value={stats.totalDepartments}
+              icon={<FiBriefcase />}
+              color="#7C3AED"
+            />
 
-          <DashboardCard title="Departments" value={stats.totalDepartments} />
-
-          <DashboardCard title="Designations" value={stats.totalDesignations} />
-        </div>
-      )}
+            <StatCard
+              title="Designations"
+              value={stats.totalDesignations}
+              icon={<FiLayers />}
+              color="#EA580C"
+            />
+          </div>
+        )}
+      </Section>
 
       {/* ================= ATTENDANCE ================= */}
 
-      <h2>Attendance Overview</h2>
+      <Section
+        title="Attendance Overview"
+        description="Live attendance statistics for today."
+      >
+        {stats && (
+          <div className="grid-4">
+            <StatCard
+              title="Present Today"
+              value={stats.presentToday}
+              icon={<FiCheckCircle />}
+              color="#16A34A"
+            />
 
-      {stats && (
-        <div
-          style={{
-            display: "grid",
-            gridTemplateColumns: "repeat(auto-fit,minmax(220px,1fr))",
-            gap: "20px",
-            marginTop: "20px",
-            marginBottom: "40px",
-          }}
-        >
-          <DashboardCard title="Present Today" value={stats.presentToday} />
+            <StatCard
+              title="Absent Today"
+              value={stats.absentToday}
+              icon={<FiXCircle />}
+              color="#DC2626"
+            />
 
-          <DashboardCard title="Absent Today" value={stats.absentToday} />
+            <StatCard
+              title="Pending Requests"
+              value={stats.pendingAttendance}
+              icon={<FiClock />}
+              color="#F59E0B"
+            />
 
-          <DashboardCard
-            title="Pending Requests"
-            value={stats.pendingAttendance}
-          />
-
-          <DashboardCard
-            title="Attendance %"
-            value={`${stats.dailySummary.attendanceRate}%`}
-          />
-        </div>
-      )}
+            <StatCard
+              title="Attendance %"
+              value={`${stats.dailySummary.attendanceRate}%`}
+              icon={<FiTrendingUp />}
+              color="#2563EB"
+            />
+          </div>
+        )}
+      </Section>
 
       {/* ================= DAILY SUMMARY ================= */}
 
-      {stats && (
-        <div
-          style={{
-            border: "1px solid #ddd",
-            borderRadius: "10px",
-            padding: "20px",
-            marginBottom: "40px",
-          }}
-        >
-          <h2>Today's Attendance Summary</h2>
+      <Section
+        title="Today's Attendance Summary"
+        description="Detailed attendance breakdown for today."
+      >
+        {stats && (
+          <div className="grid-4">
+            <InfoCard title="Present" value={stats.dailySummary.present} />
 
-          <div
-            style={{
-              display: "grid",
-              gridTemplateColumns: "repeat(auto-fit,minmax(150px,1fr))",
-              gap: "20px",
-            }}
-          >
-            <DashboardMiniCard
-              title="Present"
-              value={stats.dailySummary.present}
-            />
+            <InfoCard title="Late" value={stats.dailySummary.late} />
 
-            <DashboardMiniCard title="Late" value={stats.dailySummary.late} />
+            <InfoCard title="Half Day" value={stats.dailySummary.halfDay} />
 
-            <DashboardMiniCard
-              title="Half Day"
-              value={stats.dailySummary.halfDay}
-            />
+            <InfoCard title="Leave" value={stats.dailySummary.leave} />
 
-            <DashboardMiniCard title="Leave" value={stats.dailySummary.leave} />
+            <InfoCard title="Absent" value={stats.dailySummary.absent} />
 
-            <DashboardMiniCard
-              title="Absent"
-              value={stats.dailySummary.absent}
-            />
-
-            <DashboardMiniCard
+            <InfoCard
               title="Attendance %"
               value={`${stats.dailySummary.attendanceRate}%`}
             />
           </div>
-        </div>
-      )}
-
+        )}
+      </Section>
       {/* ================= QUICK ACTIONS ================= */}
 
       <h2>Quick Actions</h2>
