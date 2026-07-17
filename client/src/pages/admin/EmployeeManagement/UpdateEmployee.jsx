@@ -9,6 +9,8 @@ import { getDepartments } from "../../../api/departmentApi";
 
 import { getDesignationsByDepartment } from "../../../api/designationApi";
 import Button from "../../../components/ui/Button";
+import PageHeader from "../../../components/ui/PageHeader";
+import FormCard from "../../../components/ui/FormCard";
 
 const UpdateEmployee = () => {
   const { id } = useParams();
@@ -126,47 +128,60 @@ const UpdateEmployee = () => {
   };
 
   return (
-    <div>
-      <h1>Update Employee</h1>
+    <div className="page">
+      <PageHeader
+        title="Update Employee"
+        subtitle="Modify employee information."
+      />
+      <FormCard>
+        <form className="form-grid" onSubmit={handleSubmit}>
+          <input name="name" value={form.name} onChange={handleChange} />
 
-      <form onSubmit={handleSubmit}>
-        <input name="name" value={form.name} onChange={handleChange} />
+          <input
+            name="email"
+            type="email"
+            value={form.email}
+            onChange={handleChange}
+          />
 
-        <input name="email" value={form.email} onChange={handleChange} />
+          <select
+            name="department"
+            value={form.department}
+            onChange={handleChange}
+          >
+            <option value="">Select Department</option>
 
-        <select
-          name="department"
-          value={form.department}
-          onChange={handleChange}
-        >
-          <option value="">Select Department</option>
+            {departments.map((dept) => (
+              <option key={dept._id} value={dept._id}>
+                {dept.name}
+              </option>
+            ))}
+          </select>
 
-          {departments.map((dept) => (
-            <option key={dept._id} value={dept._id}>
-              {dept.name}
+          <select
+            name="designation"
+            value={form.designation}
+            onChange={handleChange}
+            disabled={!form.department}
+          >
+            <option value="">
+              {form.department
+                ? "Select Designation"
+                : "Select Department First"}
             </option>
-          ))}
-        </select>
 
-        <select
-          name="designation"
-          value={form.designation}
-          onChange={handleChange}
-          disabled={!form.department}
-        >
-          <option value="">
-            {form.department ? "Select Designation" : "Select Department First"}
-          </option>
+            {designations.map((designation) => (
+              <option key={designation._id} value={designation._id}>
+                {designation.name}
+              </option>
+            ))}
+          </select>
 
-          {designations.map((designation) => (
-            <option key={designation._id} value={designation._id}>
-              {designation.name}
-            </option>
-          ))}
-        </select>
-
-        <Button type="submit">Update</Button>
-      </form>
+          <div className="form-actions">
+            <Button type="submit">Update Employee</Button>
+          </div>
+        </form>
+      </FormCard>
     </div>
   );
 };

@@ -9,6 +9,9 @@ import { getDesignationsByDepartment } from "../../../api/designationApi";
 import Button from "../../../components/ui/Button";
 import { useNavigate } from "react-router-dom";
 
+import PageHeader from "../../../components/ui/PageHeader";
+import FormCard from "../../../components/ui/FormCard";
+
 const CreateEmployee = () => {
   const navigate = useNavigate();
 
@@ -83,54 +86,75 @@ const CreateEmployee = () => {
   };
 
   return (
-    <div>
-      <h1>Create Employee</h1>
+    <div className="page">
+      <PageHeader
+        title="Create Employee"
+        subtitle="Register a new employee in the organization."
+      />
 
-      <form onSubmit={handleSubmit}>
-        <input name="name" placeholder="Name" onChange={handleChange} />
+      <FormCard>
+        <form className="form-grid" onSubmit={handleSubmit}>
+          <input
+            name="name"
+            placeholder="Full Name"
+            value={form.name}
+            onChange={handleChange}
+          />
 
-        <input name="email" placeholder="Email" onChange={handleChange} />
+          <input
+            name="email"
+            type="email"
+            placeholder="Email Address"
+            value={form.email}
+            onChange={handleChange}
+          />
 
-        <input
-          type="password"
-          name="password"
-          placeholder="Password"
-          onChange={handleChange}
-        />
+          <input
+            type="password"
+            name="password"
+            placeholder="Temporary Password"
+            value={form.password}
+            onChange={handleChange}
+          />
 
-        <select
-          name="department"
-          value={form.department}
-          onChange={handleChange}
-        >
-          <option value="">Select Department</option>
+          <select
+            name="department"
+            value={form.department}
+            onChange={handleChange}
+          >
+            <option value="">Select Department</option>
 
-          {departments.map((dept) => (
-            <option key={dept._id} value={dept._id}>
-              {dept.name}
+            {departments.map((dept) => (
+              <option key={dept._id} value={dept._id}>
+                {dept.name}
+              </option>
+            ))}
+          </select>
+
+          <select
+            name="designation"
+            value={form.designation}
+            onChange={handleChange}
+            disabled={!form.department}
+          >
+            <option value="">
+              {form.department
+                ? "Select Designation"
+                : "Select Department First"}
             </option>
-          ))}
-        </select>
 
-        <select
-          name="designation"
-          value={form.designation}
-          onChange={handleChange}
-          disabled={!form.department}
-        >
-          <option value="">
-            {form.department ? "Select Designation" : "Select Department First"}
-          </option>
+            {designations.map((designation) => (
+              <option key={designation._id} value={designation._id}>
+                {designation.name}
+              </option>
+            ))}
+          </select>
 
-          {designations.map((designation) => (
-            <option key={designation._id} value={designation._id}>
-              {designation.name}
-            </option>
-          ))}
-        </select>
-
-        <Button type="submit">Create</Button>
-      </form>
+          <div className="form-actions">
+            <Button type="submit">Create Employee</Button>
+          </div>
+        </form>
+      </FormCard>
     </div>
   );
 };

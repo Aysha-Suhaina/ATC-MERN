@@ -173,16 +173,16 @@ const AdminDashboard = () => {
         }}
       >
         <Button onClick={() => navigate("/admin/employees/create")}>
-          ➕ Create Employee
+           Create Employee
         </Button>
 
         <Button onClick={() => navigate("/admin/pending-attendance")}>
-          📝 Pending Attendance
+           Pending Attendance
         </Button>
 
-        <Button onClick={() => navigate("/admin/reports")}>📄 Reports</Button>
+        <Button onClick={() => navigate("/admin/reports")}> Reports</Button>
 
-        <Button onClick={() => navigate("/chat")}>💬 Chat</Button>
+        <Button onClick={() => navigate("/chat")}>Chat</Button>
       </div>
     </div>
   );

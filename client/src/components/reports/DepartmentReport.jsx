@@ -1,3 +1,5 @@
+import Button from "../ui/Button";
+
 const DepartmentReport = ({
   departments,
   department,
@@ -10,19 +12,12 @@ const DepartmentReport = ({
 
       <select
         value={department}
-        onChange={(e) =>
-          setDepartment(e.target.value)
-        }
+        onChange={(e) => setDepartment(e.target.value)}
       >
-        <option value="">
-          Select Department
-        </option>
+        <option value="">Select Department</option>
 
         {departments.map((dept) => (
-          <option
-            key={dept._id}
-            value={dept._id}
-          >
+          <option key={dept._id} value={dept._id}>
             {dept.name}
           </option>
         ))}
@@ -31,29 +26,29 @@ const DepartmentReport = ({
       <br />
       <br />
 
-      <Button 
+      <Button
         disabled={!department}
         onClick={() =>
           downloadReport(
             `/department/${department}/csv`,
-            "department-report.csv"
+            "department-report.csv",
           )
         }
       >
         CSV
-      </Button >
+      </Button>
 
-      <Button 
+      <Button
         disabled={!department}
         onClick={() =>
           downloadReport(
             `/department/${department}/excel`,
-            "department-report.xlsx"
+            "department-report.xlsx",
           )
         }
       >
         Excel
-      </Button >
+      </Button>
     </>
   );
 };

@@ -1,13 +1,9 @@
-const MonthlySummary = ({
-  summary,
-}) => {
+const MonthlySummary = ({ summary }) => {
   if (!summary) return null;
 
   return (
     <>
-      <h2>
-        Monthly Summary
-      </h2>
+      <h2>Monthly Summary</h2>
 
       <table
         border="1"
@@ -19,49 +15,33 @@ const MonthlySummary = ({
       >
         <tbody>
           <tr>
-            <td>
-              Present
-            </td>
+            <td>Present</td>
 
-            <td>
-              {summary.present}
-            </td>
+            <td>{summary.present}</td>
           </tr>
 
           <tr>
             <td>Late</td>
 
-            <td>
-              {summary.late}
-            </td>
+            <td>{summary.late}</td>
           </tr>
 
           <tr>
-            <td>
-              Half Day
-            </td>
+            <td>Half Day</td>
 
-            <td>
-              {summary.halfDay}
-            </td>
+            <td>{summary.halfDay}</td>
           </tr>
 
           <tr>
             <td>Leave</td>
 
-            <td>
-              {summary.leave}
-            </td>
+            <td>{summary.leave}</td>
           </tr>
 
           <tr>
-            <td>
-              Attendance %
-            </td>
+            <td>Attendance %</td>
 
-            <td>
-              {summary.attendanceRate}%
-            </td>
+            <td>{summary.attendanceRate}%</td>
           </tr>
         </tbody>
       </table>

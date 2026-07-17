@@ -1,22 +1,14 @@
 const Button = ({
-    children,
-    variant = "primary",
-    ...props
+  children,
+  variant = "primary",
+  type = "button",
+  ...props
 }) => {
-
-    return (
-
-        <button
-            className={`btn btn-${variant}`}
-            {...props}
-        >
-
-            {children}
-
-        </button>
-
-    );
-
+  return (
+    <button type={type} className={`btn btn-${variant}`} {...props}>
+      {children}
+    </button>
+  );
 };
 
 export default Button;

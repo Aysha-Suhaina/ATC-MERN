@@ -8,6 +8,8 @@ import {
 } from "../../../api/designationApi";
 
 import { getDepartments } from "../../../api/departmentApi";
+import Card from "../../../components/ui/Card";
+import PageHeader from "../../../components/ui/PageHeader";
 
 function EditDesignation() {
   const { id } = useParams();
@@ -69,43 +71,48 @@ function EditDesignation() {
   };
 
   return (
-    <div>
-      <h2>Edit Designation</h2>
+    <div className="page-container">
+      <PageHeader
+        title="Edit Designation"
+        subtitle="Update designation details and assign a department."
+      />
 
-      <form onSubmit={handleSubmit}>
-        <div>
-          <label>Designation Name</label>
+      <Card>
+        <form onSubmit={handleSubmit}>
+          <div className="form-group">
+            <label>Designation Name</label>
 
-          <input
-            type="text"
-            name="name"
-            value={form.name}
-            onChange={handleChange}
-            required
-          />
-        </div>
+            <input
+              type="text"
+              name="name"
+              value={form.name}
+              onChange={handleChange}
+              required
+            />
+          </div>
 
-        <div>
-          <label>Department</label>
+          <div className="form-group">
+            <label>Department</label>
 
-          <select
-            name="department"
-            value={form.department}
-            onChange={handleChange}
-            required
-          >
-            <option value="">Select Department</option>
+            <select
+              name="department"
+              value={form.department}
+              onChange={handleChange}
+              required
+            >
+              <option value="">Select Department</option>
 
-            {departments.map((department) => (
-              <option key={department._id} value={department._id}>
-                {department.name}
-              </option>
-            ))}
-          </select>
-        </div>
+              {departments.map((department) => (
+                <option key={department._id} value={department._id}>
+                  {department.name}
+                </option>
+              ))}
+            </select>
+          </div>
 
-        <Button type="submit">Update Designation</Button>
-      </form>
+          <Button type="submit">Update Designation</Button>
+        </form>
+      </Card>
     </div>
   );
 }

@@ -6,6 +6,9 @@ import {
   getPendingAttendance,
 } from "../../../api/attendanceApi";
 import Button from "../../../components/ui/Button";
+import PageHeader from "../../../components/ui/PageHeader";
+import Card from "../../../components/ui/Card";
+import ApprovalBadge from "../../../components/ui/ApprovalBadge";
 
 function PendingAttendance() {
   const [attendanceList, setAttendanceList] = useState([]);
@@ -62,61 +65,95 @@ function PendingAttendance() {
   }
 
   return (
-    <div>
-      <h2>Pending Attendance Requests</h2>
+    <div className="page">
+      <PageHeader
+        title="Pending Attendance"
+        subtitle="Review and approve employee attendance submissions."
+      />
 
-      {attendanceList.length === 0 ? (
-        <p>No pending attendance requests.</p>
-      ) : (
-        <table border="1" cellPadding="10">
-          <thead>
-            <tr>
-              <th>Employee</th>
-              <th>Email</th>
-              <th>Date</th>
-              <th>Status</th>
-              <th>Check In</th>
-              <th>Check Out</th>
-              <th>Actions</th>
-            </tr>
-          </thead>
+      <Card>
+        {attendanceList.length === 0 ? (
+          <div
+            style={{
+              textAlign: "center",
+              padding: "40px",
+            }}
+          >
+            <h3>No Pending Requests</h3>
 
-          <tbody>
-            {attendanceList.map((record) => (
-              <tr key={record._id}>
-                <td>{record.user?.name}</td>
+            <p>All attendance requests have been processed.</p>
+          </div>
+        ) : (
+          <table className="data-table">
+            <thead>
+              <tr>
+                <th>Employee</th>
 
-                <td>{record.user?.email}</td>
+                <th>Email</th>
 
-                <td>{new Date(record.date).toLocaleDateString()}</td>
+                <th>Date</th>
 
-                <td>{record.attendanceStatus}</td>
+                <th>Status</th>
 
-                <td>
-                  {record.checkInTime
-                    ? new Date(record.checkInTime).toLocaleTimeString()
-                    : "-"}
-                </td>
+                <th>Check In</th>
 
-                <td>
-                  {record.checkOutTime
-                    ? new Date(record.checkOutTime).toLocaleTimeString()
-                    : "-"}
-                </td>
-                <td>
-                  <Button onClick={() => handleApprove(record._id)}>
-                    Approve
-                  </Button>
+                <th>Check Out</th>
 
-                  <Button onClick={() => handleReject(record._id)}>
-                    Reject
-                  </Button>
-                </td>
+                <th>Actions</th>
               </tr>
-            ))}
-          </tbody>
-        </table>
-      )}
+            </thead>
+
+            <tbody>
+              {attendanceList.map((record) => (
+                <tr key={record._id}>
+                  <td>{record.user?.name}</td>
+
+                  <td>{record.user?.email}</td>
+
+                  <td>{new Date(record.date).toLocaleDateString()}</td>
+
+                  <td>
+                    <ApprovalBadge status={record.attendanceStatus} />
+                  </td>
+
+                  <td>
+                    {record.checkInTime
+                      ? new Date(record.checkInTime).toLocaleTimeString()
+                      : "-"}
+                  </td>
+
+                  <td>
+                    {record.checkOutTime
+                      ? new Date(record.checkOutTime).toLocaleTimeString()
+                      : "-"}
+                  </td>
+
+                  <td
+                    style={{
+                      display: "flex",
+                      gap: "10px",
+                    }}
+                  >
+                    <Button
+                      variant="success"
+                      onClick={() => handleApprove(record._id)}
+                    >
+                      Approve
+                    </Button>
+
+                    <Button
+                      variant="danger"
+                      onClick={() => handleReject(record._id)}
+                    >
+                      Reject
+                    </Button>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        )}
+      </Card>
     </div>
   );
 }
