@@ -1,5 +1,4 @@
 import { useEffect, useState } from "react";
-import Navbar from "../../components/Navbar";
 import { getMyDepartment, updateMyDepartment } from "../../api/departmentApi";
 import { toast } from "react-toastify";
 import Button from "../../components/ui/Button";
@@ -51,7 +50,6 @@ const ManagerDepartment = () => {
   if (!department) {
     return (
       <>
-        <Navbar />
         <h2>Loading...</h2>
       </>
     );
@@ -59,7 +57,6 @@ const ManagerDepartment = () => {
 
   return (
     <>
-      <Navbar />
 
       <div>
         <h1>My Department</h1>
