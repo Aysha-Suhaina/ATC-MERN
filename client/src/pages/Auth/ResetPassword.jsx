@@ -4,6 +4,7 @@ import { useNavigate } from "react-router-dom";
 import "./ResetPassword.css";
 import { toast } from "react-toastify";
 import Button from "../../components/ui/Button";
+import FormCard from "../../components/ui/FormCard";
 
 function ForgetPassword() {
   const navigate = useNavigate();
@@ -50,40 +51,52 @@ function ForgetPassword() {
   };
 
   return (
-    <div className="container">
-      <h2>Forget Password</h2>
+    <div className="reset-password-page">
+      <FormCard
+        title="Reset Password"
+        subtitle={
+          step === 1
+            ? "Enter your registered email to receive an OTP."
+            : "Verify your OTP and choose a new password."
+        }
+      >
+        <div className="resetForm">
+          {step === 1 && (
+            <>
+              <input
+                type="email"
+                placeholder="Email Address"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+              />
 
-      {step === 1 && (
-        <div>
-          <input
-            type="email"
-            placeholder="Enter email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-          />
-          <Button onClick={sendOtp} disabled={loading}>
-            {loading ? "Sending..." : "Send OTP"}
-          </Button>
-        </div>
-      )}
+              <Button onClick={sendOtp} disabled={loading}>
+                {loading ? "Sending..." : "Send OTP"}
+              </Button>
+            </>
+          )}
 
-      {step === 2 && (
-        <div>
-          <input
-            type="text"
-            placeholder="Enter OTP"
-            value={otp}
-            onChange={(e) => setOtp(e.target.value)}
-          />
-          <input
-            type="password"
-            placeholder="New Password"
-            value={newPassword}
-            onChange={(e) => setNewPassword(e.target.value)}
-          />
-          <Button onClick={resetPassword}>Reset Password</Button>
+          {step === 2 && (
+            <>
+              <input
+                type="text"
+                placeholder="Enter OTP"
+                value={otp}
+                onChange={(e) => setOtp(e.target.value)}
+              />
+
+              <input
+                type="password"
+                placeholder="New Password"
+                value={newPassword}
+                onChange={(e) => setNewPassword(e.target.value)}
+              />
+
+              <Button onClick={resetPassword}>Reset Password</Button>
+            </>
+          )}
         </div>
-      )}
+      </FormCard>
     </div>
   );
 }

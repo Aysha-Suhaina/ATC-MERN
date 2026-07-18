@@ -1,9 +1,14 @@
 import { useCallback, useEffect, useState } from "react";
 import { getProfile } from "../../api/userApi";
-import { Link } from "react-router-dom";
 import { submitAttendance, getMyAttendance } from "../../api/attendanceApi";
 import { useNavigate } from "react-router-dom";
 import Button from "../../components/ui/Button";
+import PageHeader from "../../components/ui/PageHeader";
+import Section from "../../components/ui/Section";
+import Card from "../../components/ui/Card";
+import FormCard from "../../components/ui/FormCard";
+import InfoCard from "../../components/ui/InfoCard";
+import ApprovalBadge from "../../components/ui/ApprovalBadge";
 
 import Navbar from "../../components/Navbar";
 import { toast } from "react-toastify";
@@ -56,12 +61,6 @@ const Dashboard = () => {
 
     fetchData();
   }, [loadData]);
-
-  const isToday =
-    new Date(attendance.date).toDateString() === new Date().toDateString();
-
-  const canResubmit = attendance.approvalStatus === "rejected" && isToday;
-
   const handleChange = (e) => {
     setForm({
       ...form,
@@ -101,122 +100,136 @@ const Dashboard = () => {
     <>
       <Navbar />
 
-      <div style={{ padding: "20px" }}>
-        <h1>Employee Dashboard</h1>
-
-        {profile && (
-          <div>
-            <h3>{profile.name}</h3>
-
-            <p>{profile.department?.name}</p>
-
-            <p>{profile.designation?.name}</p>
-
-            <p>Role: {profile.role}</p>
-          </div>
-        )}
-        <Link to="/chat">
-          <Button>Chat</Button>
-        </Link>
-
-        <hr />
-
-        <h2>Submit Attendance</h2>
-
-        <form onSubmit={handleSubmit}>
-          {/* <label>Date:</label>
-        <input
-          type="date"
-          name="date"
-          onChange={handleChange}
-          required
+      <div className="page">
+        <PageHeader
+          title="Employee Dashboard"
+          subtitle="Manage your attendance and view your attendance history."
         />
 
-        <br /> */}
+        {profile && (
+          <div className="grid-3">
+            <InfoCard title="Employee" value={profile.name} />
+            <InfoCard
+              title="Department"
+              value={profile.department?.name || "-"}
+            />
+            <InfoCard
+              title="Designation"
+              value={profile.designation?.name || "-"}
+            />
+          </div>
+        )}
+      <div className="dashboard-grid-2">
+        <Section
+          title="Submit Attendance"
+          description="Record today's attendance."
+        >
+          <FormCard
+            title="Attendance Details"
+            subtitle="Fill in your attendance information."
+          >
+            <form onSubmit={handleSubmit} className="form-grid">
+              <input
+                type="time"
+                name="checkInTime"
+                onChange={handleChange}
+                required
+              />
 
-          <label>Check In Time:</label>
-          <input
-            type="time"
-            name="checkInTime"
-            onChange={handleChange}
-            required
-          />
+              <input
+                type="time"
+                name="checkOutTime"
+                onChange={handleChange}
+                required
+              />
 
-          <br />
-          <label>Check Out Time:</label>
-          <input
-            type="time"
-            name="checkOutTime"
-            onChange={handleChange}
-            required
-          />
+              <select name="attendanceStatus" onChange={handleChange}>
+                <option value="present">Present</option>
+                <option value="absent">Absent</option>
+                <option value="half_day">Half Day</option>
+                <option value="late">Late</option>
+                <option value="leave">Leave</option>
+              </select>
 
-          <br />
+              <textarea
+                name="remarks"
+                placeholder="Remarks"
+                rows="4"
+                onChange={handleChange}
+              />
 
-          <select name="attendanceStatus" onChange={handleChange}>
-            <option value="present">Present</option>
+              <div className="form-actions">
+                <Button type="submit">Submit Attendance</Button>
+              </div>
+            </form>
+          </FormCard>
+        </Section>
 
-            <option value="absent">Absent</option>
-
-            <option value="half_day">Half Day</option>
-
-            <option value="late">Late</option>
-
-            <option value="leave">Leave</option>
-          </select>
-
-          <br />
-
-          <textarea
-            name="remarks"
-            placeholder="Remarks"
-            onChange={handleChange}
-          />
-
-          <br />
-
-          <Button type="submit">Submit</Button>
-        </form>
-
-        <hr />
-
-        <h2>My Attendance</h2>
-
-        <table border="1">
-          <thead>
-            <tr>
-              <th>Date</th>
-              <th>Status</th>
-              <th>Hours</th>
-              <th>Approval</th>
-            </tr>
-          </thead>
-
-          <tbody>
-            {Array.isArray(attendance) &&
-              attendance.map((item) => (
-                <tr key={item._id}>
-                  <td>{new Date(item.date).toLocaleDateString()}</td>
-
-                  <td>{item.attendanceStatus}</td>
-
-                  <td>{item.totalHours ?? "-"}</td>
-
-                  <td>{item.approvalStatus}</td>
-
-                  <td>
-                    {canResubmit && (
-                      <Button
-                        onClick={() => navigate(`/attendance/edit/${item._id}`)}
-                      >
-                        Edit & Resubmit
-                      </Button>
-                    )}
-                  </td>
+        <Section
+          title="Attendance History"
+          description="View all your submitted attendance records."
+        >
+          <Card>
+            <table className="table">
+              <thead>
+                <tr>
+                  <th>Date</th>
+                  <th>Status</th>
+                  <th>Hours</th>
+                  <th>Approval</th>
+                  <th>Action</th>
                 </tr>
-              ))}
-          </tbody>
-        </table>
+              </thead>
+
+              <tbody>
+                {Array.isArray(attendance) && attendance.length > 0 ? (
+                  attendance.map((item) => (
+                    <tr key={item._id}>
+                      <td>{new Date(item.date).toLocaleDateString()}</td>
+
+                      <td style={{ textTransform: "capitalize" }}>
+                        {item.attendanceStatus.replace("_", " ")}
+                      </td>
+
+                      <td>{item.totalHours ?? "-"}</td>
+
+                      <td>
+                        <ApprovalBadge status={item.approvalStatus} />
+                      </td>
+
+                      <td>
+  {item.approvalStatus === "rejected" ? (
+    <Button
+      variant="secondary"
+      onClick={() => navigate(`/attendance/edit/${item._id}`)}
+    >
+      Edit & Resubmit
+    </Button>
+  ) : (
+    "-"
+  )}
+</td>
+                    </tr>
+                  ))
+                ) : (
+                  <tr>
+                    <td
+                      colSpan="5"
+                      style={{
+                        textAlign: "center",
+                        padding: "30px",
+                      }}
+                    >
+                      No attendance records found.
+                    </td>
+                  </tr>
+                )}
+              </tbody>
+            </table>
+          </Card>
+        </Section>
+
+        </div>
       </div>
     </>
   );

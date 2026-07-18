@@ -5,6 +5,7 @@ import "./Register.css";
 import { assets } from "../../assets/assets";
 import { toast } from "react-toastify";
 import Button from "../../components/ui/Button";
+import FormCard from "../../components/ui/FormCard";
 
 const Register = () => {
   const navigate = useNavigate();
@@ -60,55 +61,69 @@ const Register = () => {
     <div className="register">
       <div className="registerContainer">
         <div className="registerLeft">
-          <h2>Create Account</h2>
-          <form onSubmit={handleSubmit} className="registerForm">
-            <input
-              type="text"
-              name="name"
-              placeholder="Name"
-              value={formData.name}
-              onChange={handleChange}
-            />
-            <input
-              type="email"
-              name="email"
-              placeholder="Email"
-              value={formData.email}
-              onChange={handleChange}
-            />
+          <FormCard
+            title="Create Account"
+            subtitle="Register to access the HRMS portal."
+          >
+            <form onSubmit={handleSubmit} className="registerForm">
+              <input
+                type="text"
+                name="name"
+                placeholder="Full Name"
+                value={formData.name}
+                onChange={handleChange}
+              />
 
-            <input
-              type="password"
-              name="password"
-              placeholder="Password"
-              value={formData.password}
-              onChange={handleChange}
-            />
-            <input
-              type="password"
-              placeholder="Confirm Password"
-              value={confirmPassword}
-              onChange={(e) => setConfirmPassword(e.target.value)}
-            />
-            {confirmPassword &&
-              (formData.password === confirmPassword ? (
-                <p style={{ color: "green" }}>Passwords match</p>
-              ) : (
-                <p style={{ color: "red" }}>Passwords do not match</p>
-              ))}
+              <input
+                type="email"
+                name="email"
+                placeholder="Email Address"
+                value={formData.email}
+                onChange={handleChange}
+              />
 
-            <Button type="submit" disabled={loading}>
-              {loading ? "Loading..." : "Register"}
-            </Button>
-            {/* disabled={formData.password !== confirmPassword} */}
+              <input
+                type="password"
+                name="password"
+                placeholder="Password"
+                value={formData.password}
+                onChange={handleChange}
+              />
 
-            <p>
-              Already have an account? <Link to="/">Login</Link>{" "}
-            </p>
-          </form>
+              <input
+                type="password"
+                placeholder="Confirm Password"
+                value={confirmPassword}
+                onChange={(e) => setConfirmPassword(e.target.value)}
+              />
+
+              {confirmPassword && (
+                <p
+                  className={
+                    formData.password === confirmPassword
+                      ? "password-match"
+                      : "password-mismatch"
+                  }
+                >
+                  {formData.password === confirmPassword
+                    ? "✓ Passwords match"
+                    : "✕ Passwords do not match"}
+                </p>
+              )}
+
+              <Button type="submit" disabled={loading}>
+                {loading ? "Creating Account..." : "Register"}
+              </Button>
+
+              <p className="register-footer">
+                Already have an account? <Link to="/">Login</Link>
+              </p>
+            </form>
+          </FormCard>
         </div>
+
         <div className="registerRight">
-          <img src={assets.school_bg} alt="illustration" />
+          <img src={assets.school_bg} alt="School" />
         </div>
       </div>
     </div>

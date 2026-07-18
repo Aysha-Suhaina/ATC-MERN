@@ -22,11 +22,19 @@ function Logout({ close }) {
   return (
     <div className="overlay">
       <div className="box">
-        <p>Are you sure?</p>
+        <h3>Logout</h3>
 
-        <Button onClick={logout}>Yes</Button>
-        
-        <Button onClick={close}>No</Button>
+        <p>Are you sure you want to logout?</p>
+
+        <div className="logout-actions">
+          <Button variant="secondary" onClick={close}>
+            Cancel
+          </Button>
+
+          <Button variant="danger" onClick={logout}>
+            Logout
+          </Button>
+        </div>
       </div>
     </div>
   );

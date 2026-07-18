@@ -74,29 +74,29 @@ console.log("Connected:", socket.connected);
     socket.off("connect", handleConnect);
   };
 }, []);
-useEffect(() => {
-  const userId = localStorage.getItem("userId");
+// useEffect(() => {
+//   const userId = localStorage.getItem("userId");
 
-  if (!userId) return;
+//   if (!userId) return;
 
-  console.log("App mounted");
+//   console.log("App mounted");
 
-  const handleConnect = () => {
-    console.log("CONNECTED EVENT");
-    console.log(socket.id);
+//   const handleConnect = () => {
+//     console.log("CONNECTED EVENT");
+//     console.log(socket.id);
 
-    socket.emit("register_user", userId);
-  };
+//     socket.emit("register_user", userId);
+//   };
 
-  socket.on("connect", handleConnect);
+//   socket.on("connect", handleConnect);
 
-  console.log("Calling connect...");
-  socket.connect();
+//   console.log("Calling connect...");
+//   socket.connect();
 
-  return () => {
-    socket.off("connect", handleConnect);
-  };
-}, []);
+//   return () => {
+//     socket.off("connect", handleConnect);
+//   };
+// }, []);
 
   return (
     <>

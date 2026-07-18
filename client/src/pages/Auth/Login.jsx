@@ -6,6 +6,7 @@ import { useNavigate } from "react-router-dom";
 import { assets } from "../../assets/assets";
 import { toast } from "react-toastify";
 import Button from "../../components/ui/Button";
+import FormCard from "../../components/ui/FormCard";
 
 const Login = () => {
   const navigate = useNavigate();
@@ -56,43 +57,49 @@ const Login = () => {
     }
   };
   return (
-    // this login component
-    // //should have username,pass - ip fields
-    //login button with forget password link
-    //register text
     <div className="login">
-      <form onSubmit={handleSubmit} className="loginForm">
-        <input
-          type="email"
-          name="email"
-          value={email}
-          placeholder="Email"
-          onChange={(e) => setEmail(e.target.value)}
-        />
-
-        <div className="password-container">
+      <FormCard
+        title="Welcome Back"
+        subtitle="Sign in to access your HRMS portal."
+      >
+        <form onSubmit={handleSubmit} className="loginForm">
           <input
-            className="password-input"
-            type={showPassword ? "text" : "password"}
-            name="password"
-            value={password}
-            placeholder="Password"
-            onChange={(e) => setPassword(e.target.value)}
+            type="email"
+            name="email"
+            value={email}
+            placeholder="Email Address"
+            onChange={(e) => setEmail(e.target.value)}
           />
-          <img
-            className="eye-icon"
-            src={showPassword ? assets.eye_open : assets.eye_close}
-            onClick={() => setShowPassword(!showPassword)}
-          />
-        </div>
 
-        <Link to="/reset-password">Forgot password?</Link>
+          <div className="password-container">
+            <input
+              className="password-input"
+              type={showPassword ? "text" : "password"}
+              name="password"
+              value={password}
+              placeholder="Password"
+              onChange={(e) => setPassword(e.target.value)}
+            />
 
-        <Button type="submit">Login</Button>
-        <p>
-          Don't have and account? <Link to="/register">Sign Up </Link>
-        </p>
-      </form>
+            <img
+              className="eye-icon"
+              src={showPassword ? assets.eye_open : assets.eye_close}
+              alt={showPassword ? "Hide password" : "Show password"}
+              onClick={() => setShowPassword(!showPassword)}
+            />
+          </div>
+
+          <Link to="/reset-password" className="forgot-link">
+            Forgot Password?
+          </Link>
+
+          <Button type="submit">Login</Button>
+
+          <p className="login-footer">
+            Don't have an account? <Link to="/register">Sign Up</Link>
+          </p>
+        </form>
+      </FormCard>
     </div>
   );
 };

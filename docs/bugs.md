@@ -23,3 +23,12 @@ in employee search - when i choose dpet finance - the designations shows all des
 
 --------
 search and filteirnfg is done only dfro admin - manager needs that fucntionality too. 
+
+------------
+keep separate folder level styling file 
+like - all chat module should have chat.css 
+auth.css
+admin.css
+dashbaord.css
+like that 
+--------------
