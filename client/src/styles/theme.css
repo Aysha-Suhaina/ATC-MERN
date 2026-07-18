@@ -412,26 +412,34 @@ select {
 
 .approval-badge.rejected {
   background: #fee2e2;
-
   color: #991b1b;
+}
 
-  .btn-success {
-    background: #22c55e;
+.btn-success {
+  background: var(--success);
+  color: white;
+}
 
-    color: white;
-  }
+.btn-success:hover {
+  opacity: 0.9;
+}
 
-  .btn-danger {
-    background: #ef4444;
+.btn-danger {
+  background: var(--danger);
+  color: white;
+}
 
-    color: white;
-  }
+.btn-danger:hover {
+  opacity: 0.9;
+}
 
-  .btn-warning {
-    background: #f59e0b;
+.btn-warning {
+  background: var(--warning);
+  color: white;
+}
 
-    color: white;
-  }
+.btn-warning:hover {
+  opacity: 0.9;
 }
 .page-container {
   display: flex;

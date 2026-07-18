@@ -1,9 +1,12 @@
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+
 import socket from "../socket/socket";
 
 import Button from "../components/ui/Button";
+
 import "./Logout.css";
+
 function Logout({ close }) {
   const navigate = useNavigate();
 
@@ -11,11 +14,14 @@ function Logout({ close }) {
     await axios.post(
       "http://localhost:4000/api/auth/logout",
       {},
-      { withCredentials: true },
+      { withCredentials: true }
     );
+
     localStorage.removeItem("userId");
     localStorage.removeItem("userRole");
+
     socket.disconnect();
+
     navigate("/");
   };
 
@@ -27,11 +33,17 @@ function Logout({ close }) {
         <p>Are you sure you want to logout?</p>
 
         <div className="logout-actions">
-          <Button variant="secondary" onClick={close}>
+          <Button
+            variant="secondary"
+            onClick={close}
+          >
             Cancel
           </Button>
 
-          <Button variant="danger" onClick={logout}>
+          <Button
+            variant="danger"
+            onClick={logout}
+          >
             Logout
           </Button>
         </div>

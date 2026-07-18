@@ -9,14 +9,16 @@ function Navbar() {
     <>
       <div className="navbar">
         <h2>{localStorage.getItem("userRole")?.toUpperCase()} Portal</h2>
-      <div className="navbar-actions">
-        <Link to="/chat">
-          <Button variant="secondary">Chat</Button>
-        </Link>
-        <Button variant="secondary" onClick={() => setOpen(true)}>
-          Logout
-        </Button>
-      </div>
+
+        <div className="navbar-actions">
+          <Link to="/chat">
+            <Button variant="secondary">Chat</Button>
+          </Link>
+
+          <Button variant="danger" onClick={() => setOpen(true)}>
+            Logout
+          </Button>
+        </div>
       </div>
 
       {open && <Logout close={() => setOpen(false)} />}
