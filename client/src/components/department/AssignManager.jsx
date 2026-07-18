@@ -54,80 +54,86 @@ function AssignManager({ departmentId, currentManager, onAssigned }) {
     <>
       {!currentManager ? (
         <>
-          <select
-            value={employeeId}
-            onChange={(e) => setEmployeeId(e.target.value)}
-          >
-            <option value="">Select Employee</option>
+          <div className="flex flex-wrap gap-sm mt-md">
+            <select
+              value={employeeId}
+              onChange={(e) => setEmployeeId(e.target.value)}
+            >
+              <option value="">Select Employee</option>
 
-            {employees.map((employee) => (
-              <option
-                key={employee._id}
-                value={employee._id}
-                disabled={!employee.isActive}
-              >
-                {employee.name}
-              </option>
-            ))}
-          </select>
+              {employees.map((employee) => (
+                <option
+                  key={employee._id}
+                  value={employee._id}
+                  disabled={!employee.isActive}
+                >
+                  {employee.name}
+                </option>
+              ))}
+            </select>
 
-          <Button onClick={handleAssign}>Assign Manager</Button>
+            <Button onClick={handleAssign}>Assign Manager</Button>
+          </div>
         </>
       ) : (
         <>
-          <Button
-            onClick={async () => {
-              const { value } = await Swal.fire({
-                title: "Change Manager",
-                input: "select",
-                inputOptions: employees
-                  .filter((e) => e.isActive)
-                  .reduce((acc, emp) => {
-                    acc[emp._id] = emp.name;
-                    return acc;
-                  }, {}),
-                showCancelButton: true,
-              });
+          <div className="flex flex-wrap gap-sm mt-md">
+            <Button
+              variant="secondary"
+              onClick={async () => {
+                const { value } = await Swal.fire({
+                  title: "Change Manager",
+                  input: "select",
+                  inputOptions: employees
+                    .filter((e) => e.isActive)
+                    .reduce((acc, emp) => {
+                      acc[emp._id] = emp.name;
+                      return acc;
+                    }, {}),
+                  showCancelButton: true,
+                });
 
-              if (!value) return;
+                if (!value) return;
 
-              try {
-                await changeManager(departmentId, value);
+                try {
+                  await changeManager(departmentId, value);
 
-                toast.success("Manager changed.");
+                  toast.success("Manager changed.");
 
-                onAssigned();
-              } catch (error) {
-                toast.error(error.response?.data?.message);
-              }
-            }}
-          >
-            Change Manager
-          </Button>
+                  onAssigned();
+                } catch (error) {
+                  toast.error(error.response?.data?.message);
+                }
+              }}
+            >
+              Change Manager
+            </Button>
 
-          <Button
-            onClick={async () => {
-              const result = await Swal.fire({
-                title: "Remove Manager?",
-                icon: "warning",
-                showCancelButton: true,
-              });
+            <Button
+              variant="danger"
+              onClick={async () => {
+                const result = await Swal.fire({
+                  title: "Remove Manager?",
+                  icon: "warning",
+                  showCancelButton: true,
+                });
 
-              if (!result.isConfirmed) return;
+                if (!result.isConfirmed) return;
 
-              try {
-                await removeManager(departmentId);
+                try {
+                  await removeManager(departmentId);
 
-                toast.success("Manager removed.");
+                  toast.success("Manager removed.");
 
-                onAssigned();
-              } catch (error) {
-                toast.error(error.response?.data?.message);
-              }
-            }}
-          >
-            Remove Manager
-          </Button>
+                  onAssigned();
+                } catch (error) {
+                  toast.error(error.response?.data?.message);
+                }
+              }}
+            >
+              Remove Manager
+            </Button>
+          </div>
         </>
       )}
     </>

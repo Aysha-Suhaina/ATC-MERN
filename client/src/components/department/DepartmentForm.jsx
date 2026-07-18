@@ -36,36 +36,71 @@ function DepartmentForm({ onSuccess }) {
   };
 
   return (
-    <div>
-      <h2>Create Department</h2>
+  <div>
 
-      <form onSubmit={handleSubmit}>
-        <div>
-          <label>Department Name</label>
+    <h2>Create Department</h2>
 
-          <input
-            type="text"
-            name="name"
-            value={form.name}
-            onChange={handleChange}
-            required
-          />
-        </div>
+    <p
+      style={{
+        color: "var(--text-secondary)",
+        marginBottom: "20px",
+      }}
+    >
+      Add a new department to your organization.
+    </p>
 
-        <div>
-          <label>Description</label>
+    <form
+      className="form-grid"
+      onSubmit={handleSubmit}
+    >
 
-          <textarea
-            name="description"
-            value={form.description}
-            onChange={handleChange}
-          />
-        </div>
+      <div className="form-group">
 
-        <Button type="submit">Create Department</Button>
-      </form>
-    </div>
-  );
+        <label>
+
+          Department Name
+
+        </label>
+
+        <input
+          type="text"
+          name="name"
+          value={form.name}
+          onChange={handleChange}
+          placeholder="Human Resources"
+          required
+        />
+
+      </div>
+
+      <div className="form-group">
+
+        <label>
+
+          Description
+
+        </label>
+
+        <textarea
+          rows="4"
+          name="description"
+          value={form.description}
+          onChange={handleChange}
+          placeholder="Short description..."
+        />
+
+      </div>
+
+      <Button type="submit">
+
+        Create Department
+
+      </Button>
+
+    </form>
+
+  </div>
+);
 }
 
 export default DepartmentForm;

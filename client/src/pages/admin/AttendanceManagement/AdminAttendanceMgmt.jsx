@@ -3,6 +3,11 @@ import { toast } from "react-toastify";
 import { getAllAttendance, deleteAttendance } from "../../../api/attendanceApi";
 import { getDepartments } from "../../../api/departmentApi";
 import Button from "../../../components/ui/Button";
+import PageHeader from "../../../components/ui/PageHeader";
+import Card from "../../../components/ui/Card";
+import FilterBar from "../../../components/ui/FilterBar";
+import SearchBar from "../../../components/ui/searchBar";
+import StatusBadge from "../../../components/ui/StatusBadge";
 
 const AdminAttendanceMgmt = () => {
   const [records, setRecords] = useState([]);
@@ -69,21 +74,16 @@ const AdminAttendanceMgmt = () => {
   };
 
   return (
-    <div>
-      <h1>Attendance Management</h1>
+    <div className="page">
+      <PageHeader
+        title="Attendance Management"
+        subtitle="View, search and manage employee attendance records."
+      />
 
-      <div
-        style={{
-          display: "flex",
-          gap: "10px",
-          flexWrap: "wrap",
-          marginBottom: "20px",
-        }}
-      >
-        <input
-          type="text"
-          placeholder="Search Employee"
+      <FilterBar>
+        <SearchBar
           value={search}
+          placeholder="Search employee..."
           onChange={(e) => setSearch(e.target.value)}
         />
 
@@ -135,6 +135,7 @@ const AdminAttendanceMgmt = () => {
         />
 
         <Button
+          variant="secondary"
           onClick={() => {
             setSearch("");
 
@@ -149,39 +150,50 @@ const AdminAttendanceMgmt = () => {
         >
           Reset
         </Button>
-      </div>
+      </FilterBar>
 
-      <table>
-        <thead>
-          <tr>
-            <th>Employee</th>
-            <th>Date</th>
-            <th>Attendance Status</th>
-            <th>Approval Status</th>
-            <th>Actions</th>
-          </tr>
-        </thead>
+      <Card>
+        <table className="data-table">
+          <thead>
+            <tr>
+              <th>Employee</th>
 
-        <tbody>
-          {records.map((record) => (
-            <tr key={record._id}>
-              <td>{record.user?.name || "Unknown User"}</td>
+              <th>Date</th>
 
-              <td>{new Date(record.date).toLocaleDateString()}</td>
+              <th>Attendance</th>
 
-              <td>{record.attendanceStatus.replace("_", " ")}</td>
+              <th>Approval</th>
 
-              <td>
-                {record.approvalStatus.charAt(0).toUpperCase() +
-                  record.approvalStatus.slice(1)}
-              </td>
-              <td>
-                <Button onClick={() => handleDelete(record._id)}>Delete</Button>
-              </td>
+              <th>Actions</th>
             </tr>
-          ))}
-        </tbody>
-      </table>
+          </thead>
+
+          <tbody>
+            {records.map((record) => (
+              <tr key={record._id}>
+                <td>{record.user?.name || "Unknown User"}</td>
+
+                <td>{new Date(record.date).toLocaleDateString()}</td>
+
+                <td>{record.attendanceStatus.replace("_", " ")}</td>
+
+                <td>
+                  <StatusBadge active={record.approvalStatus === "approved"} />
+                </td>
+
+                <td>
+                  <Button
+                    variant="danger"
+                    onClick={() => handleDelete(record._id)}
+                  >
+                    Delete
+                  </Button>
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </Card>
     </div>
   );
 };

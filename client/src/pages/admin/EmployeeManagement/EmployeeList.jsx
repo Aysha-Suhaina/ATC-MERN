@@ -3,7 +3,9 @@ import Swal from "sweetalert2";
 import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
 import Button from "../../../components/ui/Button";
-
+import PageHeader from "../../../components/ui/PageHeader";
+import FilterBar from "../../../components/ui/FilterBar";
+import SearchBar from "../../../components/ui/searchBar";
 import {
   getEmployees,
   deactivateEmployee,
@@ -97,24 +99,23 @@ const EmployeeList = () => {
 
   return (
     <div>
-      <h1>Employee Management</h1>
+      <PageHeader
+        title="Employee Management"
+        subtitle="Manage employees, departments and roles."
+      >
+        <Button onClick={() => navigate("/admin/employees/create")}>
+          Create Employee
+        </Button>
+      </PageHeader>
 
       <Button onClick={() => navigate("/admin/employees/create")}>
         Create Employee
       </Button>
 
-      <div
-        style={{
-          display: "flex",
-          gap: "10px",
-          marginBottom: "20px",
-          flexWrap: "wrap",
-        }}
-      >
-        <input
-          type="text"
-          placeholder="Search Employee"
+      <FilterBar>
+        <SearchBar
           value={search}
+          placeholder="Search employees..."
           onChange={(e) => setSearch(e.target.value)}
         />
 
@@ -126,46 +127,45 @@ const EmployeeList = () => {
           <option value="true">Active</option>
           <option value="false">Inactive</option>
         </select>
-      </div>
 
-      <select
-        value={departmentFilter}
-        onChange={(e) => setDepartmentFilter(e.target.value)}
-      >
-        <option value="">All Departments</option>
-        {departments.map((dept) => (
-          <option key={dept._id} value={dept._id}>
-            {dept.name}
-          </option>
-        ))}
-      </select>
+        <select
+          value={departmentFilter}
+          onChange={(e) => setDepartmentFilter(e.target.value)}
+        >
+          <option value="">All Departments</option>
 
-      <select
-        value={designationFilter}
-        onChange={(e) => setDesignationFilter(e.target.value)}
-      >
-        <option value="">All Designations</option>
-        {designations.map((des) => (
-          <option key={des._id} value={des._id}>
-            {des.name}
-          </option>
-        ))}
-      </select>
+          {departments.map((dept) => (
+            <option key={dept._id} value={dept._id}>
+              {dept.name}
+            </option>
+          ))}
+        </select>
 
-      <Button
-        onClick={() => {
-          setSearch("");
+        <select
+          value={designationFilter}
+          onChange={(e) => setDesignationFilter(e.target.value)}
+        >
+          <option value="">All Designations</option>
 
-          setDepartmentFilter("");
+          {designations.map((des) => (
+            <option key={des._id} value={des._id}>
+              {des.name}
+            </option>
+          ))}
+        </select>
 
-          setDesignationFilter("");
-
-          setActiveFilter("");
-        }}
-      >
-        Reset
-      </Button>
-
+        <Button
+          variant="secondary"
+          onClick={() => {
+            setSearch("");
+            setDepartmentFilter("");
+            setDesignationFilter("");
+            setActiveFilter("");
+          }}
+        >
+          Reset
+        </Button>
+      </FilterBar>
       <table border="1">
         <thead>
           <tr>

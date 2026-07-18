@@ -3,6 +3,11 @@ import { useNavigate, useParams } from "react-router-dom";
 import { toast } from "react-toastify";
 import axios from "axios";
 import Button from "../../components/ui/Button";
+import Navbar from "../../components/Navbar";
+import PageHeader from "../../components/ui/PageHeader";
+import Section from "../../components/ui/Section";
+import FormCard from "../../components/ui/FormCard";
+import Card from "../../components/ui/Card";
 
 const EditAttendance = () => {
   const { id } = useParams();
@@ -93,59 +98,90 @@ const EditAttendance = () => {
   }
 
   return (
-    <div className="container mt-4">
-      <h2>Edit Attendance</h2>
+    <>
+      <Navbar />
 
-      {attendance?.rejectionReason && (
-        <div className="alert alert-danger" role="alert">
-          <strong>Rejection Reason:</strong> {attendance.rejectionReason}
-        </div>
-      )}
+      <div className="page">
+        <PageHeader
+          title="Edit Attendance"
+          subtitle="Update your attendance details and resubmit for approval."
+        />
 
-      <form onSubmit={handleSubmit}>
-        <div className="mb-3">
-          <label>Check In Time</label>
+        {attendance?.rejectionReason && (
+          <Card>
+            <h3
+              style={{
+                color: "var(--danger)",
+                marginBottom: "10px",
+              }}
+            >
+              Rejection Reason
+            </h3>
 
-          <input
-            type="time"
-            name="checkInTime"
-            value={formData.checkInTime}
-            onChange={handleChange}
-            className="form-control"
-            required
-          />
-        </div>
+            <p>{attendance.rejectionReason}</p>
+          </Card>
+        )}
 
-        <div className="mb-3">
-          <label>Check Out Time</label>
+        <Section
+          title="Attendance Details"
+          description="Modify the required fields before resubmitting."
+        >
+          <FormCard
+            title="Attendance Form"
+            subtitle="Update your attendance information."
+          >
+            <form onSubmit={handleSubmit} className="form-grid">
+              <div>
+                <label>Check In Time</label>
 
-          <input
-            type="time"
-            name="checkOutTime"
-            value={formData.checkOutTime}
-            onChange={handleChange}
-            className="form-control"
-            required
-          />
-        </div>
+                <input
+                  type="time"
+                  name="checkInTime"
+                  value={formData.checkInTime}
+                  onChange={handleChange}
+                  required
+                />
+              </div>
 
-        <div className="mb-3">
-          <label>Remarks</label>
+              <div>
+                <label>Check Out Time</label>
 
-          <textarea
-            name="remarks"
-            value={formData.remarks}
-            onChange={handleChange}
-            className="form-control"
-            rows="4"
-          />
-        </div>
+                <input
+                  type="time"
+                  name="checkOutTime"
+                  value={formData.checkOutTime}
+                  onChange={handleChange}
+                  required
+                />
+              </div>
 
-        <Button type="submit" className="btn btn-primary">
-          Resubmit Attendance
-        </Button>
-      </form>
-    </div>
+              <div>
+                <label>Remarks</label>
+
+                <textarea
+                  name="remarks"
+                  value={formData.remarks}
+                  onChange={handleChange}
+                  rows="4"
+                />
+              </div>
+
+              <div className="form-actions">
+                <Button
+                  variant="secondary"
+                  onClick={() => navigate(-1)}
+                  type="button"
+                >
+                  Cancel
+                </Button>
+
+                <Button type="submit">Resubmit Attendance</Button>
+              </div>
+            </form>
+          </FormCard>
+        </Section>
+      </div>
+    </>
   );
 };
 

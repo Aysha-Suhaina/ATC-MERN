@@ -2,6 +2,7 @@ import { Link } from "react-router-dom";
 import {toast} from 'react-toastify';
 import { deleteDesignation } from "../../api/designationApi";
 import Button from "../ui/Button";
+import Card from "../ui/Card";
 function DesignationList({
   designations,
   refreshDesignations,
@@ -20,79 +21,105 @@ function DesignationList({
       toast.error("Failed to delete designation");
     }
   };
-  return (
+ return (
 
-    <div>
+  <Card>
 
-      <h2>Designations</h2>
+    <h2>Designation List</h2>
 
-      {designations.length === 0 ? (
+    {designations.length === 0 ? (
 
-        <p>No designations found.</p>
+      <p className="empty-state">
+        No designations found.
+      </p>
 
-      ) : (
+    ) : (
 
-        <table border="1" cellPadding="10">
+      <table className="table">
 
-          <thead>
+        <thead>
 
-            <tr>
+          <tr>
 
-              <th>Designation</th>
+            <th>Designation</th>
 
-              <th>Department</th>
+            <th>Department</th>
 
-              <th>Actions</th>
+            <th>Employees</th>
 
-              <th>Employees</th>
+            <th>Actions</th>
 
-            </tr>
+          </tr>
 
-          </thead>
+        </thead>
 
-          <tbody>
+        <tbody>
 
-            {designations.map((designation) => (
+          {designations.map((designation) => (
 
-              <tr key={designation._id}>
+            <tr key={designation._id}>
 
-                <td>{designation.name}</td>
+              <td>
+                {designation.name}
+              </td>
 
-                <td>{designation.department?.name}</td>
+              <td>
+                {designation.department?.name}
+              </td>
 
-                <td>
+              <td>
+
+                <span className="badge badge-info">
+
+                  {designation.employeeCount}
+
+                </span>
+
+              </td>
+
+              <td>
+
+                <div
+                  style={{
+                    display: "flex",
+                    gap: "10px",
+                  }}
+                >
 
                   <Link
                     to={`/admin/designations/edit/${designation._id}`}
                   >
-                    <Button >Edit</Button >
+                    <Button variant="secondary">
+                      Edit
+                    </Button>
                   </Link>
 
-                  <Button 
+                  <Button
+                    variant="danger"
                     onClick={() =>
                       handleDelete(designation._id)
                     }
                   >
                     Delete
-                  </Button >
+                  </Button>
 
-                </td>
+                </div>
 
-                <td>{designation.employeeCount}</td>
+              </td>
 
-              </tr>
+            </tr>
 
-            ))}
+          ))}
 
-          </tbody>
+        </tbody>
 
-        </table>
+      </table>
 
-      )}
+    )}
 
-    </div>
+  </Card>
 
-  );
+);
 
 }
 

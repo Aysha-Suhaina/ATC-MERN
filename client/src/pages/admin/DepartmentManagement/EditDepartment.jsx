@@ -4,6 +4,8 @@ import AssignManager from "../../../components/department/AssignManager";
 import { useNavigate, useParams } from "react-router-dom";
 import Button from "../../../components/ui/Button";
 import { getDepartment, updateDepartment } from "../../../api/departmentApi";
+import Card from "../../../components/ui/Card";
+import PageHeader from "../../../components/ui/PageHeader";
 
 function EditDepartment() {
   const { id } = useParams();
@@ -59,51 +61,61 @@ function EditDepartment() {
   };
 
   return (
-    <div>
-      <h2>Edit Department</h2>
+    <div className="page">
+      <PageHeader
+        title="Edit Department"
+        subtitle="Update department details and manage its assigned manager."
+      />
 
-      <form onSubmit={handleSubmit}>
-        <div>
-          <label>Department Name</label>
+      <Card>
+        <form className="form-grid" onSubmit={handleSubmit}>
+          <div className="form-group">
+            <label>Department Name</label>
 
-          <input
-            type="text"
-            name="name"
-            value={form.name}
-            onChange={handleChange}
-            required
+            <input
+              type="text"
+              name="name"
+              value={form.name}
+              onChange={handleChange}
+              required
+            />
+          </div>
+
+          <div className="form-group">
+            <label>Description</label>
+
+            <textarea
+              name="description"
+              rows="4"
+              value={form.description}
+              onChange={handleChange}
+            />
+          </div>
+
+          <hr />
+
+          <h3>Department Manager</h3>
+
+          <p>
+            <strong>Current Manager:</strong>{" "}
+            {department?.manager ? department.manager.name : "Not Assigned"}
+          </p>
+
+          <AssignManager
+            departmentId={id}
+            currentManager={department?.manager}
+            onAssigned={loadDepartment}
           />
-        </div>
 
-        <div>
-          <label>Description</label>
-
-          <textarea
-            name="description"
-            value={form.description}
-            onChange={handleChange}
-          />
-        </div>
-
-        <hr />
-
-        <h3>Department Manager</h3>
-
-        <p>
-          <strong>Current Manager:</strong>{" "}
-          {department?.manager ? department.manager.name : "Not Assigned"}
-        </p>
-
-        <AssignManager
-          departmentId={id}
-          currentManager={department?.manager}
-          onAssigned={loadDepartment}
-        />
-
-        <hr />
-
-        <Button type="submit">Update Department</Button>
-      </form>
+          <div
+            style={{
+              marginTop: "25px",
+            }}
+          >
+            <Button type="submit">Save Changes</Button>
+          </div>
+        </form>
+      </Card>
     </div>
   );
 }
