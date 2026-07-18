@@ -1,10 +1,12 @@
-import Navbar from "../../components/Navbar";
 import { Link } from "react-router-dom";
 import { useState, useEffect, useCallback } from "react";
 import { submitAttendance, getMyAttendance } from "../../api/attendanceApi";
 
 import { getProfile } from "../../api/userApi";
 import Button from "../../components/ui/Button";
+import PageHeader from "../../components/ui/PageHeader";
+import FormCard from "../../components/ui/FormCard";
+import Card from "../../components/ui/Card";
 
 import { toast } from "react-toastify";
 
@@ -79,90 +81,112 @@ const ManagerDashboard = () => {
 
   return (
     <>
-      <Navbar />
 
-      <div>
-        <h1>Manager Dashboard</h1>
+      <div className="page">
+        <PageHeader
+          title="Manager Dashboard"
+          subtitle={`Welcome back, ${profile?.name || "Manager"}. Manage your department and team from here.`}
+        />
 
-        <h2>Welcome, {profile?.name}</h2>
+        <div className="dashboard-grid-2">
+          <FormCard
+            title="Submit Attendance"
+            subtitle="Record today's attendance."
+          >
+            <form onSubmit={handleSubmit} className="form-grid">
+              <div>
+                <label>Check In Time</label>
 
-        <Link to="/chat">
-          <Button>Chat</Button>
-        </Link>
+                <input
+                  type="time"
+                  name="checkInTime"
+                  onChange={handleChange}
+                  required
+                />
+              </div>
 
-        <h2>Submit Attendance</h2>
+              <div>
+                <label>Check Out Time</label>
 
-        <form onSubmit={handleSubmit}>
-          <label>Check In Time:</label>
-          <input
-            type="time"
-            name="checkInTime"
-            onChange={handleChange}
-            required
-          />
+                <input
+                  type="time"
+                  name="checkOutTime"
+                  onChange={handleChange}
+                  required
+                />
+              </div>
 
-          <br />
-          <label>Check Out Time:</label>
-          <input
-            type="time"
-            name="checkOutTime"
-            onChange={handleChange}
-            required
-          />
+              <div>
+                <label>Status</label>
 
-          <br />
+                <select name="attendanceStatus" onChange={handleChange}>
+                  <option value="present">Present</option>
+                  <option value="absent">Absent</option>
+                  <option value="half_day">Half Day</option>
+                  <option value="late">Late</option>
+                  <option value="leave">Leave</option>
+                </select>
+              </div>
 
-          <select name="attendanceStatus" onChange={handleChange}>
-            <option value="present">Present</option>
+              <div>
+                <label>Remarks</label>
 
-            <option value="absent">Absent</option>
+                <textarea
+                  name="remarks"
+                  placeholder="Remarks"
+                  rows={4}
+                  onChange={handleChange}
+                />
+              </div>
 
-            <option value="half_day">Half Day</option>
+              <div className="form-actions">
+                <Button type="submit">Submit Attendance</Button>
+              </div>
+            </form>
+          </FormCard>
 
-            <option value="late">Late</option>
+          <Card>
+            <h2 style={{ marginBottom: "10px" }}>Quick Actions</h2>
 
-            <option value="leave">Leave</option>
-          </select>
+            <p
+              style={{
+                color: "var(--text-light)",
+                marginBottom: "20px",
+              }}
+            >
+              Navigate to common manager tasks.
+            </p>
 
-          <br />
+            <div
+              style={{
+                display: "flex",
+                flexDirection: "column",
+                gap: "12px",
+              }}
+            >
+              <Link to="/manager/attendance">
+                <Button variant="secondary">Attendance Approval</Button>
+              </Link>
 
-          <textarea
-            name="remarks"
-            placeholder="Remarks"
-            onChange={handleChange}
-          />
+              <Link to="/manager/my-employees">
+                <Button variant="secondary">My Employees</Button>
+              </Link>
 
-          <br />
+              <Link to="/manager/my-department">
+                <Button variant="secondary">My Department</Button>
+              </Link>
 
-          <Button type="submit">Submit</Button>
-        </form>
+              <Link to="/manager/history">
+                <Button variant="secondary">
+                  Attendance History ({attendance.length})
+                </Button>
+              </Link>
 
-        <hr />
-        <p>Welcome! Manage your department from here.</p>
-
-        <div>
-          <Link to="/manager/attendance">
-            <Button>Attendance Approval</Button>
-          </Link>
-
-          <Link to="/manager/my-employees">
-            <Button>My Employees</Button>
-          </Link>
-
-          <Link to="/manager/my-department">
-            <Button>My Department</Button>
-          </Link>
-
-          <Link to="/manager/history">
-            <Button>Attendance History</Button>
-            <p>{attendance.length} records available</p>
-          </Link>
-
-          <Link to="/manager/designations">
-            <Button>Department Designations</Button>
-          </Link>
-
-          {/* Reports will be added later */}
+              <Link to="/manager/designations">
+                <Button variant="secondary">Department Designations</Button>
+              </Link>
+            </div>
+          </Card>
         </div>
       </div>
     </>

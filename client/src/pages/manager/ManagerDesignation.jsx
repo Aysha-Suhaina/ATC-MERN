@@ -1,5 +1,4 @@
 import { useEffect, useState } from "react";
-import Navbar from "../../components/Navbar";
 import { toast } from "react-toastify";
 
 import {
@@ -52,8 +51,6 @@ const ManagerDesignation = () => {
 
   return (
     <>
-      <Navbar />
-
       <div>
         <h1>Department Designations</h1>
 

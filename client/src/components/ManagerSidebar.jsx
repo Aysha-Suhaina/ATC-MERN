@@ -1,64 +1,78 @@
 import { NavLink } from "react-router-dom";
-import "./AdminSidebar.css";
+import {
+  FiHome,
+  FiCheckSquare,
+  FiUsers,
+  FiClipboard,
+  FiLayers,
+  FiBriefcase,
+  FiMessageSquare,
+} from "react-icons/fi";
 
-const AdminSidebar = () => {
+const ManagerSidebar = () => {
   return (
     <aside className="sidebar">
-      <h3 className="sidebar-title">Admin Panel</h3>
+      <h3 className="sidebar-title">Manager Panel</h3>
 
       <nav className="sidebar-nav">
         <NavLink
-          to="/admin-dashboard"
+          to="/manager-dashboard"
           className={({ isActive }) =>
             isActive ? "sidebar-link active" : "sidebar-link"
           }
         >
-          Dashboard
+          <FiHome />
+          <span>Dashboard</span>
         </NavLink>
 
         <NavLink
-          to="/admin/employees"
+          to="/manager/attendance"
           className={({ isActive }) =>
             isActive ? "sidebar-link active" : "sidebar-link"
           }
         >
-          Employees
+          <FiCheckSquare />
+          <span>Attendance Approval</span>
         </NavLink>
 
         <NavLink
-          to="/admin/attendance"
+          to="/manager/my-employees"
           className={({ isActive }) =>
             isActive ? "sidebar-link active" : "sidebar-link"
           }
         >
-          Attendance
+          <FiUsers />
+          <span>My Employees</span>
         </NavLink>
 
         <NavLink
-          to="/admin/departments"
+          to="/manager/history"
           className={({ isActive }) =>
             isActive ? "sidebar-link active" : "sidebar-link"
           }
         >
-          Departments
+          <FiClipboard />
+          <span>Attendance History</span>
         </NavLink>
 
         <NavLink
-          to="/admin/designations"
+          to="/manager/my-department"
           className={({ isActive }) =>
             isActive ? "sidebar-link active" : "sidebar-link"
           }
         >
-          Designations
+          <FiBriefcase />
+          <span>My Department</span>
         </NavLink>
 
         <NavLink
-          to="/admin/reports"
+          to="/manager/designations"
           className={({ isActive }) =>
             isActive ? "sidebar-link active" : "sidebar-link"
           }
         >
-          Reports
+          <FiLayers />
+          <span>Designations</span>
         </NavLink>
 
         <NavLink
@@ -67,11 +81,12 @@ const AdminSidebar = () => {
             isActive ? "sidebar-link active" : "sidebar-link"
           }
         >
-          Chat
+          <FiMessageSquare />
+          <span>Chat</span>
         </NavLink>
       </nav>
     </aside>
   );
 };
 
-export default AdminSidebar;
+export default ManagerSidebar;

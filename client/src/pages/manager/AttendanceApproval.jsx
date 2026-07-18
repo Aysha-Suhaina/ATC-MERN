@@ -1,5 +1,4 @@
 import { useEffect, useState } from "react";
-import Navbar from "../../components/Navbar";
 
 import {
   getManagerPendingAttendance,
@@ -29,7 +28,6 @@ const AttendanceApproval = () => {
 
   return (
     <>
-      <Navbar />
 
       <div>
         <h1>Attendance Approval</h1>

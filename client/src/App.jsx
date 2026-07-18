@@ -1,7 +1,7 @@
-import {Routes,Route} from "react-router-dom";
+import { Routes, Route } from "react-router-dom";
 import ProtectedRoute from "./ProtectedRoute";
 import socket from "./socket/socket";
-import {useEffect} from 'react';
+import { useEffect } from "react";
 
 import AdminLayout from "./layouts/AdminLayout";
 import Reports from "./pages/admin/Reports";
@@ -26,10 +26,11 @@ import DepartmentManagement from "./pages/admin/DepartmentManagement/DepartmentM
 import EditDepartment from "./pages/admin/DepartmentManagement/EditDepartment";
 
 //designation
-import DesignationManagement from "./pages/admin/DesignationManagement/DesignationManagement"
+import DesignationManagement from "./pages/admin/DesignationManagement/DesignationManagement";
 import EditDesignation from "./pages/admin/DesignationManagement/EditDesignation";
 
-//manager dahsbaird 
+//manager dahsbaird
+import ManagerLayout from "./layouts/ManagerLayout";
 import ManagerDashboard from "./pages/manager/ManagerDashboard";
 import AttendanceApproval from "./pages/manager/AttendanceApproval";
 import MyEmployees from "./pages/manager/MyEmployees";
@@ -43,183 +44,165 @@ import Chat from "./pages/chat/Chat";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
-function App(){
-
+function App() {
   useEffect(() => {
-  const userId = localStorage.getItem("userId");
+    const userId = localStorage.getItem("userId");
 
-  if (!userId) return;
+    if (!userId) return;
 
-  const handleConnect = () => {
-    console.log("Connected:", socket.id);
+    const handleConnect = () => {
+      console.log("Connected:", socket.id);
 
-    socket.emit("register_user", userId);
-  };
+      socket.emit("register_user", userId);
+    };
 
-  socket.on("connect", handleConnect);
+    socket.on("connect", handleConnect);
 
-  socket.connect();
+    socket.connect();
 
-  // If already connected, register immediately.
-  if (socket.connected) {
-    handleConnect();
-  }
+    // If already connected, register immediately.
+    if (socket.connected) {
+      handleConnect();
+    }
 
-  console.log("Socket Connected");
-console.log("Socket ID:", socket.id);
-console.log("User ID:", userId);
-console.log("Connected:", socket.connected);
+    console.log("Socket Connected");
+    console.log("Socket ID:", socket.id);
+    console.log("User ID:", userId);
+    console.log("Connected:", socket.connected);
 
-  return () => {
-    socket.off("connect", handleConnect);
-  };
-}, []);
-// useEffect(() => {
-//   const userId = localStorage.getItem("userId");
+    return () => {
+      socket.off("connect", handleConnect);
+    };
+  }, []);
+  // useEffect(() => {
+  //   const userId = localStorage.getItem("userId");
 
-//   if (!userId) return;
+  //   if (!userId) return;
 
-//   console.log("App mounted");
+  //   console.log("App mounted");
 
-//   const handleConnect = () => {
-//     console.log("CONNECTED EVENT");
-//     console.log(socket.id);
+  //   const handleConnect = () => {
+  //     console.log("CONNECTED EVENT");
+  //     console.log(socket.id);
 
-//     socket.emit("register_user", userId);
-//   };
+  //     socket.emit("register_user", userId);
+  //   };
 
-//   socket.on("connect", handleConnect);
+  //   socket.on("connect", handleConnect);
 
-//   console.log("Calling connect...");
-//   socket.connect();
+  //   console.log("Calling connect...");
+  //   socket.connect();
 
-//   return () => {
-//     socket.off("connect", handleConnect);
-//   };
-// }, []);
+  //   return () => {
+  //     socket.off("connect", handleConnect);
+  //   };
+  // }, []);
 
   return (
     <>
       <Routes>
-        <Route path="/" element={<Home/>} />
-        <Route path="/login" element={<Login/>} />
-        <Route path="/reset-password" element={<ResetPassword/>} />
-        <Route path="/register" element={<Register/>} />
+        <Route path="/" element={<Home />} />
+        <Route path="/login" element={<Login />} />
+        <Route path="/reset-password" element={<ResetPassword />} />
+        <Route path="/register" element={<Register />} />
         <Route
           path="/employee-dashboard"
           element={
-            <ProtectedRoute allowedRoles={["employee","admin","manager"]}>
+            <ProtectedRoute allowedRoles={["employee", "admin", "manager"]}>
               <Dashboard />
             </ProtectedRoute>
           }
         />
 
-        <Route
-          path="/attendance/edit/:id"
-          element={<EditAttendance />}
-        />
+        <Route path="/attendance/edit/:id" element={<EditAttendance />} />
 
         {/* admin routes  */}
         <Route
-  element={
-    <ProtectedRoute allowedRoles={["admin"]}>
-      <AdminLayout />
-    </ProtectedRoute>
-  }
->
-  <Route
-  path="/admin/reports"
-  element={
-    <ProtectedRoute allowedRoles={["admin"]}>
-      <Reports />
-    </ProtectedRoute>
-  }
-/>
-
-  <Route
-    path="/admin-dashboard"
-    element={<AdminDashboard />}
-  />
-
-  <Route
-    path="/admin/attendance"
-    element={<AdminAttendanceMgmt />}
-  />
-
-  <Route
-    path="/admin/pending-attendance"
-    element={<PendingAttendance />}
-  />
-
-  <Route
-    path="/admin/employees"
-    element={<EmployeeList />}
-  />
-
-  <Route
-    path="/admin/employees/create"
-    element={<CreateEmployee />}
-  />
-
-  <Route
-    path="/admin/employees/edit/:id"
-    element={<UpdateEmployee />}
-  />
-
-  <Route
-    path="/admin/departments"
-    element={<DepartmentManagement />}
-  />
-
-  <Route
-    path="/admin/departments/edit/:id"
-    element={<EditDepartment />}
-  />
-
-  <Route
-    path="/admin/designations"
-    element={<DesignationManagement />}
-  />
-
-  <Route
-    path="/admin/designations/edit/:id"
-    element={<EditDesignation />}
-  />
-
-</Route>
-
-        <Route
-          path="/manager-dashboard"
           element={
-            <ProtectedRoute allowedRoles={["manager","admin"]}>
-              <ManagerDashboard />
+            <ProtectedRoute allowedRoles={["admin"]}>
+              <AdminLayout />
             </ProtectedRoute>
           }
-        />
+        >
+          <Route
+            path="/admin/reports"
+            element={
+              <ProtectedRoute allowedRoles={["admin"]}>
+                <Reports />
+              </ProtectedRoute>
+            }
+          />
+
+          <Route path="/admin-dashboard" element={<AdminDashboard />} />
+
+          <Route path="/admin/attendance" element={<AdminAttendanceMgmt />} />
+
+          <Route
+            path="/admin/pending-attendance"
+            element={<PendingAttendance />}
+          />
+
+          <Route path="/admin/employees" element={<EmployeeList />} />
+
+          <Route path="/admin/employees/create" element={<CreateEmployee />} />
+
+          <Route
+            path="/admin/employees/edit/:id"
+            element={<UpdateEmployee />}
+          />
+
+          <Route path="/admin/departments" element={<DepartmentManagement />} />
+
+          <Route
+            path="/admin/departments/edit/:id"
+            element={<EditDepartment />}
+          />
+
+          <Route
+            path="/admin/designations"
+            element={<DesignationManagement />}
+          />
+
+          <Route
+            path="/admin/designations/edit/:id"
+            element={<EditDesignation />}
+          />
+
+        </Route>
 
         <Route
-          path="/chat"
-          element={
-            <ProtectedRoute>
-              <Chat />
-            </ProtectedRoute>
-          }
-        />
-
-        <Route
-          path="/manager/attendance"
-          element={<AttendanceApproval />}
-        />
-
-        <Route 
-          path="manager/my-employees"
-          element={<MyEmployees/>}
+            path="/chat"
+            element={
+              <ProtectedRoute>
+                <Chat />
+              </ProtectedRoute>
+            }
           />
         <Route
-  path="/manager/history"
-  element={<AttendanceHistory />}
-/>
+          element={
+            <ProtectedRoute allowedRoles={["manager"]}>
+              <ManagerLayout />
+            </ProtectedRoute>
+          }
+        >
+          <Route path="/manager-dashboard" element={<ManagerDashboard />} />
 
+          <Route path="/manager/attendance" element={<AttendanceApproval />} />
+
+          <Route path="/manager/my-employees" element={<MyEmployees />} />
+
+          <Route path="/manager/history" element={<AttendanceHistory />} />
+
+          <Route
+            path="/manager/my-department"
+            element={<ManagerDepartment />}
+          />
+
+          <Route
+            path="/manager/designations"
+            element={<ManagerDesignation />}
+          />
+        </Route>
 
         {/* <Route
           path="/profile"
@@ -231,30 +214,8 @@ console.log("Connected:", socket.connected);
             </ProtectedRoute>
           }
         /> */}
-
-      <Route
-  path="/manager/my-department"
-  element={
-    <ProtectedRoute allowedRoles={["manager"]}>
-      <ManagerDepartment />
-    </ProtectedRoute>
-  }
-/>
-
-<Route
-  path="/manager/designations"
-  element={
-    <ProtectedRoute
-      allowedRoles={["manager"]}
-    >
-      <ManagerDesignation />
-    </ProtectedRoute>
-  }
-/>
-        
-
       </Routes>
-      <ToastContainer position="top-right" autoClose={3000} theme="colored"/>
+      <ToastContainer position="top-right" autoClose={3000} theme="colored" />
     </>
   );
 }
