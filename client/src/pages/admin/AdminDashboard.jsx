@@ -46,16 +46,15 @@ const AdminDashboard = () => {
   }, []);
 
   return (
-    <div className="page">
-      {/* ================= HERO ================= */}
+  <div className="page">
+    <PageHeader
+      title={`Welcome back, ${profile?.name}`}
+      subtitle="Monitor your organization, review attendance and manage employees."
+    />
 
-      <PageHeader
-        title={`Welcome back, ${profile?.name}`}
-        subtitle="Monitor your organization, review attendance and manage employees."
-        
-      />
-      {/* ================= ORGANIZATION ================= */}
+    {/* ================= TOP DASHBOARD ================= */}
 
+    <div className="section-grid">
       <Section
         title="Organization Overview"
         description="Current organization statistics."
@@ -91,8 +90,6 @@ const AdminDashboard = () => {
           </div>
         )}
       </Section>
-
-      {/* ================= ATTENDANCE ================= */}
 
       <Section
         title="Attendance Overview"
@@ -130,24 +127,41 @@ const AdminDashboard = () => {
           </div>
         )}
       </Section>
+    </div>
 
-      {/* ================= DAILY SUMMARY ================= */}
+    {/* ================= BOTTOM DASHBOARD ================= */}
 
+    <div className="section-grid">
       <Section
         title="Today's Attendance Summary"
         description="Detailed attendance breakdown for today."
       >
         {stats && (
-          <div className="grid-4">
-            <InfoCard title="Present" value={stats.dailySummary.present} />
+          <div className="grid-3">
+            <InfoCard
+              title="Present"
+              value={stats.dailySummary.present}
+            />
 
-            <InfoCard title="Late" value={stats.dailySummary.late} />
+            <InfoCard
+              title="Late"
+              value={stats.dailySummary.late}
+            />
 
-            <InfoCard title="Half Day" value={stats.dailySummary.halfDay} />
+            <InfoCard
+              title="Half Day"
+              value={stats.dailySummary.halfDay}
+            />
 
-            <InfoCard title="Leave" value={stats.dailySummary.leave} />
+            <InfoCard
+              title="Leave"
+              value={stats.dailySummary.leave}
+            />
 
-            <InfoCard title="Absent" value={stats.dailySummary.absent} />
+            <InfoCard
+              title="Absent"
+              value={stats.dailySummary.absent}
+            />
 
             <InfoCard
               title="Attendance %"
@@ -156,31 +170,48 @@ const AdminDashboard = () => {
           </div>
         )}
       </Section>
-      {/* ================= QUICK ACTIONS ================= */}
 
-      <h2>Quick Actions</h2>
-
-      <div
-        style={{
-          display: "grid",
-          gridTemplateColumns: "repeat(auto-fit,minmax(220px,1fr))",
-          gap: "20px",
-        }}
+      <Section
+        title="Quick Actions"
+        description="Frequently used administrative tasks."
       >
-        <Button onClick={() => navigate("/admin/employees/create")}>
-           Create Employee
-        </Button>
+        <div className="grid-2">
+          <Button
+            onClick={() =>
+              navigate("/admin/employees/create")
+            }
+          >
+            Create Employee
+          </Button>
 
-        <Button onClick={() => navigate("/admin/pending-attendance")}>
-           Pending Attendance
-        </Button>
+          <Button
+            onClick={() =>
+              navigate("/admin/pending-attendance")
+            }
+          >
+            Pending Attendance
+          </Button>
 
-        <Button onClick={() => navigate("/admin/reports")}> Reports</Button>
+          <Button
+            onClick={() =>
+              navigate("/admin/reports")
+            }
+          >
+            Reports
+          </Button>
 
-        <Button onClick={() => navigate("/chat")}>Chat</Button>
-      </div>
+          <Button
+            onClick={() =>
+              navigate("/chat")
+            }
+          >
+            Chat
+          </Button>
+        </div>
+      </Section>
     </div>
-  );
+  </div>
+);
 };
 
 export default AdminDashboard;

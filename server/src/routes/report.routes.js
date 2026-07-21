@@ -1,60 +1,48 @@
 import express from "express";
 
-import 
-  {exportCSV,exportExcel}
- from "../controller/report.controller.js";
+import { exportCSV, exportExcel } from "../controller/report.controller.js";
 import { authenticate } from "../middleware/authenticate.middleware.js";
 import { authorize } from "../middleware/authorize.middleware.js";
 
-const router =
-  express.Router();
+const router = express.Router();
 
 router.get(
-
   "/:type/csv",
 
   authenticate,
 
   authorize("admin"),
 
-  exportCSV
-
+  exportCSV,
 );
 
 router.get(
-
   "/:type/excel",
 
   authenticate,
 
   authorize("admin"),
 
-  exportExcel
-
+  exportExcel,
 );
 
-
 router.get(
-
   "/:type/:id/csv",
 
   authenticate,
 
   authorize("admin"),
 
-  exportCSV
-
+  exportCSV,
 );
 
 router.get(
-
   "/:type/:id/excel",
 
   authenticate,
 
   authorize("admin"),
 
-  exportExcel
-
+  exportExcel,
 );
 export default router;

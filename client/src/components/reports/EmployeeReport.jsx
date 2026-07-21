@@ -7,41 +7,62 @@ const EmployeeReport = ({
   downloadReport,
 }) => {
   return (
-    <>
-      <h2>Employee Report</h2>
+  <div className="report-generator">
+    <p className="section-subtitle">
+      Generate an attendance report for an individual employee.
+    </p>
 
-      <select value={employee} onChange={(e) => setEmployee(e.target.value)}>
-        <option value="">Select Employee</option>
+    <div className="form-group">
+      <label>Select Employee</label>
+
+      <select
+        className="form-select"
+        value={employee}
+        onChange={(e) =>
+          setEmployee(e.target.value)
+        }
+      >
+        <option value="">
+          Choose an employee...
+        </option>
 
         {employees.map((emp) => (
-          <option key={emp._id} value={emp._id}>
+          <option
+            key={emp._id}
+            value={emp._id}
+          >
             {emp.name}
           </option>
         ))}
       </select>
+    </div>
 
-      <br />
-      <br />
-
+    <div className="report-download-actions">
       <Button
+        variant="secondary"
         disabled={!employee}
         onClick={() =>
-          downloadReport(`/user/${employee}/csv`, "employee-report.csv")
+          downloadReport(
+            `/user/${employee}/csv`
+          )
         }
       >
-        CSV
+        Export CSV
       </Button>
 
       <Button
         disabled={!employee}
         onClick={() =>
-          downloadReport(`/user/${employee}/excel`, "employee-report.xlsx")
+          downloadReport(
+            `/user/${employee}/excel`
+          )
         }
       >
-        Excel
+        Export Excel
       </Button>
-    </>
-  );
+    </div>
+  </div>
+);
 };
 
 export default EmployeeReport;

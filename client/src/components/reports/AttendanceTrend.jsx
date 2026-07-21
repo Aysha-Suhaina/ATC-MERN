@@ -1,55 +1,38 @@
-const AttendanceTrend = ({
-  trend,
-}) => {
+const AttendanceTrend = ({ trend }) => {
   if (!trend) return null;
 
   return (
-    <>
-      <h2>
-        Attendance Trend
-      </h2>
-
-      <table
-        border="1"
-        cellPadding="10"
-        style={{
-          width: "100%",
-          marginBottom: "30px",
-        }}
-      >
+    <div className="table-container">
+      <table className="table">
         <thead>
           <tr>
             <th>Day</th>
-
             <th>Present</th>
-
             <th>Absent</th>
           </tr>
         </thead>
 
         <tbody>
-          {trend.map(
-            (day) => (
-              <tr
-                key={day.day}
-              >
-                <td>
-                  {day.day}
-                </td>
+          {trend.map((day) => (
+            <tr key={day.day}>
+              <td>{day.day}</td>
 
-                <td>
+              <td>
+                <span className="status-badge approved">
                   {day.present}
-                </td>
+                </span>
+              </td>
 
-                <td>
+              <td>
+                <span className="status-badge rejected">
                   {day.absent}
-                </td>
-              </tr>
-            )
-          )}
+                </span>
+              </td>
+            </tr>
+          ))}
         </tbody>
       </table>
-    </>
+    </div>
   );
 };
 

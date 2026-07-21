@@ -36,71 +36,48 @@ function DepartmentForm({ onSuccess }) {
   };
 
   return (
-  <div>
+    <div>
+      <h2>Create Department</h2>
 
-    <h2>Create Department</h2>
+      <p
+        style={{
+          color: "var(--text-secondary)",
+          marginBottom: "20px",
+        }}
+      >
+        Add a new department to your organization.
+      </p>
 
-    <p
-      style={{
-        color: "var(--text-secondary)",
-        marginBottom: "20px",
-      }}
-    >
-      Add a new department to your organization.
-    </p>
+      <form className="form-grid" onSubmit={handleSubmit}>
+        <div className="form-group">
+          <label>Department Name</label>
 
-    <form
-      className="form-grid"
-      onSubmit={handleSubmit}
-    >
+          <input
+            type="text"
+            name="name"
+            value={form.name}
+            onChange={handleChange}
+            placeholder="Human Resources"
+            required
+          />
+        </div>
 
-      <div className="form-group">
+        <div className="form-group">
+          <label>Description</label>
 
-        <label>
+          <textarea
+            rows="4"
+            name="description"
+            value={form.description}
+            onChange={handleChange}
+            placeholder="Short description..."
+          />
+        </div>
 
-          Department Name
-
-        </label>
-
-        <input
-          type="text"
-          name="name"
-          value={form.name}
-          onChange={handleChange}
-          placeholder="Human Resources"
-          required
-        />
-
-      </div>
-
-      <div className="form-group">
-
-        <label>
-
-          Description
-
-        </label>
-
-        <textarea
-          rows="4"
-          name="description"
-          value={form.description}
-          onChange={handleChange}
-          placeholder="Short description..."
-        />
-
-      </div>
-
-      <Button type="submit">
-
-        Create Department
-
-      </Button>
-
-    </form>
-
-  </div>
-);
+        <Button type="submit">Create Department</Button>
+      </form>
+    </div>
+  );
 }
 
 export default DepartmentForm;

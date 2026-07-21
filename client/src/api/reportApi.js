@@ -15,10 +15,7 @@ API.interceptors.request.use((config) => {
   return config;
 });
 
-export const downloadReport = async (
-  url,
-  fileName
-) => {
+export const downloadReport = async (url) => {
   try {
     const response = await API.get(url, {
       responseType: "blob",
@@ -32,32 +29,30 @@ export const downloadReport = async (
     const link =
       document.createElement("a");
 
-    link.href = downloadUrl;
-
+    // Get filename from backend
     const disposition =
-  response.headers["content-disposition"];
+      response.headers["content-disposition"];
 
-let downloadName = fileName;
+    let fileName = "report";
 
-if (disposition) {
-  const match = disposition.match(/filename="?([^"]+)"?/);
+    if (disposition) {
+      const match =
+        disposition.match(/filename="?([^"]+)"?/);
 
-  if (match) {
-    downloadName = match[1];
-  }
-}
+      if (match) {
+        fileName = match[1];
+      }
+    }
 
-link.download = downloadName || "report";
+    link.href = downloadUrl;
+    link.download = fileName;
 
     document.body.appendChild(link);
-
     link.click();
 
     link.remove();
 
-    window.URL.revokeObjectURL(
-      downloadUrl
-    );
+    window.URL.revokeObjectURL(downloadUrl);
   } catch (error) {
     console.error(
       "Report download failed:",

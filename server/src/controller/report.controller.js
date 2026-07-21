@@ -3,7 +3,7 @@ import { getAttendanceReport } from "../services/report.service.js";
 import { convertToCSV } from "../utils/csvExporter.js";
 
 import { exportAttendanceExcel } from "../utils/excelExporter.js";
-
+import { getReportFileName } from "../utils/reportFileName.js";
 import { buildReportFilter } from "../utils/reportFilters.js";
 
 // export const exportDailyCSV = async (
@@ -81,12 +81,8 @@ export const exportCSV = async (req, res) => {
       },
     );
 
-    console.log("Type:", req.params.type);
-    console.log("Filter:", filter);
 
     let report = await getAttendanceReport(filter);
-    console.log("Report length:", report.length);
-    console.log(report[0]);
 
     if (req.params.type === "department") {
       report = report.filter(
@@ -102,11 +98,9 @@ export const exportCSV = async (req, res) => {
       "text/csv",
     );
 
-    res.setHeader(
-      "Content-Disposition",
+    const fileName = getReportFileName(req.params.type, "csv", req.params.id);
 
-      `attachment; filename=${req.params.type}.csv`,
-    );
+    res.setHeader("Content-Disposition", `attachment; filename="${fileName}"`);
 
     const allowed = ["daily", "weekly", "monthly", "user", "department"];
 
@@ -127,12 +121,11 @@ export const exportCSV = async (req, res) => {
   }
 };
 export const exportExcel = async (req, res) => {
-  console.log(req.params);
+
 
   const filter = buildReportFilter(req.params.type, {
     userId: req.params.id,
   });
-  console.log(filter);
 
   let report = await getAttendanceReport(filter);
 
@@ -142,7 +135,9 @@ export const exportExcel = async (req, res) => {
     );
   }
 
-  await exportAttendanceExcel(report, res, req.params.type);
+  const fileName = getReportFileName(req.params.type, "xlsx", req.params.id);
+
+  await exportAttendanceExcel(report, res, fileName);
 };
 
 // export const exportdailyExcel = async (

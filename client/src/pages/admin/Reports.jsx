@@ -11,8 +11,10 @@ import DownloadReports from "../../components/reports/DownloadReports";
 import DepartmentReport from "../../components/reports/DepartmentReport";
 import EmployeeReport from "../../components/reports/EmployeeReport";
 import { getAdminDashboardStats } from "../../api/dashboardApi";
+import { downloadReport } from "../../api/reportApi";
 import PageHeader from "../../components/ui/PageHeader";
 import Card from "../../components/ui/Card";
+import Section from "../../components/ui/Section";
 const Reports = () => {
   const [stats, setStats] = useState(null);
 
@@ -27,6 +29,7 @@ const Reports = () => {
   useEffect(() => {
     const loadData = async () => {
       const dashboardRes = await getAdminDashboardStats();
+      console.log("Dashboard response:", dashboardRes.data);
 
       setStats(dashboardRes.data.stats);
 
@@ -41,70 +44,81 @@ const Reports = () => {
 
     loadData();
   }, []);
+  console.log("stats =", stats);
+console.log("departments =", departments);
+console.log("employees =", employees);
   return (
-    <div className="page-container">
-      <PageHeader
-        title="Reports & Analytics"
-        subtitle="Monitor attendance trends and generate organization reports."
-      />
+  <div className="page">
+    <PageHeader
+      title="Reports & Analytics"
+      subtitle="Monitor attendance trends and generate organization reports."
+    />
 
-      {/* ================= OVERVIEW ================= */}
+    {/* ================= OVERVIEW ================= */}
 
-      <Card>
-        <h2>Overview</h2>
+    <Section
+      title="Attendance Overview"
+      description="Quick overview of today's attendance statistics."
+    >
+      <ReportOverview stats={stats} />
+    </Section>
 
-        <ReportOverview stats={stats} />
-      </Card>
+    {/* ================= ANALYTICS ================= */}
 
-      {/* ================= ANALYTICS ================= */}
-
-      <div className="dashboard-grid-2">
+    <Section
+      title="Attendance Analytics"
+      description="Attendance trends and monthly summary."
+    >
+      <div className="grid-2">
         <Card>
-          <h2>Attendance Trend</h2>
-
           <AttendanceTrend trend={stats?.attendanceTrend} />
         </Card>
 
         <Card>
-          <h2>Monthly Summary</h2>
-
           <MonthlySummary summary={stats?.monthlySummary} />
         </Card>
       </div>
+    </Section>
 
-      {/* ================= EXPORTS ================= */}
+    {/* ================= EXPORTS ================= */}
 
+    <Section
+      title="Download Reports"
+      description="Export attendance reports in CSV or Excel format."
+    >
       <Card>
-        <h2>Download Reports</h2>
-
         <DownloadReports />
       </Card>
+    </Section>
 
-      {/* ================= REPORT GENERATORS ================= */}
+    {/* ================= REPORT GENERATORS ================= */}
 
-      <div className="dashboard-grid-2">
+    <Section
+      title="Generate Custom Reports"
+      description="Generate reports for a specific department or employee."
+    >
+      <div className="grid-2">
         <Card>
-          <h2>Department Report</h2>
-
           <DepartmentReport
             departments={departments}
             department={department}
             setDepartment={setDepartment}
+            downloadReport={downloadReport}
           />
         </Card>
 
         <Card>
-          <h2>Employee Report</h2>
-
           <EmployeeReport
             employees={employees}
             employee={employee}
             setEmployee={setEmployee}
+            downloadReport={downloadReport}
           />
         </Card>
       </div>
-    </div>
-  );
+    </Section>
+  </div>
+);
 };
 
 export default Reports;

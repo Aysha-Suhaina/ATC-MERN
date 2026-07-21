@@ -7,50 +7,62 @@ const DepartmentReport = ({
   downloadReport,
 }) => {
   return (
-    <>
-      <h2>Department Report</h2>
+  <div className="report-generator">
+    <p className="section-subtitle">
+      Generate an attendance report for a specific department.
+    </p>
+
+    <div className="form-group">
+      <label>Select Department</label>
 
       <select
+        className="form-select"
         value={department}
-        onChange={(e) => setDepartment(e.target.value)}
+        onChange={(e) =>
+          setDepartment(e.target.value)
+        }
       >
-        <option value="">Select Department</option>
+        <option value="">
+          Choose a department...
+        </option>
 
         {departments.map((dept) => (
-          <option key={dept._id} value={dept._id}>
+          <option
+            key={dept._id}
+            value={dept._id}
+          >
             {dept.name}
           </option>
         ))}
       </select>
+    </div>
 
-      <br />
-      <br />
-
+    <div className="report-download-actions">
       <Button
+        variant="secondary"
         disabled={!department}
         onClick={() =>
           downloadReport(
-            `/department/${department}/csv`,
-            "department-report.csv",
+            `/department/${department}/csv`
           )
         }
       >
-        CSV
+        Export CSV
       </Button>
 
       <Button
         disabled={!department}
         onClick={() =>
           downloadReport(
-            `/department/${department}/excel`,
-            "department-report.xlsx",
+            `/department/${department}/excel`
           )
         }
       >
-        Excel
+        Export Excel
       </Button>
-    </>
-  );
+    </div>
+  </div>
+);
 };
 
 export default DepartmentReport;
