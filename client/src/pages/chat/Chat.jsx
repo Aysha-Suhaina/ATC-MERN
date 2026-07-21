@@ -5,6 +5,7 @@ import Sidebar from "../../components/chat/Sidebar";
 import Conversation from "../../components/chat/Conversation";
 import { openConversation } from "../../api/conversationApi";
 import { getMessages,markAsRead } from "../../api/messageApi";
+import '../../components/chat/chat.css';
 const Chat = () => {
   const [selectedUser, setSelectedUser] =
     useState(null);
@@ -171,12 +172,7 @@ setMessages(
 };
 
   return (
-    <div
-      style={{
-        display: "flex",
-        height: "100vh",
-      }}
-    >
+   <div className="chat-page">
       <Sidebar
         selectedUser={selectedUser}
         setSelectedUser={

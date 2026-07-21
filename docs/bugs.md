@@ -32,3 +32,7 @@ admin.css
 dashbaord.css
 like that 
 --------------
+
+resubmitting is allowed only once 
+- that too in the same day only 
+if the date passes - then absent 

@@ -532,3 +532,54 @@ select {
   padding: 30px;
   overflow-y: auto;
 }
+.status-badge.present {
+  background: #dcfce7;
+  color: #166534;
+}
+
+.status-badge.present::before {
+  background: #22c55e;
+}
+
+.status-badge.absent {
+  background: #fee2e2;
+  color: #991b1b;
+}
+
+.status-badge.absent::before {
+  background: #ef4444;
+}
+
+.status-badge.leave {
+  background: #dbeafe;
+  color: #1d4ed8;
+}
+
+.status-badge.leave::before {
+  background: #2563eb;
+}
+
+.status-badge.late {
+  background: #fef3c7;
+  color: #92400e;
+}
+
+.status-badge.late::before {
+  background: #f59e0b;
+}
+
+.status-badge.half_day {
+  background: #ede9fe;
+  color: #6d28d9;
+}
+
+.status-badge.half_day::before {
+  background: #7c3aed;
+}
+.search-bar {
+  width: 350px;
+}
+
+.search-bar input {
+  width: 100%;
+}

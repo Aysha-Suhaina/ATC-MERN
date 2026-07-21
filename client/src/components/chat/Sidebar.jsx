@@ -11,19 +11,13 @@ const Sidebar = ({
 
   const [search, setSearch] = useState("");
   return (
-    <div
-      style={{
-        width: "320px",
-        borderRight: "1px solid #ddd",
-        padding: "15px",
-      }}
-    >
+   <div className="chat-sidebar">
       <SearchBar
   search={search}
   setSearch={setSearch}
 />
 
-      <hr />
+     <div className="chat-divider"></div>
 
       {search.trim() ? (
 

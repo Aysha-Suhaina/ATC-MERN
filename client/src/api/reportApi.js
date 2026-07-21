@@ -34,7 +34,20 @@ export const downloadReport = async (
 
     link.href = downloadUrl;
 
-    link.download = fileName;
+    const disposition =
+  response.headers["content-disposition"];
+
+let downloadName = fileName;
+
+if (disposition) {
+  const match = disposition.match(/filename="?([^"]+)"?/);
+
+  if (match) {
+    downloadName = match[1];
+  }
+}
+
+link.download = downloadName || "report";
 
     document.body.appendChild(link);
 

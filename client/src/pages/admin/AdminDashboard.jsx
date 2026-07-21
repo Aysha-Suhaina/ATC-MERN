@@ -2,7 +2,6 @@ import { useEffect, useState } from "react";
 import { getProfile } from "../../api/userApi";
 import { getAdminDashboardStats } from "../../api/dashboardApi";
 import { useNavigate } from "react-router-dom";
-import { Link } from "react-router-dom";
 
 import StatCard from "../../components/ui/StatCard";
 import Button from "../../components/ui/Button";
@@ -53,11 +52,7 @@ const AdminDashboard = () => {
       <PageHeader
         title={`Welcome back, ${profile?.name}`}
         subtitle="Monitor your organization, review attendance and manage employees."
-        action={
-          <Link to="/chat">
-            <Button variant="primary">Open Chat</Button>
-          </Link>
-        }
+        
       />
       {/* ================= ORGANIZATION ================= */}
 

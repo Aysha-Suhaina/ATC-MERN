@@ -2,7 +2,6 @@ import { downloadReport } from "../../api/reportApi";
 import Button from "../ui/Button";
 
 export default function DownloadReports() {
-
   return (
     <div>
       <p className="section-subtitle">
@@ -22,12 +21,18 @@ export default function DownloadReports() {
           <div className="report-download-actions">
             <Button
               variant="secondary"
-              onClick={() => downloadReport("/daily/csv")}
+              onClick={() =>
+                downloadReport("/daily/csv", "daily-attendance.csv")
+              }
             >
               Export CSV
             </Button>
 
-            <Button onClick={() => downloadReport("/daily/excel")}>
+            <Button
+              onClick={() =>
+                downloadReport("/daily/excel", "daily-attendance.xlsx")
+              }
+            >
               Export Excel
             </Button>
           </div>
@@ -45,12 +50,18 @@ export default function DownloadReports() {
           <div className="report-download-actions">
             <Button
               variant="secondary"
-              onClick={() => downloadReport("/weekly/csv")}
+              onClick={() =>
+                downloadReport("/weekly/csv", "weekly-attendance.csv")
+              }
             >
               Export CSV
             </Button>
 
-            <Button onClick={() => downloadReport("/weekly/excel")}>
+            <Button
+              onClick={() =>
+                downloadReport("/weekly/excel", "weekly-attendance.xlsx")
+              }
+            >
               Export Excel
             </Button>
           </div>
@@ -68,12 +79,18 @@ export default function DownloadReports() {
           <div className="report-download-actions">
             <Button
               variant="secondary"
-              onClick={() => downloadReport("/monthly/csv")}
+              onClick={() =>
+                downloadReport("/monthly/csv", "monthly-attendance.csv")
+              }
             >
               Export CSV
             </Button>
 
-            <Button onClick={() => downloadReport("/monthly/excel")}>
+            <Button
+              onClick={() =>
+                downloadReport("/monthly/excel", "monthly-attendance.xlsx")
+              }
+            >
               Export Excel
             </Button>
           </div>

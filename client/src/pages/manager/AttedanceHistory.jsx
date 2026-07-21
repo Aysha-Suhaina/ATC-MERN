@@ -11,6 +11,7 @@ const AttendanceHistory = () => {
   const [records,
     setRecords] =
     useState([]);
+    const [search, setSearch] = useState("");
 
   useEffect(() => {
     const loadHistory =
@@ -31,14 +32,31 @@ const AttendanceHistory = () => {
   }, []);
 
   return (
-    <div>
+  <div className="page">
+    <div className="page-header">
+      <div>
+        <h1>Attendance History</h1>
+        <p className="section-description">
+          View attendance records of employees in your department.
+        </p>
+      </div>
+    </div>
 
-      <h1>
-        Attendance History
-      </h1>
+    <div className="card">
+      <div className="filter-bar">
+        <div className="search-bar">
+          <input
+            type="text"
+            placeholder="Search employee..."
+            value={search}
+            onChange={(e) =>
+              setSearch(e.target.value)
+            }
+          />
+        </div>
+      </div>
 
-      <table border="1">
-
+      <table className="table">
         <thead>
           <tr>
             <th>Employee</th>
@@ -50,14 +68,22 @@ const AttendanceHistory = () => {
         </thead>
 
         <tbody>
+          {records
+            .filter((record) => {
+              const keyword = search.toLowerCase();
 
-          {records.map(
-            (record) => (
+              return (
+                record.user?.name
+                  ?.toLowerCase()
+                  .includes(keyword) ||
+                record.user?.designation?.name
+                  ?.toLowerCase()
+                  .includes(keyword)
+              );
+            })
+            .map((record) => (
               <tr key={record._id}>
-
-                <td>
-                  {record.user?.name}
-                </td>
+                <td>{record.user?.name}</td>
 
                 <td>
                   {new Date(
@@ -66,35 +92,46 @@ const AttendanceHistory = () => {
                 </td>
 
                 <td>
-                  {
-                    record.attendanceStatus
-                  }
+                  <span
+                    className={`status-badge ${
+                      record.attendanceStatus ===
+                      "present"
+                        ? "active"
+                        : "inactive"
+                    }`}
+                  >
+                    {record.attendanceStatus.replace(
+                      "_",
+                      " "
+                    )}
+                  </span>
                 </td>
 
                 <td>
-                  {
-                    record.approvalStatus
-                  }
+                  <span
+                    className={`approval-badge ${record.approvalStatus}`}
+                  >
+                    {record.approvalStatus}
+                  </span>
                 </td>
 
                 <td>
-                  {
-                    record.user
-                      ?.designation
-                      ?.name
-                  }
+                  {record.user?.designation
+                    ?.name || "-"}
                 </td>
-
               </tr>
-            )
-          )}
-
+            ))}
         </tbody>
-
       </table>
 
+      {records.length === 0 && (
+        <div className="empty">
+          No attendance records found.
+        </div>
+      )}
     </div>
-  );
+  </div>
+);
 };
 
 export default AttendanceHistory;
