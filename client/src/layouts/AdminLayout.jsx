@@ -5,23 +5,17 @@ import AdminSidebar from "../components/admin/AdminSidebar";
 
 const AdminLayout = () => {
   return (
-    <>
-      <Navbar />
+    <div className="admin-layout">
+      <AdminSidebar />
 
-      <div
-        style={{
-          display: "flex",
-          minHeight: "calc(100vh - 60px)",
-        }}
-      >
-        <AdminSidebar />
+      <div className="admin-main">
+        <Navbar />
 
-        <div
-        >
+        <div className="admin-content">
           <Outlet />
         </div>
       </div>
-    </>
+    </div>
   );
 };
 

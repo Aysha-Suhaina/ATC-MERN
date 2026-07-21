@@ -84,7 +84,7 @@ function PendingAttendance() {
             <p>All attendance requests have been processed.</p>
           </div>
         ) : (
-          <table className="data-table">
+          <table className="table">
             <thead>
               <tr>
                 <th>Employee</th>

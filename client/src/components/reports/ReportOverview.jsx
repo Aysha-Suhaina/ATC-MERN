@@ -1,45 +1,46 @@
+import {
+  FiCheckCircle,
+  FiXCircle,
+  FiClock,
+  FiTrendingUp,
+} from "react-icons/fi";
+
+import StatCard from "../ui/StatCard";
+
 const ReportOverview = ({ stats }) => {
   if (!stats) return null;
 
   return (
-    <>
-      <h2>Attendance Overview</h2>
+    <div className="grid-4">
+      <StatCard
+        title="Present Today"
+        value={stats.presentToday}
+        icon={<FiCheckCircle />}
+        color="#16A34A"
+      />
 
-      <div
-        style={{
-          display: "grid",
-          gridTemplateColumns: "repeat(auto-fit,minmax(220px,1fr))",
-          gap: "20px",
-          marginBottom: "30px",
-        }}
-      >
-        <Card title="Present Today" value={stats.presentToday} />
+      <StatCard
+        title="Absent Today"
+        value={stats.absentToday}
+        icon={<FiXCircle />}
+        color="#DC2626"
+      />
 
-        <Card title="Absent Today" value={stats.absentToday} />
+      <StatCard
+        title="Pending Approval"
+        value={stats.pendingAttendance}
+        icon={<FiClock />}
+        color="#F59E0B"
+      />
 
-        <Card title="Pending Approval" value={stats.pendingAttendance} />
-
-        <Card
-          title="Attendance Rate"
-          value={`${stats.dailySummary.attendanceRate}%`}
-        />
-      </div>
-    </>
+      <StatCard
+        title="Attendance Rate"
+        value={`${stats.dailySummary.attendanceRate}%`}
+        icon={<FiTrendingUp />}
+        color="#2563EB"
+      />
+    </div>
   );
 };
-
-const Card = ({ title, value }) => (
-  <div
-    style={{
-      border: "1px solid #ddd",
-      borderRadius: "10px",
-      padding: "20px",
-    }}
-  >
-    <h4>{title}</h4>
-
-    <h2>{value}</h2>
-  </div>
-);
 
 export default ReportOverview;

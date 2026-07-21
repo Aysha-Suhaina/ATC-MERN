@@ -2,81 +2,86 @@ import { downloadReport } from "../../api/reportApi";
 import Button from "../ui/Button";
 
 export default function DownloadReports() {
-
   return (
-    <div>
-      <p className="section-subtitle">
-        Generate attendance reports in multiple formats.
-      </p>
+    <div className="report-download-list">
+      <div className="report-download-item">
+        <div>
+          <h3>📅 Daily Attendance</h3>
 
-      <div className="report-download-list">
-        {/* Daily */}
-
-        <div className="report-download-item">
-          <div>
-            <h3>📅 Daily Attendance</h3>
-
-            <p>Export today's attendance records.</p>
-          </div>
-
-          <div className="report-download-actions">
-            <Button
-              variant="secondary"
-              onClick={() => downloadReport("/daily/csv")}
-            >
-              Export CSV
-            </Button>
-
-            <Button onClick={() => downloadReport("/daily/excel")}>
-              Export Excel
-            </Button>
-          </div>
+          <p>Export today's attendance records.</p>
         </div>
 
-        {/* Weekly */}
+        <div className="report-download-actions">
+          <Button
+            variant="secondary"
+            onClick={() =>
+              downloadReport("/daily/csv")
+            }
+          >
+            Export CSV
+          </Button>
 
-        <div className="report-download-item">
-          <div>
-            <h3>📈 Weekly Attendance</h3>
+          <Button
+            onClick={() =>
+              downloadReport("/daily/excel")
+            }
+          >
+            Export Excel
+          </Button>
+        </div>
+      </div>
 
-            <p>Export attendance from the last 7 days.</p>
-          </div>
+      <div className="report-download-item">
+        <div>
+          <h3>📈 Weekly Attendance</h3>
 
-          <div className="report-download-actions">
-            <Button
-              variant="secondary"
-              onClick={() => downloadReport("/weekly/csv")}
-            >
-              Export CSV
-            </Button>
-
-            <Button onClick={() => downloadReport("/weekly/excel")}>
-              Export Excel
-            </Button>
-          </div>
+          <p>Export attendance from the last 7 days.</p>
         </div>
 
-        {/* Monthly */}
+        <div className="report-download-actions">
+          <Button
+            variant="secondary"
+            onClick={() =>
+              downloadReport("/weekly/csv")
+            }
+          >
+            Export CSV
+          </Button>
 
-        <div className="report-download-item">
-          <div>
-            <h3>📊 Monthly Attendance</h3>
+          <Button
+            onClick={() =>
+              downloadReport("/weekly/excel")
+            }
+          >
+            Export Excel
+          </Button>
+        </div>
+      </div>
 
-            <p>Export attendance for the current month.</p>
-          </div>
+      <div className="report-download-item">
+        <div>
+          <h3>📊 Monthly Attendance</h3>
 
-          <div className="report-download-actions">
-            <Button
-              variant="secondary"
-              onClick={() => downloadReport("/monthly/csv")}
-            >
-              Export CSV
-            </Button>
+          <p>Export attendance for the current month.</p>
+        </div>
 
-            <Button onClick={() => downloadReport("/monthly/excel")}>
-              Export Excel
-            </Button>
-          </div>
+        <div className="report-download-actions">
+          <Button
+            variant="secondary"
+            onClick={() =>
+              downloadReport("/monthly/csv")
+            }
+          >
+            Export CSV
+          </Button>
+
+          <Button
+            onClick={() =>
+              downloadReport("/monthly/excel")
+            }
+          >
+            Export Excel
+          </Button>
         </div>
       </div>
     </div>

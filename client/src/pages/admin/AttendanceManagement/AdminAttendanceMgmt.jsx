@@ -153,7 +153,7 @@ const AdminAttendanceMgmt = () => {
       </FilterBar>
 
       <Card>
-        <table className="data-table">
+        <table className="table">
           <thead>
             <tr>
               <th>Employee</th>

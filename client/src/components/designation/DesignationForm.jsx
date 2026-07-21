@@ -1,9 +1,10 @@
 import { useEffect, useState } from "react";
 import { toast } from "react-toastify";
+
 import { createDesignation } from "../../api/designationApi";
 import { getDepartments } from "../../api/departmentApi";
+
 import Button from "../ui/Button";
-import Card from "../ui/Card";
 
 function DesignationForm({ onSuccess }) {
   const [departments, setDepartments] = useState([]);
@@ -56,45 +57,60 @@ function DesignationForm({ onSuccess }) {
   };
 
   return (
-    <Card>
-      <h2>Create Designation</h2>
+  <div>
+    <h2>Create Designation</h2>
 
-      <form onSubmit={handleSubmit}>
-        <div className="form-group">
-          <label>Designation Name</label>
+    <p
+      style={{
+        color: "var(--text-secondary)",
+        marginBottom: "20px",
+      }}
+    >
+      Add a new designation and assign it to a department.
+    </p>
 
-          <input
-            type="text"
-            name="name"
-            value={form.name}
-            onChange={handleChange}
-            required
-          />
-        </div>
+    <form className="form-grid" onSubmit={handleSubmit}>
+      <div className="form-group">
+        <label>Designation Name</label>
 
-        <div className="form-group">
-          <label>Department</label>
+        <input
+          type="text"
+          name="name"
+          value={form.name}
+          onChange={handleChange}
+          placeholder="Software Engineer"
+          required
+        />
+      </div>
 
-          <select
-            name="department"
-            value={form.department}
-            onChange={handleChange}
-            required
-          >
-            <option value="">Select Department</option>
+      <div className="form-group">
+        <label>Department</label>
 
-            {departments.map((department) => (
-              <option key={department._id} value={department._id}>
-                {department.name}
-              </option>
-            ))}
-          </select>
-        </div>
+        <select
+          name="department"
+          value={form.department}
+          onChange={handleChange}
+          required
+        >
+          <option value="">Select Department</option>
 
-        <Button type="submit">Create Designation</Button>
-      </form>
-    </Card>
-  );
+          {departments.map((department) => (
+            <option
+              key={department._id}
+              value={department._id}
+            >
+              {department.name}
+            </option>
+          ))}
+        </select>
+      </div>
+
+      <Button type="submit">
+        Create Designation
+      </Button>
+    </form>
+  </div>
+);
 }
 
 export default DesignationForm;

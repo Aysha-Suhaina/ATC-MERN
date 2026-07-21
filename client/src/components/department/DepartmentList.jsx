@@ -47,7 +47,7 @@ function DepartmentList({ departments, refreshDepartments }) {
 
     ) : (
 
-      <table className="data-table">
+      <table className="table">
 
         <thead>
 

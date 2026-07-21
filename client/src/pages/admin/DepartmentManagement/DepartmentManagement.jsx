@@ -35,16 +35,18 @@ function DepartmentManagement() {
         subtitle="Create, update and organize company departments."
       />
 
-      <Card>
-        <DepartmentForm onSuccess={loadDepartments} />
-      </Card>
+      <div className="layout-2">
+        <Card>
+          <DepartmentForm onSuccess={loadDepartments} />
+        </Card>
 
-      <Card>
-        <DepartmentList
-          departments={departments}
-          refreshDepartments={loadDepartments}
-        />
-      </Card>
+        <Card>
+          <DepartmentList
+            departments={departments}
+            refreshDepartments={loadDepartments}
+          />
+        </Card>
+      </div>
     </div>
   );
 }

@@ -5,6 +5,7 @@ import DesignationForm from "../../../components/designation/DesignationForm";
 import DesignationList from "../../../components/designation/DesignationList";
 
 import PageHeader from "../../../components/ui/PageHeader";
+import Card from "../../../components/ui/Card";
 
 function DesignationManagement() {
   const [designations, setDesignations] = useState([]);
@@ -28,21 +29,27 @@ function DesignationManagement() {
     return <h2>Loading Designations...</h2>;
   }
 
-  return (
-    <div className="designation-management page-container">
-      <PageHeader
-        title="Designation Management"
-        subtitle="Create and manage designations across departments."
-      />
+ return (
+  <div className="page">
+    <PageHeader
+      title="Designation Management"
+      subtitle="Create and manage designations across departments."
+    />
 
-      <DesignationForm onSuccess={loadDesignations} />
+    <div className="layout-2">
+      <Card>
+        <DesignationForm onSuccess={loadDesignations} />
+      </Card>
 
-      <DesignationList
-        designations={designations}
-        refreshDesignations={loadDesignations}
-      />
+      <Card>
+        <DesignationList
+          designations={designations}
+          refreshDesignations={loadDesignations}
+        />
+      </Card>
     </div>
-  );
+  </div>
+);
 }
 
 export default DesignationManagement;

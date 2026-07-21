@@ -98,7 +98,7 @@ const EmployeeList = () => {
   };
 
   return (
-    <div>
+    <div className="page">
       <PageHeader
         title="Employee Management"
         subtitle="Manage employees, departments and roles."
@@ -166,7 +166,7 @@ const EmployeeList = () => {
           Reset
         </Button>
       </FilterBar>
-      <table border="1">
+      <table className="table">
         <thead>
           <tr>
             <th>Name</th>
