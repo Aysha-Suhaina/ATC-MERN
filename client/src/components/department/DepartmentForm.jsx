@@ -37,16 +37,10 @@ function DepartmentForm({ onSuccess }) {
 
   return (
     <div>
-      <h2>Create Department</h2>
-
-      <p
-        style={{
-          color: "var(--text-secondary)",
-          marginBottom: "20px",
-        }}
-      >
-        Add a new department to your organization.
-      </p>
+      <div className="form-header">
+        <h2>Create Department</h2>
+        <p>Add a new department to your organization.</p>
+      </div>
 
       <form className="form-grid" onSubmit={handleSubmit}>
         <div className="form-group">
@@ -73,8 +67,9 @@ function DepartmentForm({ onSuccess }) {
             placeholder="Short description..."
           />
         </div>
-
-        <Button type="submit">Create Department</Button>
+        <div className="form-actions">
+          <Button type="submit">Create Department</Button>
+        </div>
       </form>
     </div>
   );

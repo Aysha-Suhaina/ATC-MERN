@@ -23,124 +23,67 @@ function DepartmentList({ departments, refreshDepartments }) {
     }
   };
 
- return (
-  <div>
+  return (
+    <div>
+      <h2 className="section-title">Departments</h2>
+      <p className="section-description">View and manage all departments.</p>
+      {departments.length === 0 ? (
+        <div className="empty">No departments available.</div>
+      ) : (
+        <div className="table-wrapper">
+          <table className="table">
+            <thead>
+              <tr>
+                <th>Name</th>
 
-    <h2>Departments</h2>
+                <th>Description</th>
 
-    <p
-      style={{
-        color: "var(--text-secondary)",
-        marginBottom: "20px",
-      }}
-    >
-      View and manage all departments.
-    </p>
+                <th>Manager</th>
 
-    {departments.length === 0 ? (
+                <th>Actions</th>
+              </tr>
+            </thead>
 
-      <div className="empty-state">
+            <tbody>
+              {departments.map((department) => (
+                <tr key={department._id}>
+                  <td>
+                    <strong>{department.name}</strong>
+                  </td>
 
-        No departments available.
+                  <td>{department.description || "-"}</td>
 
-      </div>
+                  <td>
+                    {department.manager
+                      ? department.manager.name
+                      : "Not Assigned"}
+                  </td>
 
-    ) : (
+                  <td
+                    style={{
+                      display: "flex",
+                      gap: "10px",
+                    }}
+                  >
+                    <Link to={`/admin/departments/edit/${department._id}`}>
+                      <Button>Edit</Button>
+                    </Link>
 
-      <table className="table">
-
-        <thead>
-
-          <tr>
-
-            <th>Name</th>
-
-            <th>Description</th>
-
-            <th>Manager</th>
-
-            <th>Actions</th>
-
-          </tr>
-
-        </thead>
-
-        <tbody>
-
-          {departments.map((department) => (
-
-            <tr key={department._id}>
-
-              <td>
-
-                <strong>
-
-                  {department.name}
-
-                </strong>
-
-              </td>
-
-              <td>
-
-                {department.description || "-"}
-
-              </td>
-
-              <td>
-
-                {department.manager
-                  ? department.manager.name
-                  : "Not Assigned"}
-
-              </td>
-
-              <td
-                style={{
-                  display: "flex",
-                  gap: "10px",
-                }}
-              >
-
-                <Link
-                  to={`/admin/departments/edit/${department._id}`}
-                >
-
-                  <Button>
-
-                    Edit
-
-                  </Button>
-
-                </Link>
-
-                <Button
-                  variant="danger"
-                  onClick={() =>
-                    handleDelete(
-                      department._id
-                    )
-                  }
-                >
-
-                  Delete
-
-                </Button>
-
-              </td>
-
-            </tr>
-
-          ))}
-
-        </tbody>
-
-      </table>
-
-    )}
-
-  </div>
-);
+                    <Button
+                      variant="danger"
+                      onClick={() => handleDelete(department._id)}
+                    >
+                      Delete
+                    </Button>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      )}
+    </div>
+  );
 }
 
 export default DepartmentList;

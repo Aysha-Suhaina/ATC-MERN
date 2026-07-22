@@ -54,7 +54,7 @@ function AssignManager({ departmentId, currentManager, onAssigned }) {
     <>
       {!currentManager ? (
         <>
-          <div className="flex flex-wrap gap-sm mt-md">
+          <div className="flex-start gap-sm">
             <select
               value={employeeId}
               onChange={(e) => setEmployeeId(e.target.value)}

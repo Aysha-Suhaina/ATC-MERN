@@ -2,7 +2,7 @@ const MonthlySummary = ({ summary }) => {
   if (!summary) return null;
 
   return (
-    <div className="table-container">
+    <div className="table-wrapper">
       <table className="table">
         <tbody>
           <tr>

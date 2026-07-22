@@ -92,8 +92,9 @@ const Login = () => {
           <Link to="/reset-password" className="forgot-link">
             Forgot Password?
           </Link>
-
-          <Button type="submit">Login</Button>
+          <div className="form-actions">
+            <Button type="submit">Login</Button>
+          </div>
 
           <p className="login-footer">
             Don't have an account? <Link to="/register">Sign Up</Link>

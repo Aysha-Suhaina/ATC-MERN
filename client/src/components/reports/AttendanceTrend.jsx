@@ -2,7 +2,7 @@ const AttendanceTrend = ({ trend }) => {
   if (!trend) return null;
 
   return (
-    <div className="table-container">
+    <div className="table-wrapper">
       <table className="table">
         <thead>
           <tr>
@@ -18,15 +18,11 @@ const AttendanceTrend = ({ trend }) => {
               <td>{day.day}</td>
 
               <td>
-                <span className="status-badge approved">
-                  {day.present}
-                </span>
+                <span className="badge badge-success">{day.present}</span>
               </td>
 
               <td>
-                <span className="status-badge rejected">
-                  {day.absent}
-                </span>
+                <span className="badge badge-danger">{day.absent}</span>
               </td>
             </tr>
           ))}
