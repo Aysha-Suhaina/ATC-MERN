@@ -58,8 +58,9 @@ const MessageInput = ({ onSend, receiverId }) => {
           flex: 1,
         }}
       />
-
-      <Button type="submit">Send</Button>
+      <div className="form-actions">
+        <Button type="submit">Send</Button>
+      </div>
     </form>
   );
 };

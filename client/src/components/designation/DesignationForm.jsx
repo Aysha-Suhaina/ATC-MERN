@@ -57,60 +57,50 @@ function DesignationForm({ onSuccess }) {
   };
 
   return (
-  <div>
-    <h2>Create Designation</h2>
-
-    <p
-      style={{
-        color: "var(--text-secondary)",
-        marginBottom: "20px",
-      }}
-    >
-      Add a new designation and assign it to a department.
-    </p>
-
-    <form className="form-grid" onSubmit={handleSubmit}>
-      <div className="form-group">
-        <label>Designation Name</label>
-
-        <input
-          type="text"
-          name="name"
-          value={form.name}
-          onChange={handleChange}
-          placeholder="Software Engineer"
-          required
-        />
+    <div>
+      <div className="form-header">
+        <h2>Create Designation</h2>
+        <p>Add a new designation and assign it to a department.</p>
       </div>
 
-      <div className="form-group">
-        <label>Department</label>
+      <form className="form-grid" onSubmit={handleSubmit}>
+        <div className="form-group">
+          <label>Designation Name</label>
 
-        <select
-          name="department"
-          value={form.department}
-          onChange={handleChange}
-          required
-        >
-          <option value="">Select Department</option>
+          <input
+            type="text"
+            name="name"
+            value={form.name}
+            onChange={handleChange}
+            placeholder="Software Engineer"
+            required
+          />
+        </div>
 
-          {departments.map((department) => (
-            <option
-              key={department._id}
-              value={department._id}
-            >
-              {department.name}
-            </option>
-          ))}
-        </select>
-      </div>
+        <div className="form-group">
+          <label>Department</label>
 
-      <Button type="submit">
-        Create Designation
-      </Button>
-    </form>
-  </div>
-);
+          <select
+            name="department"
+            value={form.department}
+            onChange={handleChange}
+            required
+          >
+            <option value="">Select Department</option>
+
+            {departments.map((department) => (
+              <option key={department._id} value={department._id}>
+                {department.name}
+              </option>
+            ))}
+          </select>
+        </div>
+        <div className="form-actions">
+          <Button type="submit">Create Designation</Button>
+        </div>
+      </form>
+    </div>
+  );
 }
 
 export default DesignationForm;

@@ -119,116 +119,119 @@ const Dashboard = () => {
             />
           </div>
         )}
-      <div className="dashboard-grid-2">
-        <Section
-          title="Submit Attendance"
-          description="Record today's attendance."
-        >
-          <FormCard
-            title="Attendance Details"
-            subtitle="Fill in your attendance information."
+        <div className="dashboard-grid-2">
+          <Section
+            title="Submit Attendance"
+            description="Record today's attendance."
           >
-            <form onSubmit={handleSubmit} className="form-grid">
-              <input
-                type="time"
-                name="checkInTime"
-                onChange={handleChange}
-                required
-              />
+            <FormCard
+              title="Attendance Details"
+              subtitle="Fill in your attendance information."
+            >
+              <form onSubmit={handleSubmit} className="form-grid">
+                <input
+                  type="time"
+                  name="checkInTime"
+                  onChange={handleChange}
+                  required
+                />
 
-              <input
-                type="time"
-                name="checkOutTime"
-                onChange={handleChange}
-                required
-              />
+                <input
+                  type="time"
+                  name="checkOutTime"
+                  onChange={handleChange}
+                  required
+                />
 
-              <select name="attendanceStatus" onChange={handleChange}>
-                <option value="present">Present</option>
-                <option value="absent">Absent</option>
-                <option value="half_day">Half Day</option>
-                <option value="late">Late</option>
-                <option value="leave">Leave</option>
-              </select>
+                <select name="attendanceStatus" onChange={handleChange}>
+                  <option value="present">Present</option>
+                  <option value="absent">Absent</option>
+                  <option value="half_day">Half Day</option>
+                  <option value="late">Late</option>
+                  <option value="leave">Leave</option>
+                </select>
 
-              <textarea
-                name="remarks"
-                placeholder="Remarks"
-                rows="4"
-                onChange={handleChange}
-              />
+                <textarea
+                  name="remarks"
+                  placeholder="Remarks"
+                  rows="4"
+                  onChange={handleChange}
+                />
 
-              <div className="form-actions">
-                <Button type="submit">Submit Attendance</Button>
-              </div>
-            </form>
-          </FormCard>
-        </Section>
+                <div className="form-actions">
+                  <Button type="submit">Submit Attendance</Button>
+                </div>
+              </form>
+            </FormCard>
+          </Section>
 
-        <Section
-          title="Attendance History"
-          description="View all your submitted attendance records."
-        >
-          <Card>
-            <table className="table">
-              <thead>
-                <tr>
-                  <th>Date</th>
-                  <th>Status</th>
-                  <th>Hours</th>
-                  <th>Approval</th>
-                  <th>Action</th>
-                </tr>
-              </thead>
-
-              <tbody>
-                {Array.isArray(attendance) && attendance.length > 0 ? (
-                  attendance.map((item) => (
-                    <tr key={item._id}>
-                      <td>{new Date(item.date).toLocaleDateString()}</td>
-
-                      <td style={{ textTransform: "capitalize" }}>
-                        {item.attendanceStatus.replace("_", " ")}
-                      </td>
-
-                      <td>{item.totalHours ?? "-"}</td>
-
-                      <td>
-                        <ApprovalBadge status={item.approvalStatus} />
-                      </td>
-
-                      <td>
-  {item.approvalStatus === "rejected" ? (
-    <Button
-      variant="secondary"
-      onClick={() => navigate(`/attendance/edit/${item._id}`)}
-    >
-      Edit & Resubmit
-    </Button>
-  ) : (
-    "-"
-  )}
-</td>
+          <Section
+            title="Attendance History"
+            description="View all your submitted attendance records."
+          >
+            <Card>
+              <div className="table-wrapper">
+                <table className="table">
+                  <thead>
+                    <tr>
+                      <th>Date</th>
+                      <th>Status</th>
+                      <th>Hours</th>
+                      <th>Approval</th>
+                      <th>Action</th>
                     </tr>
-                  ))
-                ) : (
-                  <tr>
-                    <td
-                      colSpan="5"
-                      style={{
-                        textAlign: "center",
-                        padding: "30px",
-                      }}
-                    >
-                      No attendance records found.
-                    </td>
-                  </tr>
-                )}
-              </tbody>
-            </table>
-          </Card>
-        </Section>
+                  </thead>
 
+                  <tbody>
+                    {Array.isArray(attendance) && attendance.length > 0 ? (
+                      attendance.map((item) => (
+                        <tr key={item._id}>
+                          <td>{new Date(item.date).toLocaleDateString()}</td>
+
+                          <td style={{ textTransform: "capitalize" }}>
+                            {item.attendanceStatus.replace("_", " ")}
+                          </td>
+
+                          <td>{item.totalHours ?? "-"}</td>
+
+                          <td>
+                            <ApprovalBadge status={item.approvalStatus} />
+                          </td>
+
+                          <td>
+                            {item.approvalStatus === "rejected" ? (
+                              <Button
+                                variant="secondary"
+                                onClick={() =>
+                                  navigate(`/attendance/edit/${item._id}`)
+                                }
+                              >
+                                Edit & Resubmit
+                              </Button>
+                            ) : (
+                              "-"
+                            )}
+                          </td>
+                        </tr>
+                      ))
+                    ) : (
+                      <tr>
+                        <td
+                          colSpan="5"
+                          style={{
+                            textAlign: "center",
+                            padding: "30px",
+                          }}
+                        >
+                          No attendance records found.
+                        </td>
+                      </tr>
+                    )}
+                  </tbody>
+                </table>
+              </div>
+            </Card>
+          </Section>
         </div>
       </div>
     </>

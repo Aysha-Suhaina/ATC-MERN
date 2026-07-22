@@ -112,7 +112,9 @@ function EditDepartment() {
               marginTop: "25px",
             }}
           >
-            <Button type="submit">Save Changes</Button>
+            <div className="form-actions">
+              <Button type="submit">Save Changes</Button>
+            </div>
           </div>
         </form>
       </Card>

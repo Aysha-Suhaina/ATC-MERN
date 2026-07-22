@@ -73,85 +73,77 @@ function PendingAttendance() {
 
       <Card>
         {attendanceList.length === 0 ? (
-          <div
-            style={{
-              textAlign: "center",
-              padding: "40px",
-            }}
-          >
+          <div className="empty">
             <h3>No Pending Requests</h3>
 
             <p>All attendance requests have been processed.</p>
           </div>
         ) : (
-          <table className="table">
-            <thead>
-              <tr>
-                <th>Employee</th>
+          <div className="table-wrapper">
+            <table className="table">
+              <thead>
+                <tr>
+                  <th>Employee</th>
 
-                <th>Email</th>
+                  <th>Email</th>
 
-                <th>Date</th>
+                  <th>Date</th>
 
-                <th>Status</th>
+                  <th>Status</th>
 
-                <th>Check In</th>
+                  <th>Check In</th>
 
-                <th>Check Out</th>
+                  <th>Check Out</th>
 
-                <th>Actions</th>
-              </tr>
-            </thead>
-
-            <tbody>
-              {attendanceList.map((record) => (
-                <tr key={record._id}>
-                  <td>{record.user?.name}</td>
-
-                  <td>{record.user?.email}</td>
-
-                  <td>{new Date(record.date).toLocaleDateString()}</td>
-
-                  <td>
-                    <ApprovalBadge status={record.attendanceStatus} />
-                  </td>
-
-                  <td>
-                    {record.checkInTime
-                      ? new Date(record.checkInTime).toLocaleTimeString()
-                      : "-"}
-                  </td>
-
-                  <td>
-                    {record.checkOutTime
-                      ? new Date(record.checkOutTime).toLocaleTimeString()
-                      : "-"}
-                  </td>
-
-                  <td
-                    style={{
-                      display: "flex",
-                      gap: "10px",
-                    }}
-                  >
-                    <Button
-                      variant="success"
-                      onClick={() => handleApprove(record._id)}
-                    >
-                      Approve
-                    </Button>
-
-                    <Button
-                      variant="danger"
-                      onClick={() => handleReject(record._id)}
-                    >
-                      Reject
-                    </Button>
-                  </td>
+                  <th>Actions</th>
                 </tr>
-              ))}
-            </tbody>
-          </table>
+              </thead>
+
+              <tbody>
+                {attendanceList.map((record) => (
+                  <tr key={record._id}>
+                    <td>{record.user?.name}</td>
+
+                    <td>{record.user?.email}</td>
+
+                    <td>{new Date(record.date).toLocaleDateString()}</td>
+
+                    <td>
+                      <ApprovalBadge status={record.attendanceStatus} />
+                    </td>
+
+                    <td>
+                      {record.checkInTime
+                        ? new Date(record.checkInTime).toLocaleTimeString()
+                        : "-"}
+                    </td>
+
+                    <td>
+                      {record.checkOutTime
+                        ? new Date(record.checkOutTime).toLocaleTimeString()
+                        : "-"}
+                    </td>
+
+                    <td className="flex-start">
+                      <Button
+                        variant="success"
+                        onClick={() => handleApprove(record._id)}
+                      >
+                        Approve
+                      </Button>
+
+                      <Button
+                        variant="danger"
+                        onClick={() => handleReject(record._id)}
+                      >
+                        Reject
+                      </Button>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
         )}
       </Card>
     </div>

@@ -129,6 +129,7 @@ const AdminAttendanceMgmt = () => {
         </select>
 
         <input
+          className="input"
           type="date"
           value={date}
           onChange={(e) => setDate(e.target.value)}
@@ -153,46 +154,50 @@ const AdminAttendanceMgmt = () => {
       </FilterBar>
 
       <Card>
-        <table className="table">
-          <thead>
-            <tr>
-              <th>Employee</th>
+        <div className="table-wrapper">
+          <table className="table">
+            <thead>
+              <tr>
+                <th>Employee</th>
 
-              <th>Date</th>
+                <th>Date</th>
 
-              <th>Attendance</th>
+                <th>Attendance</th>
 
-              <th>Approval</th>
+                <th>Approval</th>
 
-              <th>Actions</th>
-            </tr>
-          </thead>
-
-          <tbody>
-            {records.map((record) => (
-              <tr key={record._id}>
-                <td>{record.user?.name || "Unknown User"}</td>
-
-                <td>{new Date(record.date).toLocaleDateString()}</td>
-
-                <td>{record.attendanceStatus.replace("_", " ")}</td>
-
-                <td>
-                  <StatusBadge active={record.approvalStatus === "approved"} />
-                </td>
-
-                <td>
-                  <Button
-                    variant="danger"
-                    onClick={() => handleDelete(record._id)}
-                  >
-                    Delete
-                  </Button>
-                </td>
+                <th>Actions</th>
               </tr>
-            ))}
-          </tbody>
-        </table>
+            </thead>
+
+            <tbody>
+              {records.map((record) => (
+                <tr key={record._id}>
+                  <td>{record.user?.name || "Unknown User"}</td>
+
+                  <td>{new Date(record.date).toLocaleDateString()}</td>
+
+                  <td>{record.attendanceStatus.replace("_", " ")}</td>
+
+                  <td>
+                    <StatusBadge
+                      active={record.approvalStatus === "approved"}
+                    />
+                  </td>
+
+                  <td>
+                    <Button
+                      variant="danger"
+                      onClick={() => handleDelete(record._id)}
+                    >
+                      Delete
+                    </Button>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
       </Card>
     </div>
   );

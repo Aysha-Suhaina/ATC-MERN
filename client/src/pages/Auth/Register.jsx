@@ -110,10 +110,11 @@ const Register = () => {
                     : "✕ Passwords do not match"}
                 </p>
               )}
-
-              <Button type="submit" disabled={loading}>
-                {loading ? "Creating Account..." : "Register"}
-              </Button>
+              <div className="form-actions">
+                <Button type="submit" disabled={loading}>
+                  {loading ? "Creating Account..." : "Register"}
+                </Button>
+              </div>
 
               <p className="register-footer">
                 Already have an account? <Link to="/">Login</Link>

@@ -45,80 +45,80 @@ const Reports = () => {
     loadData();
   }, []);
   console.log("stats =", stats);
-console.log("departments =", departments);
-console.log("employees =", employees);
+  console.log("departments =", departments);
+  console.log("employees =", employees);
   return (
-  <div className="page">
-    <PageHeader
-      title="Reports & Analytics"
-      subtitle="Monitor attendance trends and generate organization reports."
-    />
+    <div className="page">
+      <PageHeader
+        title="Reports & Analytics"
+        subtitle="Monitor attendance trends and generate organization reports."
+      />
 
-    {/* ================= OVERVIEW ================= */}
+      {/* ================= OVERVIEW ================= */}
 
-    <Section
-      title="Attendance Overview"
-      description="Quick overview of today's attendance statistics."
-    >
-      <ReportOverview stats={stats} />
-    </Section>
+      <Section
+        title="Attendance Overview"
+        description="Quick overview of today's attendance statistics."
+      >
+        <ReportOverview stats={stats} />
+      </Section>
 
-    {/* ================= ANALYTICS ================= */}
+      {/* ================= ANALYTICS ================= */}
 
-    <Section
-      title="Attendance Analytics"
-      description="Attendance trends and monthly summary."
-    >
-      <div className="grid-2">
+      <Section
+        title="Attendance Analytics"
+        description="Attendance trends and monthly summary."
+      >
+        <div className="content-grid">
+          <Card>
+            <AttendanceTrend trend={stats?.attendanceTrend} />
+          </Card>
+
+          <Card>
+            <MonthlySummary summary={stats?.monthlySummary} />
+          </Card>
+        </div>
+      </Section>
+
+      {/* ================= EXPORTS ================= */}
+
+      <Section
+        title="Download Reports"
+        description="Export attendance reports in CSV or Excel format."
+      >
         <Card>
-          <AttendanceTrend trend={stats?.attendanceTrend} />
+          <DownloadReports />
         </Card>
+      </Section>
 
-        <Card>
-          <MonthlySummary summary={stats?.monthlySummary} />
-        </Card>
-      </div>
-    </Section>
+      {/* ================= REPORT GENERATORS ================= */}
 
-    {/* ================= EXPORTS ================= */}
+      <Section
+        title="Generate Custom Reports"
+        description="Generate reports for a specific department or employee."
+      >
+        <div className="dashboard-grid-2">
+          <Card>
+            <DepartmentReport
+              departments={departments}
+              department={department}
+              setDepartment={setDepartment}
+              downloadReport={downloadReport}
+            />
+          </Card>
 
-    <Section
-      title="Download Reports"
-      description="Export attendance reports in CSV or Excel format."
-    >
-      <Card>
-        <DownloadReports />
-      </Card>
-    </Section>
-
-    {/* ================= REPORT GENERATORS ================= */}
-
-    <Section
-      title="Generate Custom Reports"
-      description="Generate reports for a specific department or employee."
-    >
-      <div className="grid-2">
-        <Card>
-          <DepartmentReport
-            departments={departments}
-            department={department}
-            setDepartment={setDepartment}
-            downloadReport={downloadReport}
-          />
-        </Card>
-
-        <Card>
-          <EmployeeReport
-            employees={employees}
-            employee={employee}
-            setEmployee={setEmployee}
-            downloadReport={downloadReport}
-          />
-        </Card>
-      </div>
-    </Section>
-  </div>
-);
+          <Card>
+            <EmployeeReport
+              employees={employees}
+              employee={employee}
+              setEmployee={setEmployee}
+              downloadReport={downloadReport}
+            />
+          </Card>
+        </div>
+      </Section>
+    </div>
+  );
 };
 
 export default Reports;

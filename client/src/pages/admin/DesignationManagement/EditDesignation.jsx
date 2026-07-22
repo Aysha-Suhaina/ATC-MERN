@@ -78,7 +78,7 @@ function EditDesignation() {
       />
 
       <Card>
-        <form onSubmit={handleSubmit}>
+        <form className="form-grid" onSubmit={handleSubmit}>
           <div className="form-group">
             <label>Designation Name</label>
 
@@ -109,8 +109,9 @@ function EditDesignation() {
               ))}
             </select>
           </div>
-
-          <Button type="submit">Update Designation</Button>
+          <div className="form-actions">
+            <Button type="submit">Update Designation</Button>
+          </div>
         </form>
       </Card>
     </div>

@@ -108,10 +108,6 @@ const EmployeeList = () => {
         </Button>
       </PageHeader>
 
-      <Button onClick={() => navigate("/admin/employees/create")}>
-        Create Employee
-      </Button>
-
       <FilterBar>
         <SearchBar
           value={search}
@@ -166,53 +162,55 @@ const EmployeeList = () => {
           Reset
         </Button>
       </FilterBar>
-      <table className="table">
-        <thead>
-          <tr>
-            <th>Name</th>
-            <th>Email</th>
-            <th>Department</th>
-            <th>Designation</th>
-            <th>Role</th>
-            <th>Manager</th>
-            <th>Status</th>
-            <th>Actions</th>
-          </tr>
-        </thead>
-
-        <tbody>
-          {employees.map((employee) => (
-            <tr key={employee._id}>
-              <td>{employee.name}</td>
-              <td>{employee.email}</td>
-              <td>{employee.department?.name || "-"}</td>
-              <td>{employee.designation?.name || "-"}</td>
-              <td>{employee.role}</td>
-              <td>{employee.department?.manager?.name || "Not Assigned"}</td>
-              <td>{employee.isActive ? "Active" : "Inactive"}</td>
-              <td>
-                <Button
-                  onClick={() =>
-                    navigate(`/admin/employees/edit/${employee._id}`)
-                  }
-                >
-                  Edit
-                </Button>
-
-                {employee.isActive ? (
-                  <Button onClick={() => handleDeactivate(employee)}>
-                    Deactivate
-                  </Button>
-                ) : (
-                  <Button onClick={() => handleReactivate(employee)}>
-                    Reactivate
-                  </Button>
-                )}
-              </td>
+      <div className="table-wrapper">
+        <table className="table">
+          <thead>
+            <tr>
+              <th>Name</th>
+              <th>Email</th>
+              <th>Department</th>
+              <th>Designation</th>
+              <th>Role</th>
+              <th>Manager</th>
+              <th>Status</th>
+              <th>Actions</th>
             </tr>
-          ))}
-        </tbody>
-      </table>
+          </thead>
+
+          <tbody>
+            {employees.map((employee) => (
+              <tr key={employee._id}>
+                <td>{employee.name}</td>
+                <td>{employee.email}</td>
+                <td>{employee.department?.name || "-"}</td>
+                <td>{employee.designation?.name || "-"}</td>
+                <td>{employee.role}</td>
+                <td>{employee.department?.manager?.name || "Not Assigned"}</td>
+                <td>{employee.isActive ? "Active" : "Inactive"}</td>
+                <td>
+                  <Button
+                    onClick={() =>
+                      navigate(`/admin/employees/edit/${employee._id}`)
+                    }
+                  >
+                    Edit
+                  </Button>
+
+                  {employee.isActive ? (
+                    <Button onClick={() => handleDeactivate(employee)}>
+                      Deactivate
+                    </Button>
+                  ) : (
+                    <Button onClick={() => handleReactivate(employee)}>
+                      Reactivate
+                    </Button>
+                  )}
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
     </div>
   );
 };

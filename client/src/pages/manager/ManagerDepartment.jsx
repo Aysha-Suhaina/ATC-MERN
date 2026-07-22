@@ -56,109 +56,87 @@ const ManagerDepartment = () => {
   }
 
   return (
-  <div className="page">
-    <div className="page-header">
-      <div>
-        <h1>My Department</h1>
-        <p className="section-description">
-          View your department details and update its description.
-        </p>
+    <div className="page">
+      <div className="split-layout-header">
+        <div>
+          <h1 className="page-title">My Department</h1>
+          <p className="section-description">
+            View your department details and update its description.
+          </p>
+        </div>
       </div>
-    </div>
 
-    <div className="card form-card">
-      <form onSubmit={handleSubmit}>
-        <div className="form-grid">
-          <div>
-            <label>Department Name</label>
+      <div className="card form-card">
+        <form onSubmit={handleSubmit}>
+          <div className="form-grid">
+            <div className="form-group">
+              <label>Department Name</label>
 
-            <input
-              type="text"
-              value={department.name}
-              readOnly
-            />
+              <input type="text" value={department.name} readOnly />
+            </div>
+
+            <div className="form-group">
+              <label>Department Manager</label>
+
+              <input
+                type="text"
+                value={department.manager?.name || "Not Assigned"}
+                readOnly
+              />
+            </div>
+
+            <div className="form-group">
+              <label>Description</label>
+
+              <textarea
+                rows={6}
+                value={description}
+                onChange={(e) => setDescription(e.target.value)}
+                placeholder="Enter department description..."
+              />
+            </div>
           </div>
 
-          <div>
-            <label>Department Manager</label>
+          <div className="form-actions">
+            <Button type="submit">Save Changes</Button>
+          </div>
+        </form>
+      </div>
 
-            <input
-              type="text"
-              value={
-                department.manager?.name ||
-                "Not Assigned"
-              }
-              readOnly
-            />
+      <div className="card">
+        <h3>Department Summary</h3>
+
+        <div className="grid-3">
+          <div className="info-card">
+            <div className="info-title">Department</div>
+
+            <div className="info-value">{department.name}</div>
           </div>
 
-          <div>
-            <label>Description</label>
+          <div className="info-card">
+            <div className="info-title">Manager</div>
 
-            <textarea
-              rows={6}
-              value={description}
-              onChange={(e) =>
-                setDescription(e.target.value)
-              }
-              placeholder="Enter department description..."
-            />
-          </div>
-        </div>
-
-        <div className="form-actions">
-          <Button type="submit">
-            Save Changes
-          </Button>
-        </div>
-      </form>
-    </div>
-
-    <div className="card">
-      <h3 style={{ marginBottom: "12px" }}>
-        Department Summary
-      </h3>
-
-      <div className="grid-3">
-        <div className="info-card">
-          <div className="info-title">
-            Department
+            <div className="info-value">
+              {department.manager?.name || "Not Assigned"}
+            </div>
           </div>
 
-          <div className="info-value">
-            {department.name}
-          </div>
-        </div>
+          <div className="info-card">
+            <div className="info-title">Description</div>
 
-        <div className="info-card">
-          <div className="info-title">
-            Manager
-          </div>
-
-          <div className="info-value">
-            {department.manager?.name ||
-              "Not Assigned"}
-          </div>
-        </div>
-
-        <div className="info-card">
-          <div className="info-title">
-            Description
-          </div>
-
-          <div
-            style={{
-              color: "var(--text-light)",
-              marginTop: "10px",
-            }}
-          >
-            {description || "No description added."}
+            <div
+              style={{
+                color: "var(--text-light)",
+                marginTop: "10px",
+              }}
+            >
+              {description || "No description added."}
+            </div>
           </div>
         </div>
       </div>
     </div>
-  </div>
-);
+  );
 };
 
 export default ManagerDepartment;

@@ -1,13 +1,21 @@
-const PageHeader = ({ title, subtitle, action }) => {
+const PageHeader = ({ title, subtitle, children }) => {
   return (
     <div className="page-header">
-      <div>
-        <h1>{title}</h1>
+      <div className="page-header-row">
+        <h1 className="page-title">{title}</h1>
 
-        <p>{subtitle}</p>
+        {children && (
+          <div className="page-header-actions">
+            {children}
+          </div>
+        )}
       </div>
 
-      {action}
+      {subtitle && (
+        <p className="section-description">
+          {subtitle}
+        </p>
+      )}
     </div>
   );
 };

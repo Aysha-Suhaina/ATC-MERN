@@ -146,6 +146,25 @@ h3 {
 p {
   margin-bottom: var(--spacing-md);
 }
+.page-header {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.page-header-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 24px;
+}
+
+.page-header-actions {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-shrink: 0;
+}
 
 .page-title {
   font-size: 2.25rem;
@@ -1327,6 +1346,14 @@ grid-template-columns:1fr;
   .split-layout-header {
     flex-direction: column;
     align-items: flex-start;
+  }
+   .page-header-top {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .page-header-actions {
+    width: 100%;
   }
 }
 

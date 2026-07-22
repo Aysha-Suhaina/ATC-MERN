@@ -81,7 +81,6 @@ const ManagerDashboard = () => {
 
   return (
     <>
-
       <div className="page">
         <PageHeader
           title="Manager Dashboard"
@@ -94,7 +93,7 @@ const ManagerDashboard = () => {
             subtitle="Record today's attendance."
           >
             <form onSubmit={handleSubmit} className="form-grid">
-              <div>
+              <div className="form-group">
                 <label>Check In Time</label>
 
                 <input
@@ -105,7 +104,7 @@ const ManagerDashboard = () => {
                 />
               </div>
 
-              <div>
+              <div className="form-group">
                 <label>Check Out Time</label>
 
                 <input
@@ -116,7 +115,7 @@ const ManagerDashboard = () => {
                 />
               </div>
 
-              <div>
+              <div className="form-group">
                 <label>Status</label>
 
                 <select name="attendanceStatus" onChange={handleChange}>
@@ -128,7 +127,7 @@ const ManagerDashboard = () => {
                 </select>
               </div>
 
-              <div>
+              <div className="form-group">
                 <label>Remarks</label>
 
                 <textarea
@@ -146,14 +145,9 @@ const ManagerDashboard = () => {
           </FormCard>
 
           <Card>
-            <h2 style={{ marginBottom: "10px" }}>Quick Actions</h2>
+            <h2 className="section-title">Quick Actions</h2>
 
-            <p
-              style={{
-                color: "var(--text-light)",
-                marginBottom: "20px",
-              }}
-            >
+            <p className="section-description">
               Navigate to common manager tasks.
             </p>
 
