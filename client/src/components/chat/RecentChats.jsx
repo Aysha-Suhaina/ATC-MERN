@@ -117,7 +117,7 @@ const RecentChats = ({
         return (
           <div
             key={conversation._id}
-            className="chat-user"
+            className="chat-user.active"
             onClick={() => onSelectConversation(otherUser)}
           >
             <div className="chat-user-header">

@@ -1,5 +1,5 @@
 const MessageBubble = () => {
-  return <p>No messages yet.</p>;
+  return <p className="chat-empty">No messages yet.</p>;
 };
 
 export default MessageBubble;
