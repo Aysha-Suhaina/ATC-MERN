@@ -3,50 +3,40 @@ import SearchBar from "./SearchBar";
 import RecentChats from "./RecentChats";
 import UserList from "./UserList";
 
-const Sidebar = ({
-  selectedUser,
-  setSelectedUser,
-   onlineUsers,
-}) =>  {
-
+const Sidebar = ({ selectedUser, setSelectedUser, onlineUsers }) => {
   const [search, setSearch] = useState("");
   return (
-   <div className="chat-sidebar">
-      <SearchBar
-  search={search}
-  setSearch={setSearch}
-/>
+    <div className="chat-sidebar">
+      <div className="chat-sidebar-content">
+        <SearchBar search={search} setSearch={setSearch} />
 
-     <div className="chat-divider"></div>
+        <div className="chat-divider"></div>
 
-      {search.trim() ? (
+        {search.trim() ? (
+          <UserList
+            selectedUser={selectedUser}
+            setSelectedUser={setSelectedUser}
+            onlineUsers={onlineUsers}
+            search={search}
+          />
+        ) : (
+          <>
+            <RecentChats
+              onSelectConversation={setSelectedUser}
+              onlineUsers={onlineUsers}
+            />
 
-  <UserList
-    selectedUser={selectedUser}
-    setSelectedUser={setSelectedUser}
-    onlineUsers={onlineUsers}
-    search={search}
-  />
+            <hr />
 
-) : (
-
-  <>
-    <RecentChats
-      onSelectConversation={setSelectedUser}
-      onlineUsers={onlineUsers}
-    />
-
-    <hr />
-
-    <UserList
-      selectedUser={selectedUser}
-      setSelectedUser={setSelectedUser}
-      onlineUsers={onlineUsers}
-      search=""
-    />
-  </>
-
-)}
+            <UserList
+              selectedUser={selectedUser}
+              setSelectedUser={setSelectedUser}
+              onlineUsers={onlineUsers}
+              search=""
+            />
+          </>
+        )}
+      </div>
     </div>
   );
 };

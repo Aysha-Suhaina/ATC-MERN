@@ -41,27 +41,24 @@ const MessageInput = ({ onSend, receiverId }) => {
   };
 
   return (
-    <form
-      onSubmit={handleSubmit}
-      style={{
-        display: "flex",
-        gap: "10px",
-        marginTop: "15px",
-      }}
-    >
-      <input
-        type="text"
-        placeholder="Type a message..."
-        value={text}
-        onChange={handleChange}
-        style={{
-          flex: 1,
-        }}
-      />
-      <div className="form-actions">
-        <Button type="submit">Send</Button>
-      </div>
-    </form>
+    <div className="chat-input-area">
+      <form
+        className="chat-input-row"
+        onSubmit={handleSubmit}
+      >
+        <input
+          type="text"
+          className="chat-input"
+          placeholder="Type a message..."
+          value={text}
+          onChange={handleChange}
+        />
+
+        <Button type="submit">
+          Send
+        </Button>
+      </form>
+    </div>
   );
 };
 
