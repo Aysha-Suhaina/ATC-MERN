@@ -16,7 +16,7 @@ report.[0-9]*.[0-9]*.[0-9]*.[0-9]*.json
 agents/
 
 # Temporary / Experimental
-style-correction/
+docs/style-correction.md
 # Runtime data
 pids
 *.pid
