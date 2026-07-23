@@ -1,4 +1,4 @@
-import { userToSocket } from "../utils/socketStore.js";
+import { userRoom } from "./connection.js";
 export const registerPrivateChat = (
   io,
   socket
@@ -8,29 +8,14 @@ export const registerPrivateChat = (
     "send_message",
     (data) => {
 
-      const {
-        senderId,
-        receiverId,
-        message,
-      } = data;
+      const { receiverId, message } = data;
+      const senderId = socket.data.userId;
 
       console.log(
         `${senderId} → ${receiverId}`
       );
 
-     const receiverSocket =
-  userToSocket.get(receiverId);
-
-      if (!receiverSocket) {
-
-        console.log(
-          "Receiver Offline"
-        );
-
-        return;
-
-      }
-      io.to(receiverSocket).emit(
+      io.to(userRoom(receiverId)).emit(
         "receive_message",
         {
           senderId,
@@ -42,14 +27,10 @@ export const registerPrivateChat = (
 
   socket.on(
   "message_read",
-  ({ senderId, receiverId }) => {
+  ({ receiverId }) => {
+    const senderId = socket.data.userId;
 
-    const senderSocket =
-      userToSocket.get(senderId);
-
-    if (!senderSocket) return;
-
-    io.to(senderSocket).emit(
+    io.to(userRoom(senderId)).emit(
       "message_read",
       {
         receiverId,
@@ -61,14 +42,10 @@ export const registerPrivateChat = (
 
   socket.on(
   "typing",
-  ({ senderId, receiverId }) => {
+  ({ receiverId }) => {
+    const senderId = socket.data.userId;
 
-    const receiverSocket =
-      userToSocket.get(receiverId);
-
-    if (!receiverSocket) return;
-
-    io.to(receiverSocket).emit(
+    io.to(userRoom(receiverId)).emit(
       "user_typing",
       {
         senderId,
@@ -80,14 +57,10 @@ export const registerPrivateChat = (
 
 socket.on(
   "stop_typing",
-  ({ senderId, receiverId }) => {
+  ({ receiverId }) => {
+    const senderId = socket.data.userId;
 
-    const receiverSocket =
-      userToSocket.get(receiverId);
-
-    if (!receiverSocket) return;
-
-    io.to(receiverSocket).emit(
+    io.to(userRoom(receiverId)).emit(
       "user_stop_typing",
       {
         senderId,

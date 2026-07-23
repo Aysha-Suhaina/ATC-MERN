@@ -1,11 +1,35 @@
 .sidebar {
   width: 250px;
+<<<<<<< HEAD
+  height: calc(100vh - 64px);
+
+  position: sticky;
+  top: 64px;
+
+  overflow-y: auto;
+  overflow-x: hidden;
+
+  flex-shrink: 0;
+=======
   min-height: calc(100vh - 64px);
+>>>>>>> origin/feat/model
 
   background: var(--surface);
   border-right: 1px solid var(--border);
 
   padding: 24px 18px;
+<<<<<<< HEAD
+}
+
+.sidebar-title {
+  font-size: 1.1rem;
+  font-weight: 700;
+
+  padding-bottom: 18px;
+  margin-bottom: 20px;
+
+  border-bottom: 1px solid var(--border);
+=======
 
   display: flex;
   flex-direction: column;
@@ -15,6 +39,7 @@
   font-size: 1.25rem;
   font-weight: 700;
   margin-bottom: 24px;
+>>>>>>> origin/feat/model
 }
 
 .sidebar-nav {
@@ -33,14 +58,26 @@
   transition: var(--transition);
 }
 
+<<<<<<< HEAD
+
 .sidebar-link:hover {
   background: #eef2ff;
   color: var(--primary);
+  transform:translateX(4px);
+=======
+.sidebar-link:hover {
+  background: #eef2ff;
+  color: var(--primary);
+>>>>>>> origin/feat/model
 }
 
 .sidebar-link.active {
   background: var(--primary);
   color: white;
+<<<<<<< HEAD
+  font-weight:600;
+=======
+>>>>>>> origin/feat/model
 }
 .sidebar-link {
   display: flex;
@@ -54,9 +91,17 @@
   font-weight: 500;
 
   transition: var(--transition);
+<<<<<<< HEAD
+  transform:translateX(0);
+}
+
+.sidebar-link svg {
+  font-size: 19px;
+=======
 }
 
 .sidebar-link svg {
   font-size: 18px;
+>>>>>>> origin/feat/model
   flex-shrink: 0;
 }

@@ -1,3 +1,40 @@
+<<<<<<< HEAD
+<<<<<<< Updated upstream
+
+import { useState} from 'react';
+import axios from 'axios';
+import {Link} from 'react-router-dom';
+import "./Login.css"
+import { useNavigate } from 'react-router-dom';
+import {assets} from "../../assets/assets"
+import {toast} from 'react-toastify';
+
+
+const Login = () => {
+  const navigate = useNavigate();
+  const [email,setEmail]=useState("");
+  const [password,setPassword]=useState("");
+  const [showPassword, setShowPassword]= useState(false);
+=======
+import { useState } from "react";
+import axios from "axios";
+import { useSocket } from "../../context/SocketContext";
+import { Link } from "react-router-dom";
+import "./Login.css";
+import { useNavigate } from "react-router-dom";
+import { assets } from "../../assets/assets";
+import { toast } from "react-toastify";
+import Button from "../../components/ui/Button";
+import FormCard from "../../components/ui/FormCard";
+
+const Login = () => {
+  const navigate = useNavigate();
+  const { connectSocket } = useSocket();
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [showPassword, setShowPassword] = useState(false);
+>>>>>>> Stashed changes
+=======
 import { useState } from "react";
 import axios from "axios";
 import { Link } from "react-router-dom";
@@ -13,6 +50,7 @@ const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
+>>>>>>> origin/feat/model
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -38,6 +76,9 @@ const Login = () => {
 
         localStorage.setItem("userId", res.data.userId);
         localStorage.setItem("userRole", role);
+        // The cookie set by /login authenticates the handshake. The provider
+        // already listens for presence updates, then starts the connection.
+        connectSocket();
 
         // console.log("RAW:", userId);
         // console.log("TYPE:", typeof userId);

@@ -1,53 +1,16 @@
-import {
-  userToSocket,
-  socketToUser,
-} from "../utils/socketStore.js";
+import { addUserSocket, removeUserSocket } from "../utils/socketStore.js";
 import { emitOnlineUsers } from "./onlineUsers.js";
 
-export const registerConnection = (
-  io,
-  socket
-) => {
+export const userRoom = (userId) => `user:${userId}`;
 
-  console.log(
-    "Connected:",
-    socket.id
-  );
+export const registerConnection = (io, socket) => {
+  const userId = socket.data.userId;
+  socket.join(userRoom(userId));
+  addUserSocket(userId, socket.id);
+  emitOnlineUsers(io);
 
- socket.on("register_user", (userId) => {
-  console.log("REGISTER:", userId, socket.id);
-
-  userToSocket.set(userId, socket.id);
-  socketToUser.set(socket.id, userId);
-
-  emitOnlineUsers(io, userToSocket);
-});
-
-  socket.on(
-    "disconnect",
-    () => {
-
-      const userId =
-        socketToUser.get(socket.id);
-
-        if (userId) {
-        userToSocket.delete(userId);
-
-        socketToUser.delete(socket.id);
-        }
-        emitOnlineUsers(io, userToSocket);
-
-        console.log(
-        "Online Users:",
-        [...userToSocket]
-        );
-
-      console.log(
-        "Disconnected:",
-        socket.id
-      );
-
-    }
-  );
-
+  socket.on("disconnect", () => {
+    removeUserSocket(socket.id);
+    emitOnlineUsers(io);
+  });
 };

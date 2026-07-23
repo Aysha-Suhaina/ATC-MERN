@@ -1,7 +1,15 @@
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+<<<<<<< HEAD
+<<<<<<< Updated upstream
+=======
 
+>>>>>>> origin/feat/model
 import socket from "../socket/socket";
+=======
+
+import { useSocket } from "../context/SocketContext";
+>>>>>>> Stashed changes
 
 import Button from "../components/ui/Button";
 
@@ -9,6 +17,7 @@ import "./Logout.css";
 
 function Logout({ close }) {
   const navigate = useNavigate();
+  const { disconnectSocket } = useSocket();
 
   const logout = async () => {
     await axios.post(
@@ -19,9 +28,19 @@ function Logout({ close }) {
 
     localStorage.removeItem("userId");
     localStorage.removeItem("userRole");
+<<<<<<< HEAD
+<<<<<<< Updated upstream
+    socket.disconnect();
+=======
+
+    disconnectSocket();
+
+>>>>>>> Stashed changes
+=======
 
     socket.disconnect();
 
+>>>>>>> origin/feat/model
     navigate("/");
   };
 
