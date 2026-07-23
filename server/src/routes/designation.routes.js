@@ -19,15 +19,15 @@ const router = express.Router();
 // Create Designation (Admin only)
 router.post(
   "/",
-  //authenticate,
-  //authorize("admin"),
+  authenticate,
+  authorize("admin"),
   createDesignation
 );
 
 // Get All Designations
 router.get(
   "/",
-  //authenticate,
+  authenticate,
   getAllDesignations
 );
 
@@ -47,29 +47,29 @@ router.post(
 
 router.get(
   "/department/:departmentId",
-  //authenticate,
+  authenticate,
   getDesignationsByDepartment
 );
 // Get Designation By ID
 router.get(
   "/:id",
-  //authenticate,
+  authenticate,
   getDesignationById
 );
 
 // Update Designation (Admin only)
 router.put(
   "/:id",
-  //authenticate,
-  //authorize("admin"),
+  authenticate,
+  authorize("admin"),
   updateDesignation
 );
 
 // Delete Designation (Admin only)
 router.delete(
   "/:id",
-  //authenticate,
-  //authorize("admin"),
+  authenticate,
+  authorize("admin"),
   deleteDesignation
 );
 

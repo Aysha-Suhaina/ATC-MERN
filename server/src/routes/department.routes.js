@@ -20,11 +20,14 @@ const router = express.Router();
 
 router.post(
   "/",
+  authenticate,
+  authorize("admin"),
   createDepartment
 );
 
 router.get(
   "/",
+  authenticate,
   getDepartments
 );
 router.get(
@@ -48,32 +51,43 @@ router.get(
 
 router.put(
   "/:id",
+  authenticate,
+  authorize("admin"),
   updateDepartment
 );
 
 router.delete(
   "/:id",
+  authenticate,
+  authorize("admin"),
   deleteDepartment
 );
 
 router.patch(
   "/:id/assign-manager",
+  authenticate,
+  authorize("admin"),
   assignManager
 );
 
 
 router.get(
   "/:id/employees",
+  authenticate,
   getDepartmentEmployees
 );
 
 router.patch(
   "/:id/change-manager",
+  authenticate,
+  authorize("admin"),
   changeManager
 );
 
 router.patch(
   "/:id/remove-manager",
+  authenticate,
+  authorize("admin"),
   removeManager
 );
 
