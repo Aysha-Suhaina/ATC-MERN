@@ -1,7 +1,13 @@
 import { useCallback, useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import {toast} from 'react-toastify';
+import { toast } from "react-toastify";
 import axios from "axios";
+import Button from "../../components/ui/Button";
+import Navbar from "../../components/Navbar";
+import PageHeader from "../../components/ui/PageHeader";
+import Section from "../../components/ui/Section";
+import FormCard from "../../components/ui/FormCard";
+import Card from "../../components/ui/Card";
 
 const EditAttendance = () => {
   const { id } = useParams();
@@ -9,8 +15,7 @@ const EditAttendance = () => {
 
   const [loading, setLoading] = useState(true);
 
-  const [attendance, setAttendance] =
-    useState(null);
+  const [attendance, setAttendance] = useState(null);
 
   const [formData, setFormData] = useState({
     checkInTime: "",
@@ -20,28 +25,20 @@ const EditAttendance = () => {
 
   const fetchAttendance = useCallback(async () => {
     try {
-      const res = await axios.get(
-        `/api/attendance/${id}`,
-        {
-          withCredentials: true,
-        }
-      );
+      const res = await axios.get(`/api/attendance/${id}`, {
+        withCredentials: true,
+      });
 
-      const data =
-        res.data.attendance || res.data.data;
+      const data = res.data.attendance || res.data.data;
 
       setAttendance(data);
 
       setFormData({
         checkInTime: data.checkInTime
-          ? new Date(data.checkInTime)
-              .toISOString()
-              .slice(11, 16)
+          ? new Date(data.checkInTime).toISOString().slice(11, 16)
           : "",
         checkOutTime: data.checkOutTime
-          ? new Date(data.checkOutTime)
-              .toISOString()
-              .slice(11, 16)
+          ? new Date(data.checkOutTime).toISOString().slice(11, 16)
           : "",
         remarks: data.remarks || "",
       });
@@ -72,8 +69,7 @@ const EditAttendance = () => {
   const handleChange = (e) => {
     setFormData({
       ...formData,
-      [e.target.name]:
-        e.target.value,
+      [e.target.name]: e.target.value,
     });
   };
 
@@ -81,13 +77,9 @@ const EditAttendance = () => {
     e.preventDefault();
 
     try {
-      await axios.put(
-        `/api/attendance/${id}/resubmit`,
-        formData,
-        {
-          withCredentials: true,
-        }
-      );
+      await axios.put(`/api/attendance/${id}/resubmit`, formData, {
+        withCredentials: true,
+      });
 
       toast.success("Attendance resubmitted successfully");
 
@@ -96,8 +88,7 @@ const EditAttendance = () => {
       console.error(error);
 
       toast.error(
-        error?.response?.data?.message ||
-          "Failed to resubmit attendance"
+        error?.response?.data?.message || "Failed to resubmit attendance",
       );
     }
   };
@@ -107,82 +98,90 @@ const EditAttendance = () => {
   }
 
   return (
-    <div className="container mt-4">
-      <h2>Edit Attendance</h2>
+    <>
+      <Navbar />
 
-      {attendance?.rejectionReason && (
-        <div
-          className="alert alert-danger"
-          role="alert"
+      <div className="page">
+        <PageHeader
+          title="Edit Attendance"
+          subtitle="Update your attendance details and resubmit for approval."
+        />
+
+        {attendance?.rejectionReason && (
+          <Card>
+            <h3
+              style={{
+                color: "var(--danger)",
+                marginBottom: "10px",
+              }}
+            >
+              Rejection Reason
+            </h3>
+
+            <p>{attendance.rejectionReason}</p>
+          </Card>
+        )}
+
+        <Section
+          title="Attendance Details"
+          description="Modify the required fields before resubmitting."
         >
-          <strong>
-            Rejection Reason:
-          </strong>{" "}
-          {attendance.rejectionReason}
-        </div>
-      )}
+          <FormCard
+            title="Attendance Form"
+            subtitle="Update your attendance information."
+          >
+            <form onSubmit={handleSubmit} className="form-grid">
+              <div>
+                <label>Check In Time</label>
 
-      <form onSubmit={handleSubmit}>
-        <div className="mb-3">
-          <label>
-            Check In Time
-          </label>
+                <input
+                  type="time"
+                  name="checkInTime"
+                  value={formData.checkInTime}
+                  onChange={handleChange}
+                  required
+                />
+              </div>
 
-          <input
-            type="time"
-            name="checkInTime"
-            value={
-              formData.checkInTime
-            }
-            onChange={
-              handleChange
-            }
-            className="form-control"
-            required
-          />
-        </div>
+              <div>
+                <label>Check Out Time</label>
 
-        <div className="mb-3">
-          <label>
-            Check Out Time
-          </label>
+                <input
+                  type="time"
+                  name="checkOutTime"
+                  value={formData.checkOutTime}
+                  onChange={handleChange}
+                  required
+                />
+              </div>
 
-          <input
-            type="time"
-            name="checkOutTime"
-            value={
-              formData.checkOutTime
-            }
-            onChange={
-              handleChange
-            }
-            className="form-control"
-            required
-          />
-        </div>
+              <div>
+                <label>Remarks</label>
 
-        <div className="mb-3">
-          <label>Remarks</label>
+                <textarea
+                  name="remarks"
+                  value={formData.remarks}
+                  onChange={handleChange}
+                  rows="4"
+                />
+              </div>
 
-          <textarea
-            name="remarks"
-            value={formData.remarks}
-            onChange={
-              handleChange
-            }
-            className="form-control"
-            rows="4"
-          />
-        </div>
+              <div className="form-actions">
+                <Button
+                  variant="secondary"
+                  onClick={() => navigate(-1)}
+                  type="button"
+                >
+                  Cancel
+                </Button>
 
-        <button
-          type="submit"
-          className="btn btn-primary"
-        >
-          Resubmit Attendance
-        </button>
-      </form>
-    </div>
+                <Button type="submit">Resubmit Attendance</Button>
+              </div>
+            </form>
+          </FormCard>
+        </Section>
+      </div>
+    </>
   );
 };
 

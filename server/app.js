@@ -16,11 +16,17 @@ import designationRoutes from "./src/routes/designation.routes.js";
 
 import messageRoutes from "./src/routes/message.routes.js";
 
+import dashboardRoutes from "./src/routes/dashboard.routes.js";
+
+import reportRoutes
+from "./src/routes/report.routes.js";
+
 const app = express();
 
 app.use(cors({
     origin:"http://localhost:5173",
     credentials:true,
+    exposedHeaders: ["Content-Disposition"],
 }));
 
 
@@ -64,6 +70,16 @@ app.use(
 app.use(
   "/api/messages",
   messageRoutes
+);
+
+app.use(
+  "/api/dashboard",
+  dashboardRoutes
+);
+
+app.use(
+  "/api/reports",
+  reportRoutes
 );
 
 //sample route for the app

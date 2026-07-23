@@ -1,49 +1,42 @@
-import { useEffect,useCallback, useState } from "react";
-import {toast} from 'react-toastify';
+import { useEffect, useCallback, useState } from "react";
+import { toast } from "react-toastify";
 import AssignManager from "../../../components/department/AssignManager";
 import { useNavigate, useParams } from "react-router-dom";
-
-import {
-  getDepartment,
-  updateDepartment,
-} from "../../../api/departmentApi";
+import Button from "../../../components/ui/Button";
+import { getDepartment, updateDepartment } from "../../../api/departmentApi";
+import Card from "../../../components/ui/Card";
+import PageHeader from "../../../components/ui/PageHeader";
 
 function EditDepartment() {
   const { id } = useParams();
 
   const navigate = useNavigate();
-  const [department, setDepartment] =
-  useState(null);
+  const [department, setDepartment] = useState(null);
   const [form, setForm] = useState({
     name: "",
     description: "",
   });
 
   const loadDepartment = useCallback(async () => {
-  try {
-    const response = await getDepartment(id);
+    try {
+      const response = await getDepartment(id);
 
-    setDepartment(
-  response.data.department
-);
+      setDepartment(response.data.department);
 
-setForm({
-  name:
-    response.data.department.name,
-  description:
-    response.data.department
-      .description || "",
-});
-  } catch (error) {
-    console.error(error);
-  }
-}, [id]);
+      setForm({
+        name: response.data.department.name,
+        description: response.data.department.description || "",
+      });
+    } catch (error) {
+      console.error(error);
+    }
+  }, [id]);
 
-useEffect(() => {
-  queueMicrotask(() => {
-    loadDepartment();
-  });
-}, [loadDepartment]);
+  useEffect(() => {
+    queueMicrotask(() => {
+      loadDepartment();
+    });
+  }, [loadDepartment]);
 
   const handleChange = (e) => {
     setForm((prev) => ({
@@ -68,63 +61,63 @@ useEffect(() => {
   };
 
   return (
-    <div>
+    <div className="page">
+      <PageHeader
+        title="Edit Department"
+        subtitle="Update department details and manage its assigned manager."
+      />
 
-      <h2>Edit Department</h2>
+      <Card>
+        <form className="form-grid" onSubmit={handleSubmit}>
+          <div className="form-group">
+            <label>Department Name</label>
 
-      <form onSubmit={handleSubmit}>
+            <input
+              type="text"
+              name="name"
+              value={form.name}
+              onChange={handleChange}
+              required
+            />
+          </div>
 
-        <div>
-          <label>Department Name</label>
+          <div className="form-group">
+            <label>Description</label>
 
-          <input
-            type="text"
-            name="name"
-            value={form.name}
-            onChange={handleChange}
-            required
-          />
-        </div>
+            <textarea
+              name="description"
+              rows="4"
+              value={form.description}
+              onChange={handleChange}
+            />
+          </div>
 
-        <div>
-          <label>Description</label>
-
-          <textarea
-            name="description"
-            value={form.description}
-            onChange={handleChange}
-          />
-        </div>
-
-        <hr />
+          <hr />
 
           <h3>Department Manager</h3>
 
           <p>
             <strong>Current Manager:</strong>{" "}
-            {department?.manager
-              ? department.manager.name
-              : "Not Assigned"}
+            {department?.manager ? department.manager.name : "Not Assigned"}
           </p>
 
           <AssignManager
             departmentId={id}
-            currentManager={
-              department?.manager
-            }
-            onAssigned={
-              loadDepartment
-            }
+            currentManager={department?.manager}
+            onAssigned={loadDepartment}
           />
 
-          <hr />
-
-        <button type="submit">
-          Update Department
-        </button>
-
-      </form>
-
+          <div
+            style={{
+              marginTop: "25px",
+            }}
+          >
+            <div className="form-actions">
+              <Button type="submit">Save Changes</Button>
+            </div>
+          </div>
+        </form>
+      </Card>
     </div>
   );
 }

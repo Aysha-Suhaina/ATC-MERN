@@ -1,3 +1,7 @@
+<<<<<<< HEAD
+=======
+
+>>>>>>> origin/feat/model
 @import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap");
 
 :root {
@@ -10,11 +14,19 @@
   --success: #22c55e;
   --success-light: #dcfce7;
   --success-dark: #15803d;
+<<<<<<< HEAD
 
   --warning: #f59e0b;
   --warning-light: #fef3c7;
   --warning-dark: #b45309;
 
+=======
+  
+  --warning: #f59e0b;
+  --warning-light: #fef3c7;
+  --warning-dark: #b45309;
+  
+>>>>>>> origin/feat/model
   --danger: #ef4444;
   --danger-light: #fee2e2;
   --danger-dark: #b91c1c;
@@ -23,7 +35,11 @@
   --background: #f5f7fb;
   --surface: #ffffff;
   --surface-hover: #f9fafb;
+<<<<<<< HEAD
 
+=======
+  
+>>>>>>> origin/feat/model
   --text: #1f2937;
   --text-light: #6b7280;
   --text-lighter: #9ca3af;
@@ -109,12 +125,17 @@ textarea {
   font-family: var(--font-family);
 }
 
+<<<<<<< HEAD
 h1,
 h2,
 h3,
 h4,
 h5,
 h6 {
+=======
+
+h1, h2, h3, h4, h5, h6 {
+>>>>>>> origin/feat/model
   font-weight: var(--font-weight-semibold);
   line-height: 1.3;
   margin-bottom: var(--spacing-md);
@@ -187,8 +208,13 @@ p {
   width: 100%;
   max-width: 1440px;
   margin: 0 auto;
+<<<<<<< HEAD
   padding: var(--spacing-2xl);
   padding-bottom: 60px;
+=======
+ padding: var(--spacing-2xl);
+padding-bottom: 60px;
+>>>>>>> origin/feat/model
   display: flex;
   flex-direction: column;
   gap: var(--spacing-2xl);
@@ -247,8 +273,12 @@ p {
 
 .admin-layout {
   display: flex;
+<<<<<<< HEAD
   height: 100vh;
   overflow: hidden;
+=======
+  min-height: 100vh;
+>>>>>>> origin/feat/model
 }
 
 .admin-main {
@@ -256,17 +286,26 @@ p {
   display: flex;
   flex-direction: column;
   min-width: 0;
+<<<<<<< HEAD
   overflow: hidden;
+=======
+>>>>>>> origin/feat/model
 }
 
 .admin-content {
   flex: 1;
+<<<<<<< HEAD
   overflow-y: auto;
 
   padding: var(--spacing-2xl);
 
   background: var(--background);
 
+=======
+  padding: var(--spacing-2xl);
+  overflow-y: auto;
+  background: var(--background);
+>>>>>>> origin/feat/model
   display: flex;
   flex-direction: column;
   gap: var(--spacing-2xl);
@@ -288,7 +327,11 @@ p {
 /* Card row - makes direct children (cards) flow horizontally */
 .card-row {
   display: grid;
+<<<<<<< HEAD
   grid-template-columns: repeat(2, minmax(0, 1fr));
+=======
+  grid-template-columns: repeat(2,minmax(0,1fr));
+>>>>>>> origin/feat/model
   gap: var(--spacing-xl);
 }
 
@@ -348,6 +391,10 @@ p {
   gap: var(--spacing-xl);
 }
 
+<<<<<<< HEAD
+=======
+
+>>>>>>> origin/feat/model
 /* Dashboard stat cards - aggressive 3-4 column packing */
 .dashboard-layout {
   display: grid;
@@ -363,11 +410,19 @@ p {
   gap: var(--spacing-xl);
   align-items: start;
 } */
+<<<<<<< HEAD
 .dashboard-grid-2 {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: 28px;
   align-items: start;
+=======
+.dashboard-grid-2{
+display:grid;
+grid-template-columns:repeat(2,minmax(0,1fr));
+gap:28px;
+align-items:start;
+>>>>>>> origin/feat/model
 }
 
 /* 3-column responsive grid - good for cards/stats */
@@ -395,6 +450,7 @@ p {
 /* Content grid for flexible layouts */
 .content-grid {
   display: grid;
+<<<<<<< HEAD
   grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: var(--spacing-xl);
 }
@@ -404,6 +460,19 @@ p {
 .section-grid > *,
 .content-grid > * {
   min-width: 0;
+=======
+  grid-template-columns:repeat(2,minmax(0,1fr));
+  gap: var(--spacing-xl);
+}
+
+.dashboard-grid-2>*,
+.layout-2>*,
+.section-grid>*,
+.content-grid>*{
+
+min-width:0;
+
+>>>>>>> origin/feat/model
 }
 
 .card {
@@ -522,6 +591,11 @@ p {
   color: var(--text);
 }
 
+<<<<<<< HEAD
+=======
+
+
+>>>>>>> origin/feat/model
 .btn {
   padding: var(--spacing-sm) var(--spacing-lg);
   border-radius: var(--radius-sm);
@@ -589,6 +663,11 @@ p {
   opacity: 0.9;
 }
 
+<<<<<<< HEAD
+=======
+
+
+>>>>>>> origin/feat/model
 .form-header {
   margin-bottom: var(--spacing-2xl);
 }
@@ -648,6 +727,7 @@ p {
 
 .form-select {
   width: 100%;
+<<<<<<< HEAD
   height: 46px;
 
   padding: 0 14px;
@@ -673,6 +753,8 @@ p {
   outline: none;
   border-color: var(--primary);
   box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.12);
+=======
+>>>>>>> origin/feat/model
 }
 
 .form-actions {
@@ -929,6 +1011,10 @@ p {
   color: var(--danger-dark);
 }
 
+<<<<<<< HEAD
+=======
+
+>>>>>>> origin/feat/model
 .report-generator {
   display: flex;
   flex-direction: column;
@@ -985,6 +1071,10 @@ p {
   flex-wrap: wrap;
 }
 
+<<<<<<< HEAD
+=======
+
+>>>>>>> origin/feat/model
 .empty {
   text-align: center;
   padding: var(--spacing-3xl);
@@ -1220,10 +1310,20 @@ p {
   }
 }
 
+<<<<<<< HEAD
 @media (max-width: 1100px) {
   .dashboard-grid-2 {
     grid-template-columns: 1fr;
   }
+=======
+
+@media (max-width:1100px){
+
+.dashboard-grid-2{
+grid-template-columns:1fr;
+}
+
+>>>>>>> origin/feat/model
 }
 /* Tablet: 768px */
 @media (max-width: 768px) {
@@ -1309,7 +1409,11 @@ p {
     flex-direction: column;
     align-items: flex-start;
   }
+<<<<<<< HEAD
   .page-header-top {
+=======
+   .page-header-top {
+>>>>>>> origin/feat/model
     flex-direction: column;
     align-items: flex-start;
   }
@@ -1367,4 +1471,8 @@ p {
   .form-header {
     margin-bottom: var(--spacing-lg);
   }
+<<<<<<< HEAD
 }
+=======
+}
+>>>>>>> origin/feat/model

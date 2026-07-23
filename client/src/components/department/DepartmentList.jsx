@@ -1,14 +1,12 @@
 import { Link } from "react-router-dom";
 import { deleteDepartment } from "../../api/departmentApi";
-import {toast} from 'react-toastify';
+import { toast } from "react-toastify";
+import Button from "../ui/Button";
 
-function DepartmentList({
-  departments,
-  refreshDepartments,
-}) {
+function DepartmentList({ departments, refreshDepartments }) {
   const handleDelete = async (id) => {
     const confirmDelete = window.confirm(
-      "Are you sure you want to delete this department?"
+      "Are you sure you want to delete this department?",
     );
 
     if (!confirmDelete) return;
@@ -27,67 +25,63 @@ function DepartmentList({
 
   return (
     <div>
-
-      <h2>Departments</h2>
-
+      <h2 className="section-title">Departments</h2>
+      <p className="section-description">View and manage all departments.</p>
       {departments.length === 0 ? (
-        <p>No departments available.</p>
+        <div className="empty">No departments available.</div>
       ) : (
-        <table border="1" cellPadding="10">
+        <div className="table-wrapper">
+          <table className="table">
+            <thead>
+              <tr>
+                <th>Name</th>
 
-          <thead>
-            <tr>
-              <th>Name</th>
-              <th>Description</th>
-              <th>Manager</th>
-              <th>Actions</th>
-            </tr>
-          </thead>
+                <th>Description</th>
 
-          <tbody>
+                <th>Manager</th>
 
-            {departments.map((department) => (
-              <tr key={department._id}>
-
-                <td>{department.name}</td>
-
-                <td>
-                  {department.description || "-"}
-                </td>
-
-                <td>
-                  {department.manager
-                    ? department.manager.name
-                    : "Not Assigned"}
-                </td>
-
-                <td>
-                  <Link
-                    to={`/admin/departments/edit/${department._id}`}
-                  >
-                    <button>Edit</button>
-                  </Link>
-
-                  <button
-                    onClick={() =>
-                      handleDelete(
-                        department._id
-                      )
-                    }
-                  >
-                    Delete
-                  </button>
-
-                </td>
-
+                <th>Actions</th>
               </tr>
-            ))}
+            </thead>
 
-          </tbody>
+            <tbody>
+              {departments.map((department) => (
+                <tr key={department._id}>
+                  <td>
+                    <strong>{department.name}</strong>
+                  </td>
 
-        </table>
+                  <td>{department.description || "-"}</td>
+
+                  <td>
+                    {department.manager
+                      ? department.manager.name
+                      : "Not Assigned"}
+                  </td>
+
+                  <td
+                    style={{
+                      display: "flex",
+                      gap: "10px",
+                    }}
+                  >
+                    <Link to={`/admin/departments/edit/${department._id}`}>
+                      <Button>Edit</Button>
+                    </Link>
+
+                    <Button
+                      variant="danger"
+                      onClick={() => handleDelete(department._id)}
+                    >
+                      Delete
+                    </Button>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
       )}
-
     </div>
   );
 }

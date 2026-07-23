@@ -1,15 +1,11 @@
 import { useRef, useState } from "react";
+import Button from "../ui/Button";
 import socket from "../../socket/socket";
 
-const MessageInput = ({
-  onSend,
-  receiverId,
-}) => {
-  const [text, setText] =
-    useState("");
+const MessageInput = ({ onSend, receiverId }) => {
+  const [text, setText] = useState("");
 
-  const typingTimer =
-    useRef(null);
+  const typingTimer = useRef(null);
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -19,8 +15,7 @@ const MessageInput = ({
     onSend(text);
 
     socket.emit("stop_typing", {
-      senderId:
-        localStorage.getItem("userId"),
+      senderId: localStorage.getItem("userId"),
       receiverId,
     });
 
@@ -31,53 +26,39 @@ const MessageInput = ({
     setText(e.target.value);
 
     socket.emit("typing", {
-      senderId:
-        localStorage.getItem("userId"),
+      senderId: localStorage.getItem("userId"),
       receiverId,
     });
 
-    clearTimeout(
-      typingTimer.current
-    );
+    clearTimeout(typingTimer.current);
 
-    typingTimer.current =
-      setTimeout(() => {
-        socket.emit(
-          "stop_typing",
-          {
-            senderId:
-              localStorage.getItem(
-                "userId"
-              ),
-            receiverId,
-          }
-        );
-      }, 1000);
+    typingTimer.current = setTimeout(() => {
+      socket.emit("stop_typing", {
+        senderId: localStorage.getItem("userId"),
+        receiverId,
+      });
+    }, 1000);
   };
 
   return (
-    <form
-      onSubmit={handleSubmit}
-      style={{
-        display: "flex",
-        gap: "10px",
-        marginTop: "15px",
-      }}
-    >
-      <input
-        type="text"
-        placeholder="Type a message..."
-        value={text}
-        onChange={handleChange}
-        style={{
-          flex: 1,
-        }}
-      />
+    <div className="chat-input-area">
+      <form
+        className="chat-input-row"
+        onSubmit={handleSubmit}
+      >
+        <input
+          type="text"
+          className="chat-input"
+          placeholder="Type a message..."
+          value={text}
+          onChange={handleChange}
+        />
 
-      <button type="submit">
-        Send
-      </button>
-    </form>
+        <Button type="submit">
+          Send
+        </Button>
+      </form>
+    </div>
   );
 };
 

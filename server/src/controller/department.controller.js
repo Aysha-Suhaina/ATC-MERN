@@ -134,12 +134,12 @@ export const updateMyDepartment = async (
       manager: req.user._id
     }).populate("manager", "name email");
 
-    if (!user.department) {
-      return res.status(404).json({
-        success: false,
-        message: "You are not assigned to any department.",
-      });
-    }
+    // if (!department) {
+    //   return res.status(404).json({
+    //     success: false,
+    //     message: "You are not assigned to any department.",
+    //   });
+    // }
 
 
     if (!department) {

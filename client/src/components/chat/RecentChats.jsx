@@ -101,99 +101,57 @@ const RecentChats = ({
 }, []);
 
   return (
+  <div className="recent-chats">
+    <h3 className="chat-title">Recent Chats</h3>
 
-    <div>
+    {conversations.length === 0 ? (
+      <p className="empty-chat">No conversations yet.</p>
+    ) : (
+      conversations.map((conversation) => {
+        const otherUser = conversation.participants.find(
+          (user) => user._id !== myId
+        );
 
-      <h3>Recent Chats</h3>
+        const online = onlineUsers.includes(otherUser._id);
 
-      {conversations.map(
-        (conversation) => {
+        return (
+          <div
+            key={conversation._id}
+            className="chat-user.active"
+            onClick={() => onSelectConversation(otherUser)}
+          >
+            <div className="chat-user-header">
+              <div className="chat-user-info">
+                <span
+                  className={`online-dot ${
+                    online ? "online" : "offline"
+                  }`}
+                />
 
-          const otherUser =
-            conversation.participants.find(
-              (user) =>
-                user._id !== myId
-            );
+                <span className="chat-user-name">
+                  {otherUser.name}
+                </span>
+              </div>
 
-          const online =
-            onlineUsers.includes(
-              otherUser._id
-            );
-
-          return (
-
-            <div
-              key={conversation._id}
-              onClick={() =>
-                onSelectConversation(
-                  otherUser
-                )
-              }
-              style={{
-                cursor: "pointer",
-                padding: "10px",
-                borderBottom:
-                  "1px solid #ddd",
-              }}
-            >
-
-              <div
-  style={{
-    display: "flex",
-    justifyContent: "space-between",
-    alignItems: "center",
-  }}
->
-  <div>
-    <span>
-      {online ? "🟢" : "⚪"}
-    </span>
-
-    {" "}
-
-    <strong>
-      {otherUser.name}
-    </strong>
-  </div>
-
-  <small
-    style={{
-      color: "#777",
-    }}
-  >
-    {formatTime(
-      conversation.lastMessage
-        ?.createdAt
-    )}
-  </small>
-</div>
-
-              <small
-  style={{
-    color: "#666",
-    display: "block",
-    marginTop: "4px",
-  }}
->
-  {conversation.lastMessage?.content
-    ?.length > 35
-    ? conversation.lastMessage.content.slice(
-        0,
-        35
-      ) + "..."
-    : conversation.lastMessage?.content}
-</small>
-
+              <small className="chat-time">
+                {formatTime(
+                  conversation.lastMessage?.createdAt
+                )}
+              </small>
             </div>
 
-          );
-
-        }
-      )}
-
-    </div>
-
-  );
+            <div className="chat-last-message">
+              {conversation.lastMessage?.content?.length > 35
+                ? conversation.lastMessage.content.slice(0, 35) + "..."
+                : conversation.lastMessage?.content ||
+                  "No messages yet"}
+            </div>
+          </div>
+        );
+      })
+    )}
+  </div>
+);
 
 };
 

@@ -20,15 +20,49 @@ export const updateProfile = async (data) => {
 
 //employee mgmt 
 
-export const getEmployees =
-  async () => {
-    return axios.get(
-      `${API}/employees`,
-      {
-        withCredentials: true,
-      }
+export const getEmployees = (
+  filters = {}
+) => {
+
+  const params =
+    new URLSearchParams();
+
+  if (filters.search)
+    params.append(
+      "search",
+      filters.search
     );
-  };
+
+  if (filters.department)
+    params.append(
+      "department",
+      filters.department
+    );
+
+  if (filters.designation)
+    params.append(
+      "designation",
+      filters.designation
+    );
+
+  if (
+    filters.active !== "" &&
+    filters.active !== undefined
+  ) {
+    params.append(
+      "active",
+      filters.active
+    );
+  }
+
+  return axios.get(
+    `${API}/employees?${params.toString()}`,
+    {
+      withCredentials: true,
+    }
+  );
+
+};
 
 export const createEmployee =
   async (data) => {

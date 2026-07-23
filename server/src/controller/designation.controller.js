@@ -49,7 +49,8 @@ export const getAllDesignations = async (req, res) => {
   designation: designation._id,
   role: "employee",
 });
-console.log(designation.name, employeeCount);
+
+//console.log(designation.name, employeeCount);
         return {
           ...designation.toObject(),
           employeeCount,

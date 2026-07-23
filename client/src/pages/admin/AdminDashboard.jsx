@@ -1,201 +1,181 @@
 import { useEffect, useState } from "react";
 import { getProfile } from "../../api/userApi";
+import { getAdminDashboardStats } from "../../api/dashboardApi";
 import { useNavigate } from "react-router-dom";
-import { Link } from "react-router-dom";
-import Navbar from "../../components/Navbar";
+
+import StatCard from "../../components/ui/StatCard";
+import Button from "../../components/ui/Button";
+import Section from "../../components/ui/Section";
+import InfoCard from "../../components/ui/InfoCard";
+
+import PageHeader from "../../components/ui/PageHeader";
+
+import {
+  FiUsers,
+  FiUserCheck,
+  FiBriefcase,
+  FiLayers,
+  FiClock,
+  FiXCircle,
+  FiCheckCircle,
+  FiTrendingUp,
+} from "react-icons/fi";
 
 const AdminDashboard = () => {
   const navigate = useNavigate();
 
-  const [profile, setProfile] =
-    useState(null);
+  const [profile, setProfile] = useState(null);
+  const [stats, setStats] = useState(null);
 
   useEffect(() => {
-  const fetchProfile = async () => {
-    try {
-      const res = await getProfile();
+    const fetchProfile = async () => {
+      try {
+        const res = await getProfile();
 
-      setProfile(
-        res.data?.data ??
-        res.data
-      );
-    } catch (error) {
-      console.log(error);
-    }
-  };
+        setProfile(res.data?.data ?? res.data);
+
+        const statsRes = await getAdminDashboardStats();
+
+        setStats(statsRes.data.stats);
+      } catch (error) {
+        console.log(error);
+      }
+    };
 
     fetchProfile();
   }, []);
 
   return (
-    <>
-    
-      <Navbar />
+    <div className="page">
+      <PageHeader
+        title={`Welcome back, ${profile?.name}`}
+        subtitle="Monitor your organization, review attendance and manage employees."
+      />
 
-      <div style={{ padding: "25px" }}>
-        <h1>Admin Dashboard</h1>
+     {/* // top dashbaord */}
 
-        {profile && (
-          <>
-            <h3>Welcome back, {profile.name} </h3>
-
-            <p>
-              <strong>Role:</strong> {profile.role}
-            </p>
-
-            <p>
-              <strong>Department:</strong>{" "}
-              {profile.department || "Not Assigned"}
-            </p>
-          </>
-        )}
-
-        <Link to="/chat">
-          <button>Chat</button>
-        </Link>
-
-        <hr />
-
-
-
-        <p>
-          Manage employees, attendance, departments,
-          designations, reports and organizational
-          settings from a single place.
-        </p>
-
-        <hr />
-
-        <h2>Attendance Management</h2>
-
-        <p>
-          Review attendance records and approve or
-          reject attendance submissions.
-        </p>
-
-        <button
-          onClick={() =>
-            navigate("/admin/attendance")
-          }
+      <div className="section-grid">
+        <Section
+          title="Organization Overview"
+          description="Current organization statistics."
         >
-          View Attendance
-        </button>
+          {stats && (
+            <div className="grid-4">
+              <StatCard
+                title="Employees"
+                value={stats.totalEmployees}
+                icon={<FiUsers />}
+              />
 
-        <button
-          onClick={() =>
-            navigate("/admin/pending-attendance")
-          }
-          style={{ marginLeft: "10px" }}
+              <StatCard
+                title="Managers"
+                value={stats.totalManagers}
+                icon={<FiUserCheck />}
+                color="#16A34A"
+              />
+
+              <StatCard
+                title="Departments"
+                value={stats.totalDepartments}
+                icon={<FiBriefcase />}
+                color="#7C3AED"
+              />
+
+              <StatCard
+                title="Designations"
+                value={stats.totalDesignations}
+                icon={<FiLayers />}
+                color="#EA580C"
+              />
+            </div>
+          )}
+        </Section>
+
+        <Section
+          title="Attendance Overview"
+          description="Live attendance statistics for today."
         >
-          Pending Requests
-        </button>
+          {stats && (
+            <div className="grid-4">
+              <StatCard
+                title="Present Today"
+                value={stats.presentToday}
+                icon={<FiCheckCircle />}
+                color="#16A34A"
+              />
 
-        <hr />
+              <StatCard
+                title="Absent Today"
+                value={stats.absentToday}
+                icon={<FiXCircle />}
+                color="#DC2626"
+              />
 
-        <h2>Employee Management</h2>
+              <StatCard
+                title="Pending Requests"
+                value={stats.pendingAttendance}
+                icon={<FiClock />}
+                color="#F59E0B"
+              />
 
-        <p>
-          Create employee accounts, update employee
-          information and manage user roles.
-        </p>
-
-        <button
-          onClick={() =>
-            navigate("/admin/employees")
-          }
-        >
-          Employee List
-        </button>
-
-        <button
-          onClick={() =>
-            navigate("/admin/employees/create")
-          }
-          style={{ marginLeft: "10px" }}
-        >
-          Create Employee
-        </button>
-
-        <hr />
-
-        <h2>Organization Management</h2>
-
-        <p>
-          Configure the company's departments,
-          designations and department managers.
-        </p>
-
-        <button
-          onClick={() =>
-            navigate("/admin/departments")
-          }
-        >
-          Manage Departments
-        </button>
-
-        <button
-          onClick={() =>
-            navigate("/admin/designations")
-          }
-          style={{ marginLeft: "10px" }}
-        >
-          Manage Designations
-        </button>
-
-        <hr />
-
-        <h2>Reports</h2>
-
-        <p>
-          Generate attendance and employee reports and
-          export them in multiple formats.
-        </p>
-
-        <button disabled>
-          Attendance Reports (Coming Soon)
-        </button>
-
-        <button
-          disabled
-          style={{ marginLeft: "10px" }}
-        >
-          Employee Reports (Coming Soon)
-        </button>
-
-        <hr />
-
-        <h2>Communication</h2>
-
-        <p>
-          Access private messaging and department group
-          chats.
-        </p>
-
-        <button disabled>
-          Private Chat (Coming Soon)
-        </button>
-
-        <button
-          disabled
-          style={{ marginLeft: "10px" }}
-        >
-          Department Chat (Coming Soon)
-        </button>
-
-        <hr />
-
-        <h2>Account</h2>
-
-        <p>
-          Manage your administrator account and
-          personal settings.
-        </p>
-
-        <button disabled>
-          My Profile (Coming Soon)
-        </button>
+              <StatCard
+                title="Attendance %"
+                value={`${stats.dailySummary.attendanceRate}%`}
+                icon={<FiTrendingUp />}
+                color="#2563EB"
+              />
+            </div>
+          )}
+        </Section>
       </div>
-    </>
+
+      {/*  BOTTOM DASHBOARD */}
+
+      <div className="section-grid">
+        <Section
+          title="Today's Attendance Summary"
+          description="Detailed attendance breakdown for today."
+        >
+          {stats && (
+            <div className="grid-3">
+              <InfoCard title="Present" value={stats.dailySummary.present} />
+
+              <InfoCard title="Late" value={stats.dailySummary.late} />
+
+              <InfoCard title="Half Day" value={stats.dailySummary.halfDay} />
+
+              <InfoCard title="Leave" value={stats.dailySummary.leave} />
+
+              <InfoCard title="Absent" value={stats.dailySummary.absent} />
+
+              <InfoCard
+                title="Attendance %"
+                value={`${stats.dailySummary.attendanceRate}%`}
+              />
+            </div>
+          )}
+        </Section>
+
+        <Section
+          title="Quick Actions"
+          description="Frequently used administrative tasks."
+        >
+          <div className="content-grid">
+            <Button onClick={() => navigate("/admin/employees/create")}>
+              Create Employee
+            </Button>
+
+            <Button onClick={() => navigate("/admin/pending-attendance")}>
+              Pending Attendance
+            </Button>
+
+            <Button onClick={() => navigate("/admin/reports")}>Reports</Button>
+
+            <Button onClick={() => navigate("/chat")}>Chat</Button>
+          </div>
+        </Section>
+      </div>
+    </div>
   );
 };
 

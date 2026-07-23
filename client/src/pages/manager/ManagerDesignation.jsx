@@ -1,248 +1,201 @@
 import { useEffect, useState } from "react";
-import Navbar from "../../components/Navbar";
 import { toast } from "react-toastify";
 
 import {
-  getMyDepartmentDesignations,createMyDepartmentDesignation,
-  updateMyDepartmentDesignation,deleteMyDepartmentDesignation
+  getMyDepartmentDesignations,
+  createMyDepartmentDesignation,
+  updateMyDepartmentDesignation,
+  deleteMyDepartmentDesignation,
 } from "../../api/designationApi";
-
+import Button from "../../components/ui/Button";
 
 const ManagerDesignation = () => {
- // console.log(updateMyDepartmentDesignation);
-  const [designations, setDesignations] =
-    useState([]);
-    const [name, setName] = useState("");
+  // console.log(updateMyDepartmentDesignation);
+  const [designations, setDesignations] = useState([]);
+  const [name, setName] = useState("");
 
+  const [editingId, setEditingId] = useState(null);
 
-const [editingId, setEditingId] =
-  useState(null);
+  const [editingName, setEditingName] = useState("");
+  const loadDesignations = async () => {
+    try {
+      const res = await getMyDepartmentDesignations();
 
-const [editingName, setEditingName] =
-  useState("");
-  const loadDesignations =
-    async () => {
-      try {
-        const res =
-          await getMyDepartmentDesignations();
-
-        setDesignations(
-          res.data.designations
-        );
-      } catch (err) {
-        toast.error(
-          err.response?.data?.msg ||
-            "Failed to load designations"
-        );
-      }
-    };
-
-    
+      setDesignations(res.data.designations);
+    } catch (err) {
+      toast.error(err.response?.data?.msg || "Failed to load designations");
+    }
+  };
 
   useEffect(() => {
     loadDesignations();
   }, []);
 
   const handleSubmit = async (e) => {
-  e.preventDefault();
+    e.preventDefault();
 
-  try {
-    await createMyDepartmentDesignation({
-      name,
-    });
+    try {
+      await createMyDepartmentDesignation({
+        name,
+      });
 
-    toast.success(
-      "Designation created."
-    );
+      toast.success("Designation created.");
 
-    setName("");
+      setName("");
 
-    loadDesignations();
-
-  } catch (err) {
-    toast.error(
-      err.response?.data?.msg ||
-      "Failed"
-    );
-  }
-};
+      loadDesignations();
+    } catch (err) {
+      toast.error(err.response?.data?.msg || "Failed");
+    }
+  };
 
   return (
-    <>
-      <Navbar />
-
-      <div>
-        <h1>
-          Department Designations
-        </h1>
-
-        <form onSubmit={handleSubmit}>
-
-  <input
-    type="text"
-    placeholder="Designation name"
-    value={name}
-    onChange={(e) =>
-      setName(e.target.value)
-    }
-    required
-  />
-
-  <button type="submit">
-    Add Designation
-  </button>
-
-</form>
-
-<hr />
-
-        {designations.length === 0 ? (
-          <p>
-            No designations found.
+    <div className="page">
+      <div className="split-layout-header">
+        <div>
+          <h1 className="page-title">Department Designations</h1>
+          <p className="section-description">
+            Create and manage designations within your department.
           </p>
+        </div>
+      </div>
+
+      <div className="card form-card">
+        <form onSubmit={handleSubmit}>
+          <div className="form-grid">
+            <input
+              type="text"
+              placeholder="Designation Name"
+              value={name}
+              onChange={(e) => setName(e.target.value)}
+              required
+            />
+          </div>
+
+          <div className="form-actions">
+            <Button type="submit">Add Designation</Button>
+          </div>
+        </form>
+      </div>
+
+      <div className="card">
+        {designations.length === 0 ? (
+          <div className="empty">No designations found.</div>
         ) : (
-          <table
-            border="1"
-            cellPadding="10"
-          >
-            <thead>
-              <tr>
-                <th>Name</th>
-                <th>Department</th>
-                <th>Employees</th>
-                <th>Actions</th>
-              </tr>
-            </thead>
+          <div className="table-wrapper">
+            <table className="table">
+              <thead>
+                <tr>
+                  <th>Name</th>
+                  <th>Department</th>
+                  <th>Employees</th>
+                  <th width="240">Actions</th>
+                </tr>
+              </thead>
 
-            <tbody>
-              {designations.map(
-                (designation) => (
-                  <tr
-                    key={
-                      designation._id
-                    }
-                  >
-                   <td>
-                    {editingId ===
-                    designation._id ? (
-                      <input
-                        value={editingName}
-                        onChange={(e) =>
-                          setEditingName(
-                            e.target.value
-                          )
-                        }
-                      />
-                    ) : (
-                      designation.name
-                    )}
-                  </td>
-
+              <tbody>
+                {designations.map((designation) => (
+                  <tr key={designation._id}>
                     <td>
-                      {
-                        designation
-                          .department
-                          ?.name
-                      }
+                      {editingId === designation._id ? (
+                        <input
+                          className="input"
+                          value={editingName}
+                          onChange={(e) => setEditingName(e.target.value)}
+                        />
+                      ) : (
+                        designation.name
+                      )}
                     </td>
 
-                    <td>{designation.employeeCount}</td>
+                    <td>{designation.department?.name}</td>
 
                     <td>
-  <>
-  {editingId === designation._id ? (
-    <>
-      <button
-        onClick={async () => {
-          try {
-            await updateMyDepartmentDesignation(
-              designation._id,
-              {
-                name: editingName,
-              }
-            );
+                      <span className="badge badge-success">
+                        {designation.employeeCount}
+                      </span>
+                    </td>
 
-            toast.success("Updated");
+                    <td>
+                      <div className="flex-start">
+                        {editingId === designation._id ? (
+                          <>
+                            <Button
+                              onClick={async () => {
+                                try {
+                                  await updateMyDepartmentDesignation(
+                                    designation._id,
+                                    {
+                                      name: editingName,
+                                    },
+                                  );
 
-            setEditingId(null);
+                                  toast.success("Updated");
 
-            loadDesignations();
+                                  setEditingId(null);
 
-          } catch (err) {
-            toast.error(
-              err.response?.data?.msg
-            );
-          }
-        }}
-      >
-        Save
-      </button>
+                                  loadDesignations();
+                                } catch (err) {
+                                  toast.error(err.response?.data?.msg);
+                                }
+                              }}
+                            >
+                              Save
+                            </Button>
 
-      <button
-        onClick={() =>
-          setEditingId(null)
-        }
-      >
-        Cancel
-      </button>
-    </>
-  ) : (
-    <>
-      <button
-        onClick={() => {
-          setEditingId(
-            designation._id
-          );
+                            <Button
+                              variant="secondary"
+                              onClick={() => setEditingId(null)}
+                            >
+                              Cancel
+                            </Button>
+                          </>
+                        ) : (
+                          <>
+                            <Button
+                              variant="secondary"
+                              onClick={() => {
+                                setEditingId(designation._id);
 
-          setEditingName(
-            designation.name
-          );
-        }}
-      >
-        Edit
-      </button>
+                                setEditingName(designation.name);
+                              }}
+                            >
+                              Edit
+                            </Button>
 
-      <button
-        onClick={async () => {
-          if (
-            !window.confirm(
-              "Delete this designation?"
-            )
-          )
-            return;
+                            <Button
+                              variant="danger"
+                              onClick={async () => {
+                                if (!window.confirm("Delete this designation?"))
+                                  return;
 
-          try {
-            await deleteMyDepartmentDesignation(
-              designation._id
-            );
+                                try {
+                                  await deleteMyDepartmentDesignation(
+                                    designation._id,
+                                  );
 
-            toast.success(
-              "Designation deleted."
-            );
+                                  toast.success("Designation deleted.");
 
-            loadDesignations();
-
-          } catch (err) {
-            toast.error(
-              err.response?.data?.msg
-            );
-          }
-        }}
-      >
-        Delete
-      </button>
-    </>
-  )}
-</>
-</td>
+                                  loadDesignations();
+                                } catch (err) {
+                                  toast.error(err.response?.data?.msg);
+                                }
+                              }}
+                            >
+                              Delete
+                            </Button>
+                          </>
+                        )}
+                      </div>
+                    </td>
                   </tr>
-                )
-              )}
-            </tbody>
-          </table>
+                ))}
+              </tbody>
+            </table>
+          </div>
         )}
       </div>
-    </>
+    </div>
   );
 };
 

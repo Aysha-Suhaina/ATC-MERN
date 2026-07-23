@@ -1,112 +1,77 @@
 import { Link } from "react-router-dom";
-import {toast} from 'react-toastify';
+import { toast } from "react-toastify";
 import { deleteDesignation } from "../../api/designationApi";
-
-function DesignationList({
-  designations,
-  refreshDesignations,
-}) {
-
+import Button from "../ui/Button";
+import Card from "../ui/Card";
+function DesignationList({ designations, refreshDesignations }) {
   const handleDelete = async (id) => {
-
-    const confirmDelete = window.confirm(
-      "Delete this designation?"
-    );
-
+    const confirmDelete = window.confirm("Delete this designation?");
     if (!confirmDelete) return;
-
     try {
-
       await deleteDesignation(id);
-
       toast.success("Designation deleted");
-
       refreshDesignations();
-
     } catch (error) {
-
       console.error(error);
-
       toast.error("Failed to delete designation");
-
     }
-
   };
-
   return (
-
-    <div>
-
-      <h2>Designations</h2>
+    <Card>
+      <h2 className="section-title">Designation List</h2>
 
       {designations.length === 0 ? (
-
-        <p>No designations found.</p>
-
+        <p className="empty">No designations found.</p>
       ) : (
+        <div className="table-wrapper">
+          <table className="table">
+            <thead>
+              <tr>
+                <th>Designation</th>
 
-        <table border="1" cellPadding="10">
+                <th>Department</th>
 
-          <thead>
+                <th>Employees</th>
 
-            <tr>
-
-              <th>Designation</th>
-
-              <th>Department</th>
-
-              <th>Actions</th>
-
-              <th>Employees</th>
-
-            </tr>
-
-          </thead>
-
-          <tbody>
-
-            {designations.map((designation) => (
-
-              <tr key={designation._id}>
-
-                <td>{designation.name}</td>
-
-                <td>{designation.department?.name}</td>
-
-                <td>
-
-                  <Link
-                    to={`/admin/designations/edit/${designation._id}`}
-                  >
-                    <button>Edit</button>
-                  </Link>
-
-                  <button
-                    onClick={() =>
-                      handleDelete(designation._id)
-                    }
-                  >
-                    Delete
-                  </button>
-
-                </td>
-
-                <td>{designation.employeeCount}</td>
-
+                <th>Actions</th>
               </tr>
+            </thead>
 
-            ))}
+            <tbody>
+              {designations.map((designation) => (
+                <tr key={designation._id}>
+                  <td>{designation.name}</td>
 
-          </tbody>
+                  <td>{designation.department?.name}</td>
 
-        </table>
+                  <td>
+                    <span className="badge badge-success">
+                      {designation.employeeCount}
+                    </span>
+                  </td>
 
+                  <td>
+                    <div className="flex-start">
+                      <Link to={`/admin/designations/edit/${designation._id}`}>
+                        <Button variant="secondary">Edit</Button>
+                      </Link>
+
+                      <Button
+                        variant="danger"
+                        onClick={() => handleDelete(designation._id)}
+                      >
+                        Delete
+                      </Button>
+                    </div>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
       )}
-
-    </div>
-
+    </Card>
   );
-
 }
 
 export default DesignationList;

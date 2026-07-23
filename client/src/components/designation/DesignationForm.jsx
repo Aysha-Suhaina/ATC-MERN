@@ -1,7 +1,10 @@
 import { useEffect, useState } from "react";
-import {toast} from 'react-toastify';
+import { toast } from "react-toastify";
+
 import { createDesignation } from "../../api/designationApi";
 import { getDepartments } from "../../api/departmentApi";
+
+import Button from "../ui/Button";
 
 function DesignationForm({ onSuccess }) {
   const [departments, setDepartments] = useState([]);
@@ -55,13 +58,13 @@ function DesignationForm({ onSuccess }) {
 
   return (
     <div>
+      <div className="form-header">
+        <h2>Create Designation</h2>
+        <p>Add a new designation and assign it to a department.</p>
+      </div>
 
-      <h2>Create Designation</h2>
-
-      <form onSubmit={handleSubmit}>
-
-        <div>
-
+      <form className="form-grid" onSubmit={handleSubmit}>
+        <div className="form-group">
           <label>Designation Name</label>
 
           <input
@@ -69,13 +72,12 @@ function DesignationForm({ onSuccess }) {
             name="name"
             value={form.name}
             onChange={handleChange}
+            placeholder="Software Engineer"
             required
           />
-
         </div>
 
-        <div>
-
+        <div className="form-group">
           <label>Department</label>
 
           <select
@@ -84,32 +86,19 @@ function DesignationForm({ onSuccess }) {
             onChange={handleChange}
             required
           >
-
-            <option value="">
-              Select Department
-            </option>
+            <option value="">Select Department</option>
 
             {departments.map((department) => (
-
-              <option
-                key={department._id}
-                value={department._id}
-              >
+              <option key={department._id} value={department._id}>
                 {department.name}
               </option>
-
             ))}
-
           </select>
-
         </div>
-
-        <button type="submit">
-          Create Designation
-        </button>
-
+        <div className="form-actions">
+          <Button type="submit">Create Designation</Button>
+        </div>
       </form>
-
     </div>
   );
 }

@@ -1,10 +1,10 @@
-import { assets } from '../../assets/assets'
-import "./Home.css"
-import Login from './Login'
+import { assets } from "../../assets/assets";
+import "./Home.css";
+import Login from "./Login";
 const Home = () => {
   return (
     <div className="homepage-div">
-      <div className="homeContainer"> 
+      <div className="homeContainer">
         <div className="login-div">
           <Login />
         </div>
@@ -13,6 +13,6 @@ const Home = () => {
         </div>
       </div>
     </div>
-  )
-}
-export default Home
+  );
+};
+export default Home;
