@@ -9,6 +9,14 @@ lerna-debug.log*
 # Diagnostic reports (https://nodejs.org/api/report.html)
 report.[0-9]*.[0-9]*.[0-9]*.[0-9]*.json
 
+# VS Code
+.vscode/
+
+# AI / Agent workspace
+agents/
+
+# Temporary / Experimental
+docs/style-correction.md
 # Runtime data
 pids
 *.pid

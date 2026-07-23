@@ -1,38 +1,48 @@
-two manager for same department
+# BUGS TRACKED  
 
-employee count error - for deleting designation.
+## Authentication
 
-wrong password hit for admin  doesnt have any effect
+* Invalid admin password does not display an error message.
 
-new chat wont be apeared in recent chat unless refreshed - fix:move recetnchat.jsx int o chat.jsx
+## Department Management
 
------
-for returning daily getdailyreports : 
-Right now you're returning the entire Attendance document, including:
+* Prevent assigning multiple managers to the same department.
 
-"_id"
-"__v"
-"updatedAt"
+## Employee Management
 
-The frontend doesn't need all of that. Since this is a report API, it's cleaner to return only the fields you'll actually display or export.
+* Filter designation dropdown based on the selected department.
+* Manager module is missing search and filtering functionality available in the Admin module.
 
-refactor this 
-------
+## Designation Management
 
-in employee search - when i choose dpet finance - the designations shows all designation from different dept too- it should only be the designation from selected department only . 
+* Employee count is incorrect after deleting a designation.
 
---------
-search and filteirnfg is done only dfro admin - manager needs that fucntionality too. 
+## Attendance
 
-------------
-keep separate folder level styling file 
-like - all chat module should have chat.css 
-auth.css
-admin.css
-dashbaord.css
-like that 
---------------
+* Allow attendance resubmission only once.
+* Resubmission should be allowed only on the same day.
+* If the day has passed, resubmission should not be allowed and the attendance should retain its final status.
 
-resubmitting is allowed only once 
-- that too in the same day only 
-if the date passes - then absent 
+## Chat
+
+* Newly created conversations do not appear in Recent Chats until the page is refreshed.
+* Suggested fix: Move `RecentChat.jsx` state management into `Chat.jsx`.
+
+## Reports
+
+* Refactor `getDailyReport()` response.
+* Return only the fields required by the frontend/export.
+* Remove unnecessary fields such as `_id`, `__v`, and `updatedAt`.
+
+## Frontend
+
+* Organize styles into feature-level stylesheets.
+* Suggested structure:
+
+  * `auth.css`
+  * `admin.css`
+  * `attendance.css`
+  * `chat.css`
+  * `dashboard.css`
+  * `employee.css`
+  * `reports.css`
