@@ -1,7 +1,7 @@
 import Message from "../model/Message.js";
 import Conversation from "../model/Conversation.js";
 import { getIO } from "../socket/socket.js";
-import { userToSocket } from "../socket/utils/socketStore.js";
+import { userRoom } from "../socket/events/connection.js";
 export const getMessages = async (
   req,
   res
@@ -115,28 +115,10 @@ export const markAsRead = async (
     unreadMessages.forEach(
       (message) => {
 
-        const senderSocket =
-          userToSocket.get(
-            message.sender.toString()
-          );
-
-        if (senderSocket) {
-          console.log(
-            "EMITTING READ:",
-            message._id.toString(),
-            "to socket:",
-            senderSocket
-          );
-
-          io.to(senderSocket).emit(
-            "message_read",
-            {
-              messageId:
-                message._id.toString(),
-            }
-          );
-
-        }
+        io.to(userRoom(message.sender.toString())).emit(
+          "message_read",
+          { messageId: message._id.toString() }
+        );
 
       }
     );

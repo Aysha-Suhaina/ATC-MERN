@@ -1,7 +1,13 @@
 import {Routes,Route} from "react-router-dom";
 import ProtectedRoute from "./ProtectedRoute";
+<<<<<<< Updated upstream
 import socket from "./socket/socket";
 import {useEffect} from 'react';
+=======
+
+import AdminLayout from "./layouts/AdminLayout";
+import Reports from "./pages/admin/Reports";
+>>>>>>> Stashed changes
 //auth
 import Home from "./pages/Auth/Home";
 import Login from "./pages/Auth/Login";
@@ -40,6 +46,7 @@ import Chat from "./pages/chat/Chat";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
+<<<<<<< Updated upstream
 function App(){
 
   useEffect(() => {
@@ -95,6 +102,9 @@ useEffect(() => {
   };
 }, []);
 
+=======
+function App() {
+>>>>>>> Stashed changes
   return (
     <>
       <Routes>

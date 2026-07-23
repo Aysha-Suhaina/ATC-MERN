@@ -1,7 +1,5 @@
-export const emitOnlineUsers = (io, userToSocket) => {
-  const users = [...userToSocket.keys()];
+import { userToSockets } from "../utils/socketStore.js";
 
-  console.log("Broadcasting online users:", users);
-
-  io.emit("online_users", users);
+export const emitOnlineUsers = (io) => {
+  io.emit("online_users", [...userToSockets.keys()]);
 };

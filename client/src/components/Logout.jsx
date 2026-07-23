@@ -1,16 +1,28 @@
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+<<<<<<< Updated upstream
 import socket from "../socket/socket";
+=======
+
+import { useSocket } from "../context/SocketContext";
+>>>>>>> Stashed changes
 
 import "./Logout.css";
 function Logout({ close }) {
   const navigate = useNavigate();
+  const { disconnectSocket } = useSocket();
 
   const logout = async () => {
     await axios.post("http://localhost:4000/api/auth/logout", {}, { withCredentials: true });
     localStorage.removeItem("userId");
     localStorage.removeItem("userRole");
+<<<<<<< Updated upstream
     socket.disconnect();
+=======
+
+    disconnectSocket();
+
+>>>>>>> Stashed changes
     navigate("/");
   };
 
