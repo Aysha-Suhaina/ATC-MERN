@@ -195,7 +195,38 @@ mongod
 
 ---
 
-### Run the Application
+## Run the Application
+
+### Database Seeding (Required)
+
+Before running the application for the first time, seed the database to populate the initial data.
+
+### Start the Backend Server
+
+```bash
+cd server
+npm install
+npm run dev
+```
+
+### Seed the Database
+
+Open a new terminal:
+
+```bash
+cd server
+npm run seed
+```
+
+The seed script will populate the database with:
+
+* Departments
+* Designations
+* Users (Admin, Managers, Employees)
+
+If the database has already been seeded, running the script again will not create duplicate records.
+
+After the seeding process completes successfully, start the frontend application and log in using one of the seeded accounts.
 
 Open a new terminal in the project root and start both the frontend and backend:
 
