@@ -1,12 +1,5 @@
-/* ===========================
-   GOOGLE FONT
-=========================== */
 
 @import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap");
-
-/* ===========================
-   VARIABLES
-=========================== */
 
 :root {
   /* Colors - Primary Palette */
@@ -80,10 +73,6 @@
   --z-modal: 1000;
 }
 
-/* ===========================
-   RESET
-=========================== */
-
 * {
   margin: 0;
   padding: 0;
@@ -121,9 +110,6 @@ textarea {
   font-family: var(--font-family);
 }
 
-/* ===========================
-   TYPOGRAPHY
-=========================== */
 
 h1, h2, h3, h4, h5, h6 {
   font-weight: var(--font-weight-semibold);
@@ -192,10 +178,6 @@ p {
   margin-bottom: var(--spacing-lg);
   font-size: var(--font-size-sm);
 }
-
-/* ===========================
-   LAYOUT
-=========================== */
 
 .page,
 .page-container {
@@ -295,10 +277,6 @@ padding-bottom: 60px;
   gap: var(--spacing-xl);
 }
 
-/* ===========================
-   LAYOUT HELPERS
-=========================== */
-
 /* Card row - makes direct children (cards) flow horizontally */
 .card-row {
   display: grid;
@@ -362,9 +340,6 @@ padding-bottom: 60px;
   gap: var(--spacing-xl);
 }
 
-/* ===========================
-   GRID UTILITIES
-=========================== */
 
 /* Dashboard stat cards - aggressive 3-4 column packing */
 .dashboard-layout {
@@ -426,10 +401,6 @@ min-width:0;
 
 }
 
-/* ===========================
-   CARDS
-=========================== */
-
 .card {
   background: var(--surface);
   border-radius: var(--radius);
@@ -455,10 +426,6 @@ min-width:0;
 .employee-dashboard .form-card {
   padding: var(--spacing-lg);
 }
-
-/* ===========================
-   STAT CARDS
-=========================== */
 
 .stat-card {
   background: var(--surface);
@@ -550,9 +517,7 @@ min-width:0;
   color: var(--text);
 }
 
-/* ===========================
-   BUTTONS
-=========================== */
+
 
 .btn {
   padding: var(--spacing-sm) var(--spacing-lg);
@@ -621,9 +586,7 @@ min-width:0;
   opacity: 0.9;
 }
 
-/* ===========================
-   FORMS
-=========================== */
+
 
 .form-header {
   margin-bottom: var(--spacing-2xl);
@@ -709,10 +672,6 @@ min-width:0;
   box-shadow: 0 0 0 3px var(--primary-light);
 }
 
-/* ===========================
-   TABLES
-=========================== */
-
 .table {
   width: 100%;
   border-collapse: collapse;
@@ -746,10 +705,6 @@ min-width:0;
 .table-compact td {
   padding: var(--spacing-md) var(--spacing-lg);
 }
-
-/* ===========================
-   SEARCH & FILTERS
-=========================== */
 
 .search-bar {
   display: flex;
@@ -810,10 +765,6 @@ min-width:0;
   border-color: var(--primary);
   box-shadow: 0 0 0 3px var(--primary-light);
 }
-
-/* ===========================
-   BADGES & STATUS
-=========================== */
 
 .badge {
   padding: var(--spacing-xs) var(--spacing-md);
@@ -952,9 +903,6 @@ min-width:0;
   color: var(--danger-dark);
 }
 
-/* ===========================
-   REPORTS & GENERATOR
-=========================== */
 
 .report-generator {
   display: flex;
@@ -1012,9 +960,6 @@ min-width:0;
   flex-wrap: wrap;
 }
 
-/* ===========================
-   UTILITIES
-=========================== */
 
 .empty {
   text-align: center;
@@ -1136,10 +1081,6 @@ min-width:0;
   gap: var(--spacing-lg);
   min-width: 0;
 }
-
-/* ===========================
-   RESPONSIVE DESIGN
-=========================== */
 
 /* Large screens: 1200px and up - maximize horizontal space usage */
 @media (min-width: 1400px) {
