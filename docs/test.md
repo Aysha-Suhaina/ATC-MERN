@@ -1,97 +1,191 @@
-Postman Test Flow
-Test 1
+# TESTING.md
 
-Server running?
+## Overview
 
-GET /
+This document provides a manual testing checklist for verifying the application's functionality before deployment or after implementing new features.
 
-Expected:
+---
 
-{
-  "message": "Attendance Management API Running"
-}
-Test 2
+## Authentication
 
-Submit attendance
+* Register a new employee account.
+* Login with valid credentials.
+* Reject invalid login credentials.
+* Logout successfully.
+* Reset password using OTP.
+* Verify JWT authentication and protected routes.
 
-POST /api/attendance
+---
 
-Body:
+## Dashboard
 
-{
-  "date":"2026-06-12",
-  "checkInTime":"2026-06-12T09:00:00Z",
-  "checkOutTime":"2026-06-12T18:00:00Z",
-  "attendanceStatus":"present",
-  "remarks":"Worked on attendance module"
-}
+### Admin Dashboard
 
-Expected:
+* Verify dashboard statistics.
+* Verify attendance summary.
+* Verify daily report.
+* Verify recent activity.
 
-{
-  "success": true
-}
-Test 3
+### Manager Dashboard
 
-Submit same attendance again
+* Verify department statistics.
+* Verify pending attendance count.
+* Verify employee overview.
 
-Expected:
+### Employee Dashboard
 
-{
-  "message":"Attendance already submitted"
-}
+* Verify personal attendance summary.
+* Verify attendance status.
 
-Status:
+---
 
-400 Bad Request
-Test 4
+## Department Management
 
-Get attendance history
+* Create a department.
+* Update department details.
+* Delete a department.
+* Assign a manager.
+* Change department manager.
+* Remove department manager.
+* Verify department employee listing.
 
-GET /api/attendance/me
+---
 
-Expected:
+## Designation Management
 
-Array with the attendance you just created.
+* Create a designation.
+* Update a designation.
+* Delete a designation.
+* Verify department-specific designations.
 
-Test 5
+---
 
-Manager gets pending attendance
+## Employee Management
 
-GET /api/attendance/pending
+* Create an employee.
+* Update employee details.
+* Deactivate an employee.
+* Reactivate an employee.
+* Search employees.
+* Filter employees.
+* Verify department and designation assignment.
 
-Expected:
+---
 
-Attendance record appears with:
+## Attendance
 
-{
-  "approvalStatus":"pending"
-}
-Test 6
+### Employee
 
-Approve attendance
+* Submit attendance.
+* Edit attendance.
+* Resubmit rejected attendance.
+* View attendance history.
 
-PATCH /api/attendance/{id}/approve
+### Manager
 
-Body:
+* View pending attendance.
+* Approve attendance.
+* Reject attendance.
+* View department attendance history.
 
-{
-  "remarks":"Approved"
-}
+### Admin
 
-Expected:
+* View all attendance.
+* View pending attendance.
+* Approve attendance.
+* Reject attendance.
+* Delete attendance records.
 
-{
-  "approvalStatus":"approved"
-}
-Test 7
+---
 
-Reject another attendance
+## Chat
 
-PATCH /api/attendance/{id}/reject
+* Start a new conversation.
+* Send messages.
+* Receive messages in real time.
+* Verify typing indicator.
+* Verify online/offline status.
+* Verify read receipts.
+* Verify conversation history.
 
-Expected:
+---
 
-{
-  "approvalStatus":"rejected"
-}
+## Reports
+
+* Export attendance as CSV.
+* Export attendance as Excel.
+* Export employee reports.
+* Export department reports.
+
+---
+
+## Profile
+
+* View profile.
+* Update profile information.
+* Verify profile image upload.
+
+---
+
+## Role-Based Access Control
+
+### Admin
+
+* Access all modules.
+* Manage employees.
+* Manage departments.
+* Manage designations.
+* Manage attendance.
+* Export reports.
+
+### Manager
+
+* Access only assigned department.
+* Manage department attendance.
+* Manage department designations.
+* View department employees.
+
+### Employee
+
+* Manage personal attendance.
+* Access chat.
+* Update profile.
+
+---
+
+## API Validation
+
+* Verify protected endpoints require authentication.
+* Verify role-based authorization.
+* Verify validation errors are handled correctly.
+* Verify appropriate HTTP status codes are returned.
+
+---
+
+## Error Handling
+
+* Verify validation messages.
+* Verify unauthorized access handling.
+* Verify forbidden access handling.
+* Verify server error responses.
+* Verify network failure handling.
+
+---
+
+## Browser Testing
+
+* Google Chrome
+* Microsoft Edge
+
+---
+
+## Final Checklist
+
+* All features function as expected.
+* No console errors.
+* No server errors.
+* No broken routes.
+* No UI alignment issues.
+* Role permissions work correctly.
+* Real-time chat functions correctly.
+* Reports export successfully.
