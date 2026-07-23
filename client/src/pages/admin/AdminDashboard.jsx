@@ -52,7 +52,7 @@ const AdminDashboard = () => {
         subtitle="Monitor your organization, review attendance and manage employees."
       />
 
-      {/* ================= TOP DASHBOARD ================= */}
+     {/* // top dashbaord */}
 
       <div className="section-grid">
         <Section
@@ -129,7 +129,7 @@ const AdminDashboard = () => {
         </Section>
       </div>
 
-      {/* ================= BOTTOM DASHBOARD ================= */}
+      {/*  BOTTOM DASHBOARD */}
 
       <div className="section-grid">
         <Section

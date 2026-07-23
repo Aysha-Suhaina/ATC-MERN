@@ -202,7 +202,7 @@ recentActivities
           );
 
      // Attendance Trend (Last 7 Days)
-    // ==========================
+    // ========
 
     const attendanceTrend = [];
 

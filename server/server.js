@@ -1,13 +1,10 @@
 import dotenv from "dotenv";
 import http from "http";
 
-import {
-  initializeSocket,
-} from "./src/socket/socket.js";
+import { initializeSocket } from "./src/socket/socket.js";
 
-import {
-  registerSocketEvents,
-} from "./src/socket/socketHandler.js";
+import initializeAdmin from "./src/utils/initializeAdmin.js";
+import { registerSocketEvents } from "./src/socket/socketHandler.js";
 
 dotenv.config();
 
@@ -17,18 +14,19 @@ import connectDB from "./src/config/db.js";
 
 const PORT = process.env.PORT || 4000;
 
-connectDB();
+connectDB()
+  .then(async () => {
+    await initializeAdmin();
 
-const server = http.createServer(app);
+    const server = http.createServer(app);
 
-const io = initializeSocket(server);
+    const io = initializeSocket(server);
 
-registerSocketEvents(io);
+    registerSocketEvents(io);
 
-
-server.listen(PORT, () => {
-  console.log(
-    `Server running on port ${PORT}`
-  );
-});
-
+    server.listen(PORT, () => {
+      console.log(
+        `Server running on port ${PORT}`
+      );
+    });
+  });

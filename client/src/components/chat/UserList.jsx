@@ -9,7 +9,7 @@ const UserList = ({ selectedUser, setSelectedUser, onlineUsers, search }) => {
     try {
       const res = await getChatUsers();
 
-      console.log(res.data);
+      // console.log(res.data);
       setUsers(res.data.users);
     } catch (err) {
       toast.error(err.response?.data?.msg || "Failed to load users");
@@ -20,7 +20,7 @@ const UserList = ({ selectedUser, setSelectedUser, onlineUsers, search }) => {
     loadUsers();
   }, []);
 
-  console.log("ONLINE USERS STATE:", onlineUsers);
+  //console.log("ONLINE USERS STATE:", onlineUsers);
 
   const filteredUsers = users.filter((user) => {
     if (!search.trim()) return true;

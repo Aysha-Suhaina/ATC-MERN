@@ -29,7 +29,7 @@ const Reports = () => {
   useEffect(() => {
     const loadData = async () => {
       const dashboardRes = await getAdminDashboardStats();
-      console.log("Dashboard response:", dashboardRes.data);
+      //console.log("Dashboard response:", dashboardRes.data);
 
       setStats(dashboardRes.data.stats);
 
@@ -44,9 +44,9 @@ const Reports = () => {
 
     loadData();
   }, []);
-  console.log("stats =", stats);
-  console.log("departments =", departments);
-  console.log("employees =", employees);
+  // console.log("stats =", stats);
+  // console.log("departments =", departments);
+  // console.log("employees =", employees);
   return (
     <div className="page">
       <PageHeader
@@ -54,7 +54,7 @@ const Reports = () => {
         subtitle="Monitor attendance trends and generate organization reports."
       />
 
-      {/* ================= OVERVIEW ================= */}
+      {/* OVERVIEW  */}
 
       <Section
         title="Attendance Overview"
@@ -63,7 +63,7 @@ const Reports = () => {
         <ReportOverview stats={stats} />
       </Section>
 
-      {/* ================= ANALYTICS ================= */}
+      {/* ANALYTICS  */}
 
       <Section
         title="Attendance Analytics"
@@ -80,7 +80,7 @@ const Reports = () => {
         </div>
       </Section>
 
-      {/* ================= EXPORTS ================= */}
+      {/*  EXPORTS */}
 
       <Section
         title="Download Reports"
@@ -91,7 +91,7 @@ const Reports = () => {
         </Card>
       </Section>
 
-      {/* ================= REPORT GENERATORS ================= */}
+      {/*  REPORT GENERATORS  */}
 
       <Section
         title="Generate Custom Reports"

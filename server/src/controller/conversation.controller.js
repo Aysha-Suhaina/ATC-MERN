@@ -71,7 +71,7 @@ export const openConversation = async (
     });
 
  } catch (error) {
-  console.error("====== OPEN CONVERSATION ERROR ======");
+  console.error("=== OPEN CONVERSATION ERROR ===");
   console.error(error);
   console.error(error.stack);
 

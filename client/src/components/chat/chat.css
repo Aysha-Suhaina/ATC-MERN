@@ -1,6 +1,4 @@
-/* ======================================
-   CHAT LAYOUT
-====================================== */
+
 
 .chat-page {
   display: flex;
@@ -8,10 +6,6 @@
   background: var(--background);
   overflow: hidden;
 }
-
-/* ======================================
-   SIDEBAR
-====================================== */
 
 .chat-sidebar {
    width:340px;
@@ -35,10 +29,6 @@
   margin: 18px 0;
 }
 
-/* ======================================
-   SEARCH
-====================================== */
-
 .chat-search {
   width: 100%;
   padding: 12px 15px;
@@ -52,20 +42,12 @@
   border-color: var(--primary);
 }
 
-/* ======================================
-   SECTION TITLES
-====================================== */
-
 .chat-title {
   font-size: 1rem;
   font-weight: 600;
   margin-bottom: 14px;
   color: var(--text);
 }
-
-/* ======================================
-   USER / RECENT CHAT CARD
-====================================== */
 
 .chat-user {
   display: flex;
@@ -132,10 +114,6 @@
   text-overflow: ellipsis;
 }
 
-/* ======================================
-   ONLINE DOT
-====================================== */
-
 .online-dot {
    width:12px;
     height:12px;
@@ -164,10 +142,6 @@ box-shadow:0 0 0 8px rgba(34,197,94,0);
 
 }
 
-/* ======================================
-   CONVERSATION
-====================================== */
-
 .chat-conversation {
   flex: 1;
   display: flex;
@@ -195,16 +169,6 @@ z-index:10;
   background:radial-gradient(circle at top left,#ffffff 0,#f8fafc 65%);
 
 }
-
-/* ======================================
-   MESSAGE ROW
-====================================== */
-
-
-
-/* ======================================
-   MESSAGE BUBBLE
-====================================== */
 
 .message-bubble {
   max-width: 65%;
@@ -244,11 +208,6 @@ z-index:10;
 }
 
 
-
-/* ======================================
-   TYPING
-====================================== */
-
 .typing-indicator {
   padding: 10px 20px;
   color: var(--text-light);
@@ -256,9 +215,6 @@ z-index:10;
   font-size: .9rem;
 }
 
-/* ======================================
-   MESSAGE INPUT
-====================================== */
 
 .chat-input-area {
   padding: 18px;
@@ -291,10 +247,6 @@ box-shadow:0 4px 14px rgba(0,0,0,.08);
   border-color: var(--primary);
 }
 
-/* ======================================
-   EMPTY STATE
-====================================== */
-
 .chat-empty {
   height: 100%;
   display: flex;
@@ -304,9 +256,6 @@ box-shadow:0 4px 14px rgba(0,0,0,.08);
   font-size: 1rem;
 }
 
-/* ======================================
-   SCROLLBAR
-====================================== */
 
 .chat-sidebar-content::-webkit-scrollbar,
 .conversation-body::-webkit-scrollbar {
@@ -318,10 +267,6 @@ box-shadow:0 4px 14px rgba(0,0,0,.08);
   background: #d1d5db;
   border-radius: 20px;
 }
-
-/* ======================================
-   RESPONSIVE
-====================================== */
 
 @media (max-width: 900px) {
   .chat-sidebar {
@@ -373,9 +318,7 @@ box-shadow:0 4px 14px rgba(0,0,0,.08);
   align-items: center;
   color: var(--text-light);
 }
-/* ======================================
-   MESSAGE CONTAINER
-====================================== */
+
 
 .messages-container {
   display: flex;
@@ -383,10 +326,6 @@ box-shadow:0 4px 14px rgba(0,0,0,.08);
   gap: 14px;
   min-height: 100%;
 }
-
-/* ======================================
-   MESSAGE ROW
-====================================== */
 
 .message-row {
    display: flex;
@@ -400,9 +339,7 @@ box-shadow:0 4px 14px rgba(0,0,0,.08);
 }
 
 
-/* ======================================
-   EMPTY STATE
-====================================== */
+
 
 .chat-empty {
   display: flex;
@@ -413,9 +350,6 @@ box-shadow:0 4px 14px rgba(0,0,0,.08);
   font-size: 15px;
 }
 
-/* ======================================
-   TYPING
-====================================== */
 
 .typing-indicator {
   padding: 10px 18px;
