@@ -73,6 +73,7 @@ ATC/
 │   ├── controllers/
 │   ├── middleware/
 │   ├── models/
+|   ├── seed/
 │   ├── routes/
 │   ├── socket/
 │   └── package.json
@@ -164,12 +165,15 @@ SMTP_USER=your_email@example.com
 SMTP_KEY=your_email_app_password
 
 SENDER_MAIL=your_email@example.com
+
+ADMIN_NAME= your admin name 
+ADMIN_EMAIL= admin mail
+ADMIN_PASSWORD= admin password 
 ```
 
 > **Note**
 >
 > - Replace the placeholder values with your own configuration.
-> - Never commit the `.env` file or expose sensitive credentials.
 
 ---
 
