@@ -1,294 +1,407 @@
-# Attendance Management System API Documentation (MVP)
+# API Documentation
 
-Base URL
+## Base URL
 
-http://localhost:5000/api
+```http
+http://localhost:4000/api
+```
 
-Authentication
+## Authentication
 
-All protected routes require:
+Protected routes require a valid JWT.
 
-Authorization: Bearer <jwt_token>
-
----
-
-## 1. Health Check
-
-### GET /
-
-Response
-
-{
-"message": "Attendance Management API Running"
-}
-
-Status Code
-
-200 OK
+```http
+Authorization: Bearer <JWT_TOKEN>
+```
 
 ---
 
-## 2. Submit Attendance
+## Authentication
 
-### POST /attendance
+### POST `/auth/register`
 
-#### API: ``` http://localhost:5000/api/attendance/ ```
+Registers a new employee account.
 
-Role Access
-
-Employee
-Manager
-Admin
-
-Headers
-
-Authorization: Bearer <token>
-
-Request Body
-
-{
-"date": "2026-06-12",
-"checkInTime": "2026-06-12T09:00:00Z",
-"checkOutTime": "2026-06-12T18:00:00Z",
-"attendanceStatus": "present",
-"remarks": "Worked on payroll module"
-}
-
-Success Response
-
-{
-"success": true,
-"statusCode": 201,
-"message": "Attendance submitted",
-"data": {
-"_id": "6849abcd123",
-"user": "6849user123",
-"date": "2026-06-12T00:00:00.000Z",
-"checkInTime": "2026-06-12T09:00:00.000Z",
-"checkOutTime": "2026-06-12T18:00:00.000Z",
-"totalHours": 9,
-"attendanceStatus": "present",
-"approvalStatus": "pending"
-}
-}
-
-Validation Errors
-
-400 Attendance already submitted
-
-{
-"message": "Attendance already submitted"
-}
-
-400 Missing Fields
-
-{
-"message": "Required fields missing"
-}
+**Access:** Public
 
 ---
 
-## 3. View My Attendance
+### POST `/auth/login`
 
-### GET /attendance/me
+Authenticates a user and returns a JWT token.
 
-Role Access
-
-Employee
-Manager
-Admin
-
-Headers
-
-Authorization: Bearer <token>
-
-Success Response
-
-{
-"success": true,
-"statusCode": 200,
-"message": "Attendance fetched",
-"data": [
-{
-"_id": "6849abcd123",
-"date": "2026-06-12",
-"attendanceStatus": "present",
-"approvalStatus": "pending"
-}
-]
-}
+**Access:** Public
 
 ---
 
-## 4. Get Pending Attendance
+### POST `/auth/logout`
 
-### GET /attendance/pending
+Logs out the authenticated user.
 
-Role Access
-
-Manager
-Admin
-
-Headers
-
-Authorization: Bearer <token>
-
-Success Response
-
-{
-"success": true,
-"statusCode": 200,
-"message": "Pending attendance fetched",
-"data": [
-{
-"_id": "attendance123",
-"user": {
-"_id": "user123",
-"name": "John Doe"
-},
-"approvalStatus": "pending"
-}
-]
-}
-
-Forbidden Response
-
-{
-"message": "Access denied"
-}
+**Access:** Authenticated User
 
 ---
 
-## 5. Approve Attendance
+### POST `/auth/send-reset-otp`
 
-### PATCH /attendance/:attendanceId/approve
+Sends a password reset OTP.
 
-Role Access
-
-Manager
-Admin
-
-Headers
-
-Authorization: Bearer <token>
-
-Request Body
-
-{
-"remarks": "Verified by manager"
-}
-
-Success Response
-
-{
-"success": true,
-"statusCode": 200,
-"message": "Attendance approved",
-"data": {
-"approvalStatus": "approved",
-"approvedAt": "2026-06-12T11:00:00Z"
-}
-}
-
-Not Found
-
-{
-"message": "Attendance not found"
-}
+**Access:** Public
 
 ---
 
-## 6. Reject Attendance
+### POST `/auth/reset-password`
 
-### PATCH /attendance/:attendanceId/reject
+Resets the user's password using a valid OTP.
 
-Role Access
-
-Manager
-Admin
-
-Headers
-
-Authorization: Bearer <token>
-
-Request Body
-
-{
-"remarks": "Incorrect checkout time"
-}
-
-Success Response
-
-{
-"success": true,
-"statusCode": 200,
-"message": "Attendance rejected",
-"data": {
-"approvalStatus": "rejected"
-}
-}
+**Access:** Public
 
 ---
 
-## 7. Get User Profile
+## Users
 
-### GET /users/profile
+### GET `/users/profile`
 
-Role Access
+Returns the authenticated user's profile.
 
-Authenticated Users
-
-Headers
-
-Authorization: Bearer <token>
-
-Success Response
-
-{
-"success": true,
-"statusCode": 200,
-"message": "Profile fetched",
-"data": {
-"_id": "user123",
-"name": "John Doe",
-"email": "[john@example.com](mailto:john@example.com)",
-"role": "employee",
-"department": "Engineering",
-"designation": "Backend Developer"
-}
-}
+**Access:** Authenticated User
 
 ---
 
-## 8. Update User Profile
+### PUT `/users/profile`
 
-### PUT /users/profile
+Updates the authenticated user's profile.
 
-Role Access
+**Access:** Authenticated User
 
-Authenticated Users
+---
 
-Headers
+### GET `/users/employees`
 
-Authorization: Bearer <token>
+Returns all employees.
 
-Request Body
+**Access:** Admin
 
-{
-"name": "John Doe",
-"department": "Engineering",
-"designation": "Backend Developer"
-}
+---
 
-Success Response
+### GET `/users/employees/:id`
 
-{
-"success": true,
-"statusCode": 200,
-"message": "Profile updated",
-"data": {
-"name": "John Doe",
-"department": "Engineering",
-"designation": "Backend Developer"
-}
-}
+Returns employee details.
+
+**Access:** Admin
+
+---
+
+### POST `/users/employees`
+
+Creates a new employee.
+
+**Access:** Admin
+
+---
+
+### PUT `/users/employees/:id`
+
+Updates an employee.
+
+**Access:** Admin
+
+---
+
+### PATCH `/users/employees/:id/deactivate`
+
+Deactivates an employee account.
+
+**Access:** Admin
+
+---
+
+### PATCH `/users/employees/:id/reactivate`
+
+Reactivates an employee account.
+
+**Access:** Admin
+
+---
+
+### GET `/users/managers`
+
+Returns all managers.
+
+**Access:** Admin
+
+---
+
+### GET `/users/attendance`
+
+Returns all attendance records.
+
+**Access:** Admin
+
+---
+
+### GET `/users/chat-users`
+
+Returns available chat users.
+
+**Access:** Authenticated User
+
+---
+
+### GET `/users/manager/my-employees`
+
+Returns employees belonging to the manager's department.
+
+**Access:** Manager
+
+---
+
+### PATCH `/users/manager/employees/:employeeId/designation`
+
+Assigns or updates an employee's designation.
+
+**Access:** Manager
+
+---
+
+## Departments
+
+### POST `/departments`
+
+Creates a department.
+
+**Access:** Admin
+
+### GET `/departments`
+
+Returns all departments.
+
+**Access:** Public / Authenticated
+
+### GET `/departments/:id`
+
+Returns a department by ID.
+
+### PUT `/departments/:id`
+
+Updates a department.
+
+### DELETE `/departments/:id`
+
+Deletes a department.
+
+### PATCH `/departments/:id/assign-manager`
+
+Assigns a department manager.
+
+### PATCH `/departments/:id/change-manager`
+
+Changes the assigned manager.
+
+### PATCH `/departments/:id/remove-manager`
+
+Removes the current manager.
+
+### GET `/departments/:id/employees`
+
+Returns employees within a department.
+
+### GET `/departments/my`
+
+Returns the authenticated manager's department.
+
+**Access:** Manager
+
+### PUT `/departments/my`
+
+Updates the manager's department details.
+
+**Access:** Manager
+
+---
+
+## Designations
+
+### POST `/designations`
+
+Creates a designation.
+
+### GET `/designations`
+
+Returns all designations.
+
+### GET `/designations/:id`
+
+Returns a designation by ID.
+
+### GET `/designations/department/:departmentId`
+
+Returns designations for a department.
+
+### PUT `/designations/:id`
+
+Updates a designation.
+
+### DELETE `/designations/:id`
+
+Deletes a designation.
+
+### GET `/designations/my`
+
+Returns designations for the manager's department.
+
+**Access:** Manager
+
+### POST `/designations/my`
+
+Creates a designation within the manager's department.
+
+**Access:** Manager
+
+### PUT `/designations/my/:id`
+
+Updates a department designation.
+
+**Access:** Manager
+
+### DELETE `/designations/my/:id`
+
+Deletes a department designation.
+
+**Access:** Manager
+
+---
+
+## Attendance
+
+### POST `/attendance`
+
+Submits attendance.
+
+### GET `/attendance`
+
+Returns all attendance records.
+
+**Access:** Admin, Manager
+
+### GET `/attendance/me`
+
+Returns the authenticated employee's attendance history.
+
+### GET `/attendance/pending`
+
+Returns pending attendance requests.
+
+**Access:** Admin
+
+### GET `/attendance/manager/pending`
+
+Returns pending attendance requests for the manager's department.
+
+**Access:** Manager
+
+### GET `/attendance/manager/history`
+
+Returns attendance history for the manager's department.
+
+**Access:** Manager
+
+### GET `/attendance/:attendanceId`
+
+Returns attendance details.
+
+### PATCH `/attendance/:attendanceId/approve`
+
+Approves attendance.
+
+**Access:** Admin, Manager
+
+### PATCH `/attendance/:attendanceId/reject`
+
+Rejects attendance.
+
+**Access:** Admin, Manager
+
+### PUT `/attendance/:id/resubmit`
+
+Resubmits rejected attendance.
+
+**Access:** Employee
+
+### DELETE `/attendance/:attendanceId`
+
+Deletes an attendance record.
+
+**Access:** Admin
+
+---
+
+## Conversations
+
+### GET `/conversations`
+
+Returns all conversations.
+
+### GET `/conversations/my`
+
+Returns conversations for the authenticated user.
+
+### POST `/conversations/open`
+
+Creates or opens an existing conversation.
+
+### GET `/conversations/:id/messages`
+
+Returns all messages within a conversation.
+
+---
+
+## Messages
+
+### GET `/messages/:conversationId`
+
+Returns messages for a conversation.
+
+### POST `/messages`
+
+Sends a new message.
+
+### PATCH `/messages/:conversationId/read`
+
+Marks conversation messages as read.
+
+---
+
+## Reports
+
+### GET `/reports/:type/csv`
+
+Exports report data in CSV format.
+
+### GET `/reports/:type/excel`
+
+Exports report data in Excel format.
+
+### GET `/reports/:type/:id/csv`
+
+Exports a specific report in CSV format.
+
+### GET `/reports/:type/:id/excel`
+
+Exports a specific report in Excel format.
+
+---
+
+## Dashboard
+
+### GET `/dashboard/admin`
+
+Returns dashboard statistics.
+
+**Access:** Admin
+
+### GET `/dashboard/report/daily`
+
+Returns the daily attendance report.
+
+**Access:** Admin
