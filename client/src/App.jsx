@@ -1,20 +1,10 @@
 import { Routes, Route } from "react-router-dom";
 import ProtectedRoute from "./ProtectedRoute";
-<<<<<<< Updated upstream
 import socket from "./socket/socket";
-<<<<<<< HEAD
-import {useEffect} from 'react';
-=======
-
-import AdminLayout from "./layouts/AdminLayout";
-import Reports from "./pages/admin/Reports";
->>>>>>> Stashed changes
-=======
 import { useEffect } from "react";
 
 import AdminLayout from "./layouts/AdminLayout";
 import Reports from "./pages/admin/Reports";
->>>>>>> origin/feat/model
 //auth
 import Home from "./pages/Auth/Home";
 import Login from "./pages/Auth/Login";
@@ -54,13 +44,7 @@ import Chat from "./pages/chat/Chat";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
-<<<<<<< HEAD
-<<<<<<< Updated upstream
-function App(){
-
-=======
 function App() {
->>>>>>> origin/feat/model
   useEffect(() => {
     const userId = localStorage.getItem("userId");
 
@@ -86,9 +70,6 @@ function App() {
     };
   }, []);
 
-=======
-function App() {
->>>>>>> Stashed changes
   return (
     <>
       <Routes>
