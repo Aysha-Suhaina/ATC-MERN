@@ -2,6 +2,7 @@ import {
   getUserConversations,
   getConversationMessages,
 } from "../services/chat.service.js";
+import Message from "../model/Message.js";
 
 import Conversation from "../model/Conversation.js";
 
@@ -106,9 +107,35 @@ export const getMyConversations = async (
           updatedAt: -1,
         });
 
+    const conversationsWithUnread =
+      await Promise.all(
+        conversations.map(
+          async (conversation) => {
+
+            const unreadCount =
+              await Message.countDocuments({
+                conversation:
+                  conversation._id,
+
+                sender: {
+                  $ne: req.user._id,
+                },
+
+                isRead: false,
+              });
+
+            return {
+              ...conversation.toObject(),
+              unreadCount,
+            };
+          }
+        )
+      );
+
     res.json({
       success: true,
-      conversations,
+      conversations:
+        conversationsWithUnread,
     });
 
   } catch (error) {

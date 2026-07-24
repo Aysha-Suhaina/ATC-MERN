@@ -1,18 +1,8 @@
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
-<<<<<<< HEAD
-<<<<<<< Updated upstream
-=======
-
->>>>>>> origin/feat/model
-import socket from "../socket/socket";
-=======
-
 import { useSocket } from "../context/SocketContext";
->>>>>>> Stashed changes
 
 import Button from "../components/ui/Button";
-
 import "./Logout.css";
 
 function Logout({ close }) {
@@ -28,19 +18,9 @@ function Logout({ close }) {
 
     localStorage.removeItem("userId");
     localStorage.removeItem("userRole");
-<<<<<<< HEAD
-<<<<<<< Updated upstream
-    socket.disconnect();
-=======
 
     disconnectSocket();
 
->>>>>>> Stashed changes
-=======
-
-    socket.disconnect();
-
->>>>>>> origin/feat/model
     navigate("/");
   };
 
@@ -52,17 +32,11 @@ function Logout({ close }) {
         <p>Are you sure you want to logout?</p>
 
         <div className="logout-actions">
-          <Button
-            variant="secondary"
-            onClick={close}
-          >
+          <Button variant="secondary" onClick={close}>
             Cancel
           </Button>
 
-          <Button
-            variant="danger"
-            onClick={logout}
-          >
+          <Button variant="danger" onClick={logout}>
             Logout
           </Button>
         </div>
