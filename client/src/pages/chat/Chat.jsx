@@ -36,13 +36,13 @@ useEffect(() => {
 
   const handleMessageRead = ({ messageId }) => {
     setMessages((prev) =>
-      prev.map((msg) =>
-        msg._id === messageId
+      prev.map((message) =>
+        message._id === messageId
           ? {
-              ...msg,
+              ...message,
               isRead: true,
             }
-          : msg,
+          : message,
       ),
     );
   };

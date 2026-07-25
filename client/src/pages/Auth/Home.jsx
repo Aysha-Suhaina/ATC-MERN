@@ -9,7 +9,7 @@ const Home = () => {
           <Login />
         </div>
         <div className="bg-img">
-          <img src={assets.school_bg} alt="bg" />
+          <img src={assets.login_img} alt="bg" />
         </div>
       </div>
     </div>

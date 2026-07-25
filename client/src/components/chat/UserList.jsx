@@ -12,7 +12,7 @@ const UserList = ({ selectedUser, setSelectedUser, onlineUsers, search }) => {
       // console.log(res.data);
       setUsers(res.data.users);
     } catch (err) {
-      toast.error(err.response?.data?.msg || "Failed to load users");
+      toast.error(err.response?.data?.message || "Failed to load users");
     }
   };
 

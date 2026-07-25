@@ -17,7 +17,7 @@ export const getConversations = async (req, res) => {
   } catch (err) {
     res.status(500).json({
       success: false,
-      msg: err.message,
+      message: err.message,
     });
   }
 };
@@ -33,7 +33,7 @@ export const getMessages = async (req, res) => {
   } catch (err) {
     res.status(500).json({
       success: false,
-      msg: err.message,
+      message: err.message,
     });
   }
 };
@@ -78,7 +78,7 @@ export const openConversation = async (
 
   return res.status(500).json({
     success: false,
-    msg: error.message,
+    message: error.message,
   });
 }
 };
@@ -142,7 +142,7 @@ export const getMyConversations = async (
 
     res.status(500).json({
       success: false,
-      msg: error.message,
+      message: error.message,
     });
 
   }
