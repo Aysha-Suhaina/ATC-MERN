@@ -28,7 +28,7 @@ export const getMessages = async (
   } catch (error) {
     res.status(500).json({
       success: false,
-      msg: error.message,
+      message: error.message,
     });
   }
 };
@@ -80,7 +80,7 @@ export const sendMessage = async (
 
   return res.status(500).json({
     success: false,
-    msg: error.message,
+    message: error.message,
   });
 }
 };
@@ -131,7 +131,7 @@ export const markAsRead = async (
 
     res.status(500).json({
       success: false,
-      msg: error.message,
+      message: error.message,
     });
 
   }

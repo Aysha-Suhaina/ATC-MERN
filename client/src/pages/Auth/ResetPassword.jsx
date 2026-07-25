@@ -27,10 +27,10 @@ function ForgetPassword() {
         { email },
       );
 
-      toast.success(res.data.msg || "OTP sent");
+      toast.success(res.data.message || "OTP sent");
       setStep(2);
     } catch (err) {
-      toast.error(err.response?.data?.msg || "Error sending OTP");
+      toast.error(err.response?.data?.message || "Error sending OTP");
     } finally {
       setLoading(false);
     }

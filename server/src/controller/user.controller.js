@@ -385,7 +385,7 @@ export const getChatUsers = async (req, res) => {
   } catch (err) {
     res.status(500).json({
       success: false,
-      msg: err.message,
+      message: err.message,
     });
   }
 };

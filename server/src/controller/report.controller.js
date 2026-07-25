@@ -63,7 +63,7 @@ import { buildReportFilter } from "../utils/reportFilters.js";
 
 //       success: false,
 
-//       msg: error.message,
+//       message: error.message,
 
 //     });
 
@@ -107,7 +107,7 @@ export const exportCSV = async (req, res) => {
     if (!allowed.includes(req.params.type)) {
       return res.status(400).json({
         success: false,
-        msg: "Invalid report type",
+        message: "Invalid report type",
       });
     }
 
@@ -116,7 +116,7 @@ export const exportCSV = async (req, res) => {
     return res.status(500).json({
       success: false,
 
-      msg: error.message,
+      message: error.message,
     });
   }
 };
@@ -195,7 +195,7 @@ export const exportExcel = async (req, res) => {
 
 //         success: false,
 
-//         msg: error.message,
+//         message: error.message,
 
 //       });
 

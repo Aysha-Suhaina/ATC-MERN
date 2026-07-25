@@ -321,7 +321,7 @@ const activityFeed =
   } catch (error) {
     res.status(500).json({
       success: false,
-      msg: error.message,
+      message: error.message,
     });
   }
 };
@@ -389,7 +389,7 @@ export const getDailyReport = async (
   } catch (error) {
     res.status(500).json({
       success: false,
-      msg: error.message,
+      message: error.message,
     });
   }
 };

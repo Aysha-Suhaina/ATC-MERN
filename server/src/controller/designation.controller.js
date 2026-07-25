@@ -15,7 +15,7 @@ export const createDesignation = async (req, res) => {
     if (exists) {
       return res.status(400).json({
         success: false,
-        msg: "Designation already exists in this department",
+        message: "Designation already exists in this department",
       });
     }
 
@@ -31,7 +31,7 @@ export const createDesignation = async (req, res) => {
   } catch (error) {
     res.status(500).json({
       success: false,
-      msg: error.message,
+      message: error.message,
     });
   }
 };
@@ -66,7 +66,7 @@ export const getAllDesignations = async (req, res) => {
   } catch (error) {
     res.status(500).json({
       success: false,
-      msg: error.message,
+      message: error.message,
     });
   }
 };
@@ -81,7 +81,7 @@ export const getDesignationById = async (req, res) => {
     if (!designation) {
       return res.status(404).json({
         success: false,
-        msg: "Designation not found",
+        message: "Designation not found",
       });
     }
 
@@ -92,7 +92,7 @@ export const getDesignationById = async (req, res) => {
   } catch (error) {
     res.status(500).json({
       success: false,
-      msg: error.message,
+      message: error.message,
     });
   }
 };
@@ -112,7 +112,7 @@ export const getDesignationsByDepartment = async (req, res) => {
   } catch (error) {
     res.status(500).json({
       success: false,
-      msg: error.message,
+      message: error.message,
     });
   }
 };
@@ -133,7 +133,7 @@ export const updateDesignation = async (req, res) => {
     if (!designation) {
       return res.status(404).json({
         success: false,
-        msg: "Designation not found",
+        message: "Designation not found",
       });
     }
 
@@ -144,7 +144,7 @@ export const updateDesignation = async (req, res) => {
   } catch (error) {
     res.status(500).json({
       success: false,
-      msg: error.message,
+      message: error.message,
     });
   }
 }
@@ -160,7 +160,7 @@ export const getMyDepartmentDesignations =
       if (!department) {
         return res.status(404).json({
           success: false,
-          msg: "You are not managing any department.",
+          message: "You are not managing any department.",
         });
       }
 
@@ -200,7 +200,7 @@ res.json({
     } catch (error) {
       res.status(500).json({
         success: false,
-        msg: error.message,
+        message: error.message,
       });
     }
   };
@@ -216,18 +216,18 @@ export const deleteDesignation = async (req, res) => {
     if (!designation) {
       return res.status(404).json({
         success: false,
-        msg: "Designation not found",
+        message: "Designation not found",
       });
     }
 
     res.json({
       success: true,
-      msg: "Designation deleted successfully",
+      message: "Designation deleted successfully",
     });
   } catch (error) {
     res.status(500).json({
       success: false,
-      msg: error.message,
+      message: error.message,
     });
   }
 };
@@ -244,7 +244,7 @@ export const createMyDepartmentDesignation = async (req, res) => {
       if (!department) {
         return res.status(404).json({
           success: false,
-          msg: "Department not found.",
+          message: "Department not found.",
         });
       }
 
@@ -260,7 +260,7 @@ export const createMyDepartmentDesignation = async (req, res) => {
       if (exists) {
         return res.status(400).json({
           success: false,
-          msg: "Designation already exists.",
+          message: "Designation already exists.",
         });
       }
 
@@ -278,7 +278,7 @@ export const createMyDepartmentDesignation = async (req, res) => {
     } catch (error) {
       res.status(500).json({
         success: false,
-        msg: error.message,
+        message: error.message,
       });
     }
   };
@@ -296,7 +296,7 @@ export const createMyDepartmentDesignation = async (req, res) => {
       if (!department) {
         return res.status(404).json({
           success: false,
-          msg: "You are not managing any department.",
+          message: "You are not managing any department.",
         });
       }
 
@@ -308,7 +308,7 @@ export const createMyDepartmentDesignation = async (req, res) => {
       if (!designation) {
         return res.status(404).json({
           success: false,
-          msg: "Designation not found.",
+          message: "Designation not found.",
         });
       }
 
@@ -318,7 +318,7 @@ export const createMyDepartmentDesignation = async (req, res) => {
       ) {
         return res.status(403).json({
           success: false,
-          msg: "You can edit only your department designations.",
+          message: "You can edit only your department designations.",
         });
       }
 
@@ -335,7 +335,7 @@ export const createMyDepartmentDesignation = async (req, res) => {
       if (exists) {
         return res.status(400).json({
           success: false,
-          msg: "Designation already exists.",
+          message: "Designation already exists.",
         });
       }
 
@@ -356,7 +356,7 @@ export const createMyDepartmentDesignation = async (req, res) => {
     } catch (error) {
       res.status(500).json({
         success: false,
-        msg: error.message,
+        message: error.message,
       });
     }
   };
@@ -372,7 +372,7 @@ export const deleteMyDepartmentDesignation =
       if (!department) {
         return res.status(404).json({
           success: false,
-          msg: "Department not found.",
+          message: "Department not found.",
         });
       }
 
@@ -385,7 +385,7 @@ export const deleteMyDepartmentDesignation =
       if (!designation) {
         return res.status(404).json({
           success: false,
-          msg: "Designation not found.",
+          message: "Designation not found.",
         });
       }
 
@@ -397,7 +397,7 @@ export const deleteMyDepartmentDesignation =
       if (employeeCount > 0) {
         return res.status(400).json({
           success: false,
-          msg: `Cannot delete. ${employeeCount} employee(s) are assigned to this designation.`,
+          message: `Cannot delete. ${employeeCount} employee(s) are assigned to this designation.`,
         });
       }
 
@@ -405,13 +405,13 @@ export const deleteMyDepartmentDesignation =
 
       res.json({
         success: true,
-        msg: "Designation deleted successfully.",
+        message: "Designation deleted successfully.",
       });
 
     } catch (error) {
       res.status(500).json({
         success: false,
-        msg: error.message,
+        message: error.message,
       });
     }
   };

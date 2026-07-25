@@ -10,7 +10,6 @@ import {
   FiMessageSquare,
 } from "react-icons/fi";
 
-
 const AdminSidebar = () => {
   return (
     <aside className="sidebar">

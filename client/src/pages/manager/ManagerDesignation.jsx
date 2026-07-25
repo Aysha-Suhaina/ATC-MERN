@@ -23,7 +23,7 @@ const ManagerDesignation = () => {
 
       setDesignations(res.data.designations);
     } catch (err) {
-      toast.error(err.response?.data?.msg || "Failed to load designations");
+      toast.error(err.response?.data?.message || "Failed to load designations");
     }
   };
 
@@ -45,7 +45,7 @@ const ManagerDesignation = () => {
 
       loadDesignations();
     } catch (err) {
-      toast.error(err.response?.data?.msg || "Failed");
+      toast.error(err.response?.data?.message || "Failed");
     }
   };
 
@@ -136,7 +136,7 @@ const ManagerDesignation = () => {
 
                                   loadDesignations();
                                 } catch (err) {
-                                  toast.error(err.response?.data?.msg);
+                                  toast.error(err.response?.data?.message);
                                 }
                               }}
                             >
@@ -178,7 +178,7 @@ const ManagerDesignation = () => {
 
                                   loadDesignations();
                                 } catch (err) {
-                                  toast.error(err.response?.data?.msg);
+                                  toast.error(err.response?.data?.message);
                                 }
                               }}
                             >

@@ -7,14 +7,14 @@ export const register = async(req,res)=>{
     const{name,email,password}=req.body;
 
     if(!name || !email || !password){
-        return res.status(400).json({success:false , msg:"enter all the credentials"})
+        return res.status(400).json({success:false , message:"enter all the credentials"})
     }
 
     try{
         const existingUser = await User.findOne({email})
 
         if(existingUser){
-            return res.json({success:false , msg:"mail already exist - please try with another mail "})
+            return res.json({success:false , message:"mail already exist - please try with another mail "})
         }
 
         const hashedPassword= await bcrypt.hash(password,10);
@@ -30,7 +30,7 @@ export const register = async(req,res)=>{
             //SECURE
             //sameSite
             maxAge:7*24*60*60*1000
-        }).json({ success: true, msg: "Registered successfully" });
+        }).json({ success: true, message: "Registered successfully" });
 
         const mailOptions ={
         from: process.env.SENDER_MAIL,
@@ -43,7 +43,7 @@ export const register = async(req,res)=>{
        // const info = await transporter.sendMail(mailOptions);
 
     }catch(err){
-        return res.status(400).json({success:false,msg:err.message})
+        return res.status(400).json({success:false,message:err.message})
     }
 }
 
@@ -51,12 +51,12 @@ export const login = async(req,res)=>{
     const {email,password}= req.body;
 
     if(!email || !password){
-        return res.status(400).json({success:false, msg:"email and password are required "})
+        return res.status(400).json({success:false, message:"email and password are required "})
     }
     try{
         const user = await User.findOne({email})
         if(!user){
-            return res.json({success:false,msg:"User not registered"})
+            return res.json({success:false,message:"User not registered"})
         }
 
         if (!user.isActive) {
@@ -69,7 +69,7 @@ export const login = async(req,res)=>{
         const isMatch=await bcrypt.compare(password,user.password)
 
         if(!isMatch){
-            return res.json({success:false,msg:"Invalid password"})
+            return res.json({success:false,message:"Invalid password"})
         };
         const userRole = user.role?.toLowerCase();
 
@@ -88,13 +88,13 @@ export const login = async(req,res)=>{
             userId: user._id,
             name: user.name,
             userRole,
-            msg: "Login successful"
+            message: "Login successful"
         });
 //message 
 
 
     }catch(err){
-        return res.json({success:false,msg:err.message})
+        return res.json({success:false,message:err.message})
     }
 }
 
@@ -103,9 +103,9 @@ export const logout= async(req,res)=>{
     try{
         res.clearCookie('token', {httpOnly:true})
 
-        return res.json({success:true,msg:"logged out"})
+        return res.json({success:true,message:"logged out"})
     }catch(err){
-        return res.json({success:false,msg:err.message})
+        return res.json({success:false,message:err.message})
     }
 }
 
@@ -113,14 +113,14 @@ export const sendResetOtp = async (req,res)=>{
     const {email}= req.body;
 
     if(!email){
-        return res.status(400).json({success:false,msg:"email required"})
+        return res.status(400).json({success:false,message:"email required"})
     }
     try{
         const user = await User.findOne({email
         });
 
         if(!user){
-            return res.status(404).json({success:false,msg:"email not found"})
+            return res.status(404).json({success:false,message:"email not found"})
         }
 
         const otp= String(Math.floor(100000 + Math.random() * 900000));
@@ -140,10 +140,10 @@ export const sendResetOtp = async (req,res)=>{
 
          const info = await transporter.sendMail(mailOptions);
         console.log("mail sent:", info);
-        return res.status(200).json({success:true,msg:"OTP sent to your email"})
+        return res.status(200).json({success:true,message:"OTP sent to your email"})
 
     }catch(err){
-        return res.status(400).json({success:false,msg:err.message})
+        return res.status(400).json({success:false,message:err.message})
     }
 }
 
@@ -154,17 +154,17 @@ export const resetPassword= async(req,res)=>{
     const {email,otp,newPassword}= req.body;
 
     if(!email || !otp || !newPassword){
-        return res.status(400).json({success:false,msg:"enter all the credentials"})
+        return res.status(400).json({success:false,message:"enter all the credentials"})
     }
     try{
        const user=await User.findOne({email});
 
        if(!user){
-        return res.status(400).json({success:false,msg:"email not found"})  
+        return res.status(400).json({success:false,message:"email not found"})  
 
        }
        if(user.resetOtp !==otp || user.resetOtp=== "" || user.resetOtpExpiresAt < Date.now()){
-        return res.status(400).json({success:false,msg:"invalid or expired OTP"})
+        return res.status(400).json({success:false,message:"invalid or expired OTP"})
        }
 
        const hashedPassword= await bcrypt.hash(newPassword,10);
@@ -175,9 +175,9 @@ export const resetPassword= async(req,res)=>{
 
        await user.save();
 
-       return res.status(200).json({success:true,msg:"password reset successful"})
+       return res.status(200).json({success:true,message:"password reset successful"})
     }catch(err){
-        return res.status(400).json({success:false,msg:err.message})
+        return res.status(400).json({success:false,message:err.message})
     };
     
 }

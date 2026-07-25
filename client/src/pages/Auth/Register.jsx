@@ -48,7 +48,7 @@ const Register = () => {
         "http://localhost:4000/api/auth/register",
         formData,
       );
-      toast.success(res.data.msg);
+      toast.success(res.data.message);
       navigate("/");
     } catch (err) {
       console.log(err);
@@ -124,7 +124,7 @@ const Register = () => {
         </div>
 
         <div className="registerRight">
-          <img src={assets.school_bg} alt="School" />
+          <img src={assets.login_img} alt="login_banner" />
         </div>
       </div>
     </div>
