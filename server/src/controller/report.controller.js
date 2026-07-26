@@ -81,13 +81,19 @@ export const exportCSV = async (req, res) => {
       },
     );
 
-
     let report = await getAttendanceReport(filter);
 
     if (req.params.type === "department") {
       report = report.filter(
         (item) => item.user?.department?._id.toString() === req.params.id,
       );
+    }
+
+    if (report.length === 0) {
+      return res.status(404).json({
+        success: false,
+        message: "No attendance records found to export.",
+      });
     }
 
     const csv = convertToCSV(report);
@@ -121,8 +127,6 @@ export const exportCSV = async (req, res) => {
   }
 };
 export const exportExcel = async (req, res) => {
-
-
   const filter = buildReportFilter(req.params.type, {
     userId: req.params.id,
   });
@@ -133,6 +137,13 @@ export const exportExcel = async (req, res) => {
     report = report.filter(
       (item) => item.user?.department?._id.toString() === req.params.id,
     );
+  }
+
+  if (report.length === 0) {
+    return res.status(404).json({
+      success: false,
+      message: "No attendance records found to export.",
+    });
   }
 
   const fileName = getReportFileName(req.params.type, "xlsx", req.params.id);
