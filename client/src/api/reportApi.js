@@ -1,4 +1,5 @@
 import axios from "axios";
+import { toast } from "react-toastify";
 
 const API = axios.create({
   baseURL: "http://localhost:4000/api/reports",
@@ -23,21 +24,17 @@ export const downloadReport = async (url) => {
 
     const blob = new Blob([response.data]);
 
-    const downloadUrl =
-      window.URL.createObjectURL(blob);
+    const downloadUrl = window.URL.createObjectURL(blob);
 
-    const link =
-      document.createElement("a");
+    const link = document.createElement("a");
 
     // Get filename from backend
-    const disposition =
-      response.headers["content-disposition"];
+    const disposition = response.headers["content-disposition"];
 
     let fileName = "report";
 
     if (disposition) {
-      const match =
-        disposition.match(/filename="?([^"]+)"?/);
+      const match = disposition.match(/filename="?([^"]+)"?/);
 
       if (match) {
         fileName = match[1];
@@ -54,9 +51,20 @@ export const downloadReport = async (url) => {
 
     window.URL.revokeObjectURL(downloadUrl);
   } catch (error) {
-    console.error(
-      "Report download failed:",
-      error
-    );
+    console.error("Report download failed:", error);
+
+    let message = "Report download failed.";
+
+    if (error.response?.data instanceof Blob) {
+      try {
+        const text = await error.response.data.text();
+        const json = JSON.parse(text);
+        message = json.message || message;
+      } catch (parseError) {
+        console.error("Failed to parse error response:", parseError);
+      }
+    }
+
+    toast.error(message);
   }
 };
