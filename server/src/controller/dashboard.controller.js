@@ -331,6 +331,7 @@ export const getDailyReport = async (
   res
 ) => {
   try {
+    // Set today's date range
     const today = new Date();
 
     today.setHours(0, 0, 0, 0);
@@ -341,6 +342,7 @@ export const getDailyReport = async (
       tomorrow.getDate() + 1
     );
 
+    // Fetch today's attendance
     const attendance =
       await Attendance.find({
         date: {
@@ -366,25 +368,31 @@ export const getDailyReport = async (
         .sort({
           checkInTime: -1,
         });
-        const attendanceStatus = {
-  pending: await Attendance.countDocuments({
-    approvalStatus: "pending",
-  }),
 
-  approved: await Attendance.countDocuments({
-    approvalStatus: "approved",
-  }),
+    // Count attendance approval statuses
+    const attendanceStatus = {
+      pending:
+        await Attendance.countDocuments({
+          approvalStatus: "pending",
+        }),
 
-  rejected: await Attendance.countDocuments({
-    approvalStatus: "rejected",
-  }),
-};
+      approved:
+        await Attendance.countDocuments({
+          approvalStatus: "approved",
+        }),
 
+      rejected:
+        await Attendance.countDocuments({
+          approvalStatus: "rejected",
+        }),
+    };
+
+    // Send response
     res.json({
       success: true,
       total: attendance.length,
       report: attendance,
-      attendanceStatus
+      attendanceStatus,
     });
   } catch (error) {
     res.status(500).json({
