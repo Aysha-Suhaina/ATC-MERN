@@ -1,8 +1,5 @@
 # BUGS TRACKED  
 
-## Authentication
-
-* Invalid admin password does not display an error message.
 
 ## Department Management
 

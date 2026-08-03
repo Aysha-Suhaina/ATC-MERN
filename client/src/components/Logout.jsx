@@ -13,7 +13,7 @@ function Logout({ close }) {
     await axios.post(
       "http://localhost:4000/api/auth/logout",
       {},
-      { withCredentials: true }
+      { withCredentials: true },
     );
 
     localStorage.removeItem("userId");
@@ -21,7 +21,7 @@ function Logout({ close }) {
 
     disconnectSocket();
 
-    navigate("/");
+    navigate("/", { replace: true });
   };
 
   return (

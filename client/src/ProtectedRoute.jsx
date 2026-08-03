@@ -8,7 +8,7 @@ const ProtectedRoute = ({
     localStorage.getItem("userRole")?.toLowerCase();
 
   if (!role) {
-    return <Navigate to="/" />;
+     return <Navigate to="/" replace />;
   }
 
   if (
@@ -19,7 +19,7 @@ const ProtectedRoute = ({
       )
       .includes(role)
   ) {
-    return <Navigate to="/" />;
+    return <Navigate to="/" replace />;
   }
 
   return children;
