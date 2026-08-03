@@ -1,8 +1,7 @@
 import { useState } from "react";
 import axios from "axios";
 import { useSocket } from "../../context/SocketContext";
-import { Link } from "react-router-dom";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate, Navigate } from "react-router-dom";
 import "./Login.css";
 import { assets } from "../../assets/assets";
 import { toast } from "react-toastify";
@@ -10,12 +9,25 @@ import Button from "../../components/ui/Button";
 import FormCard from "../../components/ui/FormCard";
 
 const Login = () => {
-  const navigate = useNavigate();
   const { connectSocket } = useSocket();
-
+  const navigate = useNavigate();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
+
+  const role = localStorage.getItem("userRole")?.toLowerCase();
+
+  if (role === "admin") {
+    return <Navigate to="/admin-dashboard" replace />;
+  }
+
+  if (role === "manager") {
+    return <Navigate to="/manager-dashboard" replace />;
+  }
+
+  if (role === "employee") {
+    return <Navigate to="/employee-dashboard" replace />;
+  }
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -34,6 +46,13 @@ const Login = () => {
         toast.error(res.data.message);
       } else {
         toast.success(res.data.message);
+
+        toast.info(
+          "Security Reminder: You are signed in. Always use Logout before leaving this device. Closing the browser or pressing Back does not log you out.",
+          {
+            autoClose: 7000,
+          },
+        );
       }
       if (res.data.success == true) {
         //localStorage.setItem("user", JSON.stringify(res.data));
@@ -49,11 +68,15 @@ const Login = () => {
         // console.log("TYPE:", typeof userId);
 
         if (role === "admin") {
-          navigate("/admin-dashboard");
-        } else if (role === "manager") {
-          navigate("/manager-dashboard");
-        } else {
-          navigate("/employee-dashboard");
+          navigate("/admin-dashboard", { replace: true });
+        }
+
+        if (role === "manager") {
+          navigate("/manager-dashboard", { replace: true });
+        }
+
+        if (role === "employee") {
+          navigate("/employee-dashboard", { replace: true });
         }
       }
       //localStorage.setItem("userId", userId._id);

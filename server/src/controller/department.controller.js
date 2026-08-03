@@ -1,32 +1,27 @@
-import  Department from "../model/Department.js";
+import Department from "../model/Department.js";
 import User from "../model/User.js";
 
-export const createDepartment = async (
-  req,
-  res,
-  next
-) => {
+export const createDepartment = async (req, res, next) => {
   try {
     const { name, description } = req.body;
 
-    const existing =
-      await Department.findOne({
-        name,
-      });
+    const trimmedName = name.trim();
+
+    const existing = await Department.findOne({
+      name: new RegExp(`^${trimmedName}$`, "i"),
+    });
 
     if (existing) {
       return res.status(400).json({
         success: false,
-        message:
-          "Department already exists",
+        message: "Department already exists",
       });
     }
 
-    const department =
-      await Department.create({
-        name,
-        description,
-      });
+    const department = await Department.create({
+      name: trimmedName,
+      description: description.trim(),
+    });
 
     return res.status(201).json({
       success: true,
@@ -37,21 +32,13 @@ export const createDepartment = async (
   }
 };
 
-export const getDepartments = async (
-  req,
-  res,
-  next
-) => {
+export const getDepartments = async (req, res, next) => {
   try {
-    const departments =
-      await Department.find()
-        .populate(
-          "manager",
-          "name email"
-        )
-        .sort({
-          name: 1,
-        });
+    const departments = await Department.find()
+      .populate("manager", "name email")
+      .sort({
+        name: 1,
+      });
 
     return res.status(200).json({
       success: true,
@@ -62,53 +49,17 @@ export const getDepartments = async (
   }
 };
 
-export const getDepartmentById =
-  async (req, res, next) => {
-    try {
-      const department =
-        await Department.findById(
-          req.params.id
-        ).populate(
-          "manager",
-          "name email"
-        );
-
-      if (!department) {
-        return res.status(404).json({
-          success: false,
-          message:
-            "Department not found",
-        });
-      }
-
-      return res.status(200).json({
-        success: true,
-        department,
-      });
-    } catch (error) {
-      next(error);
-    }
-  };
-
-export const getMyDepartment = async (
-  req,
-  res,
-  next
-) => {
+export const getDepartmentById = async (req, res, next) => {
   try {
-    const department =
-      await Department.findOne({
-        manager: req.user._id,
-      }).populate(
-        "manager",
-        "name email"
-      );
+    const department = await Department.findById(req.params.id).populate(
+      "manager",
+      "name email",
+    );
 
     if (!department) {
       return res.status(404).json({
         success: false,
-        message:
-          "You are not managing any department.",
+        message: "Department not found",
       });
     }
 
@@ -116,22 +67,39 @@ export const getMyDepartment = async (
       success: true,
       department,
     });
-
   } catch (error) {
     next(error);
   }
 };
 
-export const updateMyDepartment = async (
-  req,
-  res,
-  next
-) => {
+export const getMyDepartment = async (req, res, next) => {
+  try {
+    const department = await Department.findOne({
+      manager: req.user._id,
+    }).populate("manager", "name email");
+
+    if (!department) {
+      return res.status(404).json({
+        success: false,
+        message: "You are not managing any department.",
+      });
+    }
+
+    return res.status(200).json({
+      success: true,
+      department,
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
+export const updateMyDepartment = async (req, res, next) => {
   try {
     const { description } = req.body;
 
     const department = await Department.findOne({
-      manager: req.user._id
+      manager: req.user._id,
     }).populate("manager", "name email");
 
     // if (!department) {
@@ -140,7 +108,6 @@ export const updateMyDepartment = async (
     //     message: "You are not assigned to any department.",
     //   });
     // }
-
 
     if (!department) {
       return res.status(404).json({
@@ -153,105 +120,81 @@ export const updateMyDepartment = async (
 
     await department.save();
 
-    await department.populate(
-      "manager",
-      "name email"
-    );
+    await department.populate("manager", "name email");
 
     return res.status(200).json({
       success: true,
       message: "Department updated successfully.",
       department,
     });
-
   } catch (error) {
     next(error);
   }
 };
 
-export const updateDepartment =
-  async (req, res, next) => {
-    try {
-      const {
+export const updateDepartment = async (req, res, next) => {
+  try {
+    const { name, description } = req.body;
+
+    const department = await Department.findByIdAndUpdate(
+      req.params.id,
+      {
         name,
         description,
-      } = req.body;
+      },
+      {
+        new: true,
+        runValidators: true,
+      },
+    );
 
-      const department =
-        await Department.findByIdAndUpdate(
-          req.params.id,
-          {
-            name,
-            description,
-          },
-          {
-            new: true,
-            runValidators: true,
-          }
-        );
-
-      if (!department) {
-        return res.status(404).json({
-          success: false,
-          message:
-            "Department not found",
-        });
-      }
-
-      return res.status(200).json({
-        success: true,
-        department,
+    if (!department) {
+      return res.status(404).json({
+        success: false,
+        message: "Department not found",
       });
-    } catch (error) {
-      next(error);
     }
-  };
 
-export const deleteDepartment =
-  async (req, res, next) => {
-    try {
-      const department =
-        await Department.findById(
-          req.params.id
-        );
+    return res.status(200).json({
+      success: true,
+      department,
+    });
+  } catch (error) {
+    next(error);
+  }
+};
 
-      if (!department) {
-        return res.status(404).json({
-          success: false,
-          message:
-            "Department not found",
-        });
-      }
+export const deleteDepartment = async (req, res, next) => {
+  try {
+    const department = await Department.findById(req.params.id);
 
-      await department.deleteOne();
-
-      return res.status(200).json({
-        success: true,
-        message:
-          "Department deleted successfully",
+    if (!department) {
+      return res.status(404).json({
+        success: false,
+        message: "Department not found",
       });
-    } catch (error) {
-      next(error);
     }
-  };
 
-export const assignManager = async (
-  req,
-  res,
-  next
-) => {
+    await department.deleteOne();
+
+    return res.status(200).json({
+      success: true,
+      message: "Department deleted successfully",
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
+export const assignManager = async (req, res, next) => {
   try {
     const { employeeId } = req.body;
 
     const employee = await User.findById(employeeId);
-    if (
-      employee.department?.toString() !==
-      req.params.id
-    ) {
+    if (employee.department?.toString() !== req.params.id) {
       return res.status(400).json({
         success: false,
-        message:
-          "Employee does not belong to this department.",
+        message: "Employee does not belong to this department.",
       });
     }
 
@@ -276,8 +219,10 @@ export const assignManager = async (
       });
     }
 
-    const department = await Department.findById(req.params.id)
-      .populate("manager", "name");
+    const department = await Department.findById(req.params.id).populate(
+      "manager",
+      "name",
+    );
 
     if (!department) {
       return res.status(404).json({
@@ -305,18 +250,18 @@ export const assignManager = async (
         message: `${employee.name} already manages ${existingDepartment.name}.`,
       });
     }
-   // Promote employee if needed
-      if (employee.role === "employee") {
-        employee.role = "manager";
-      }
+    // Promote employee if needed
+    if (employee.role === "employee") {
+      employee.role = "manager";
+    }
 
-      // Make sure the manager belongs to this department
-      employee.department = department._id;
+    // Make sure the manager belongs to this department
+    employee.department = department._id;
 
-      await employee.save();
+    await employee.save();
 
-      department.manager = employee._id;
-      await department.save();
+    department.manager = employee._id;
+    await department.save();
     await department.populate("manager", "name email");
 
     return res.status(200).json({
@@ -324,41 +269,32 @@ export const assignManager = async (
       message: `${employee.name} has been assigned as manager of ${department.name}.`,
       department,
     });
-
   } catch (error) {
     next(error);
   }
 };
 
-export const getDepartmentEmployees =
-  async (req, res, next) => {
-    try {
-      const employees =
-        await User.find({
-          department: req.params.id,
-          role: "employee",
-        })
-          .select(
-            "name email isActive"
-          )
-          .sort({
-            name: 1,
-          });
-
-      return res.status(200).json({
-        success: true,
-        employees,
+export const getDepartmentEmployees = async (req, res, next) => {
+  try {
+    const employees = await User.find({
+      department: req.params.id,
+      role: "employee",
+    })
+      .select("name email isActive")
+      .sort({
+        name: 1,
       });
-    } catch (error) {
-      next(error);
-    }
-  };
 
-export const changeManager = async (
-  req,
-  res,
-  next
-) => {
+    return res.status(200).json({
+      success: true,
+      employees,
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
+export const changeManager = async (req, res, next) => {
   try {
     const { employeeId } = req.body;
 
@@ -378,13 +314,9 @@ export const changeManager = async (
       });
     }
 
-    const currentManager = await User.findById(
-      department.manager
-    );
+    const currentManager = await User.findById(department.manager);
 
-    const newManager = await User.findById(
-      employeeId
-    );
+    const newManager = await User.findById(employeeId);
 
     if (!newManager) {
       return res.status(404).json({
@@ -393,22 +325,17 @@ export const changeManager = async (
       });
     }
 
-    if (
-      newManager.department?.toString() !==
-      department._id.toString()
-    ) {
+    if (newManager.department?.toString() !== department._id.toString()) {
       return res.status(400).json({
         success: false,
-        message:
-          "Employee does not belong to this department.",
+        message: "Employee does not belong to this department.",
       });
     }
 
     if (!newManager.isActive) {
       return res.status(400).json({
         success: false,
-        message:
-          "Inactive employee cannot become manager.",
+        message: "Inactive employee cannot become manager.",
       });
     }
 
@@ -425,22 +352,14 @@ export const changeManager = async (
       success: true,
       message: "Manager changed successfully.",
     });
-
   } catch (error) {
     next(error);
   }
 };
 
-export const removeManager = async (
-  req,
-  res,
-  next
-) => {
+export const removeManager = async (req, res, next) => {
   try {
-    const department =
-      await Department.findById(
-        req.params.id
-      );
+    const department = await Department.findById(req.params.id);
 
     if (!department) {
       return res.status(404).json({
@@ -456,10 +375,7 @@ export const removeManager = async (
       });
     }
 
-    const manager =
-      await User.findById(
-        department.manager
-      );
+    const manager = await User.findById(department.manager);
 
     manager.role = "employee";
 
@@ -472,7 +388,6 @@ export const removeManager = async (
       success: true,
       message: "Manager removed successfully.",
     });
-
   } catch (error) {
     next(error);
   }
