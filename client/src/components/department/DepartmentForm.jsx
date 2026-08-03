@@ -1,18 +1,27 @@
 import { useState } from "react";
 import { toast } from "react-toastify";
-import { createDepartment } from "../../api/departmentApi";
-import Button from "../ui/Button";
-function DepartmentForm({ onSuccess }) {
-  const [form, setForm] = useState({
-    name: "",
-    description: "",
-  });
 
-  const handleChange = (e) => {
+import { createDepartment } from "../../api/departmentApi";
+
+import Button from "../ui/Button";
+
+const initialForm = {
+  name: "",
+  description: "",
+};
+
+function DepartmentForm({ onSuccess }) {
+  const [form, setForm] = useState(initialForm);
+
+  const handleChange = ({ target: { name, value } }) => {
     setForm((prev) => ({
       ...prev,
-      [e.target.name]: e.target.value,
+      [name]: value,
     }));
+  };
+
+  const resetForm = () => {
+    setForm(initialForm);
   };
 
   const handleSubmit = async (e) => {
@@ -23,11 +32,7 @@ function DepartmentForm({ onSuccess }) {
 
       toast.success("Department created successfully");
 
-      setForm({
-        name: "",
-        description: "",
-      });
-
+      resetForm();
       onSuccess();
     } catch (error) {
       console.error(error);
@@ -44,9 +49,10 @@ function DepartmentForm({ onSuccess }) {
 
       <form className="form-grid" onSubmit={handleSubmit}>
         <div className="form-group">
-          <label>Department Name</label>
+          <label htmlFor="department-name">Department Name</label>
 
           <input
+            id="department-name"
             type="text"
             name="name"
             value={form.name}
@@ -57,16 +63,18 @@ function DepartmentForm({ onSuccess }) {
         </div>
 
         <div className="form-group">
-          <label>Description</label>
+          <label htmlFor="department-description">Description</label>
 
           <textarea
-            rows="4"
+            id="department-description"
             name="description"
+            rows={4}
             value={form.description}
             onChange={handleChange}
             placeholder="Short description..."
           />
         </div>
+
         <div className="form-actions">
           <Button type="submit">Create Department</Button>
         </div>
