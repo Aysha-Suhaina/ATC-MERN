@@ -3,7 +3,7 @@ import socket from "../../socket/socket";
 
 import { getMyConversations } from "../../api/conversationApi";
 
-const RecentChats = ({ onSelectConversation, onlineUsers }) => {
+const RecentChats = ({ onSelectConversation, onlineUsers, refreshChats }) => {
   const [conversations, setConversations] = useState([]);
 
   const myId = localStorage.getItem("userId");
@@ -38,8 +38,9 @@ const RecentChats = ({ onSelectConversation, onlineUsers }) => {
 
   const loadConversations = async () => {
     try {
+      //console.log("Loading conversations...");
       const res = await getMyConversations();
-
+      //console.log(res.data.conversations);
       setConversations(res.data.conversations);
     } catch (err) {
       console.error(err);
@@ -48,7 +49,7 @@ const RecentChats = ({ onSelectConversation, onlineUsers }) => {
 
   useEffect(() => {
     loadConversations();
-  }, []);
+  }, [refreshChats]);
   useEffect(() => {
     const refresh = () => {
       loadConversations();
@@ -71,9 +72,14 @@ const RecentChats = ({ onSelectConversation, onlineUsers }) => {
         <p className="empty-chat">No conversations yet.</p>
       ) : (
         conversations.map((conversation) => {
+          //console.log(
+           // "Conversation:",
+          //  conversation.participants.map((p) => p.name),
+          //);
           const otherUser = conversation.participants.find(
             (user) => user._id !== myId,
           );
+         // console.log("Other user:", otherUser);
 
           const online = onlineUsers.includes(otherUser._id);
 

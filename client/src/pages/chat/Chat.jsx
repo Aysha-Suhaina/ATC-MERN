@@ -9,7 +9,7 @@ import { getMessages, markAsRead } from "../../api/messageApi";
 import "../../components/chat/chat.css";
 const Chat = () => {
   const [selectedUser, setSelectedUser] = useState(null);
-
+  const [refreshChats, setRefreshChats] = useState(0);
   const [currentConversation, setCurrentConversation] = useState(null);
 
   const [messages, setMessages] = useState([]);
@@ -66,6 +66,7 @@ useEffect(() => {
       const conversation = conversationRes.data.conversation;
 
       setCurrentConversation(conversation);
+      setRefreshChats(prev => prev + 1);
 
       // Load all previous messages
       const messagesRes = await getMessages(conversation._id);
@@ -86,6 +87,7 @@ useEffect(() => {
         selectedUser={selectedUser}
         setSelectedUser={handleSelectUser}
         onlineUsers={onlineUsers}
+        refreshChats={refreshChats}
       />
 
       <Conversation
