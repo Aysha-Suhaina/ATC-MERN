@@ -3,7 +3,7 @@ import SearchBar from "./SearchBar";
 import RecentChats from "./RecentChats";
 import UserList from "./UserList";
 
-const Sidebar = ({ selectedUser, setSelectedUser, onlineUsers }) => {
+const Sidebar = ({ selectedUser, setSelectedUser, onlineUsers, refreshChats }) => {
   const [search, setSearch] = useState("");
   return (
     <div className="chat-sidebar">
@@ -24,6 +24,7 @@ const Sidebar = ({ selectedUser, setSelectedUser, onlineUsers }) => {
             <RecentChats
               onSelectConversation={setSelectedUser}
               onlineUsers={onlineUsers}
+              refreshChats={refreshChats}
             />
 
             <hr />
