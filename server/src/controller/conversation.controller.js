@@ -38,112 +38,84 @@ export const getMessages = async (req, res) => {
   }
 };
 
-export const openConversation = async (
-  req,
-  res
-) => {
+export const openConversation = async (req, res) => {
   try {
     const { receiverId } = req.body;
 
-    let conversation =
-      await Conversation.findOne({
-        isGroup: false,
-        participants: {
-          $all: [
-            req.user._id,
-            receiverId,
-          ],
-        },
-      });
+    let conversation = await Conversation.findOne({
+      isGroup: false,
+      participants: {
+        $all: [req.user._id, receiverId],
+      },
+    });
 
     if (!conversation) {
-      conversation =
-        await Conversation.create({
-          participants: [
-            req.user._id,
-            receiverId,
-          ],
-        });
+      conversation = await Conversation.create({
+        participants: [req.user._id, receiverId],
+      });
     }
 
     res.json({
       success: true,
       conversation,
     });
+  } catch (error) {
+    console.error("=== OPEN CONVERSATION ERROR ===");
+    console.error(error);
+    console.error(error.stack);
 
- } catch (error) {
-  console.error("=== OPEN CONVERSATION ERROR ===");
-  console.error(error);
-  console.error(error.stack);
-
-  return res.status(500).json({
-    success: false,
-    message: error.message,
-  });
-}
+    return res.status(500).json({
+      success: false,
+      message: error.message,
+    });
+  }
 };
 
-export const getMyConversations = async (
-  req,
-  res
-) => {
+export const getMyConversations = async (req, res) => {
   try {
-    const conversations =
-      await Conversation.find({
-        participants: req.user._id,
+    const conversations = await Conversation.find({
+      participants: req.user._id,
+      lastMessage: { $ne: null },
+    })
+      .populate("participants", "name role department")
+      .populate({
+        path: "lastMessage",
+        populate: {
+          path: "sender",
+          select: "name",
+        },
       })
-        .populate(
-          "participants",
-          "name role department"
-        )
-        .populate({
-          path: "lastMessage",
-          populate: {
-            path: "sender",
-            select: "name",
+      .sort({
+        updatedAt: -1,
+      });
+
+    const conversationsWithUnread = await Promise.all(
+      conversations.map(async (conversation) => {
+        const unreadCount = await Message.countDocuments({
+          conversation: conversation._id,
+
+          sender: {
+            $ne: req.user._id,
           },
-        })
-        .sort({
-          updatedAt: -1,
+
+          isRead: false,
         });
 
-    const conversationsWithUnread =
-      await Promise.all(
-        conversations.map(
-          async (conversation) => {
-
-            const unreadCount =
-              await Message.countDocuments({
-                conversation:
-                  conversation._id,
-
-                sender: {
-                  $ne: req.user._id,
-                },
-
-                isRead: false,
-              });
-
-            return {
-              ...conversation.toObject(),
-              unreadCount,
-            };
-          }
-        )
-      );
+        return {
+          ...conversation.toObject(),
+          unreadCount,
+        };
+      }),
+    );
 
     res.json({
       success: true,
-      conversations:
-        conversationsWithUnread,
+      conversations: conversationsWithUnread,
     });
-
   } catch (error) {
-
     res.status(500).json({
       success: false,
       message: error.message,
     });
-
   }
 };

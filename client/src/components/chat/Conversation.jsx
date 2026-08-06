@@ -22,7 +22,7 @@ const Conversation = ({
       });
 
       setMessages((prev) => [...prev, res.data.message]);
-
+      console.log("Message sent");
       socket.emit("send_message", {
         senderId: localStorage.getItem("userId"),
         receiverId: selectedUser._id,

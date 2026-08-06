@@ -52,6 +52,7 @@ const RecentChats = ({ onSelectConversation, onlineUsers, refreshChats }) => {
   }, [refreshChats]);
   useEffect(() => {
     const refresh = () => {
+      console.log("Refreshing recent chats...");
       loadConversations();
     };
 
