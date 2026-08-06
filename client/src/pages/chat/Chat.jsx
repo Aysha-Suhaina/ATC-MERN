@@ -14,47 +14,52 @@ const Chat = () => {
 
   const [messages, setMessages] = useState([]);
 
-const { onlineUsers } = useSocket();
+  const { onlineUsers } = useSocket();
 
-useEffect(() => {
-  const handleReceiveMessage = async (data) => {
-    if (
-      currentConversation &&
-      data.message.conversation === currentConversation._id
-    ) {
-      setMessages((prev) => [...prev, data.message]);
+  useEffect(() => {
+    const handleReceiveMessage = async (data) => {
+      const myId = localStorage.getItem("userId");
 
-      await markAsRead(currentConversation._id);
+      if (data.senderId === myId) {
+        return;
+      }
+      if (
+        currentConversation &&
+        data.message.conversation === currentConversation._id
+      ) {
+        setMessages((prev) => [...prev, data.message]);
 
-      const updated = await getMessages(currentConversation._id);
+        await markAsRead(currentConversation._id);
 
-      setMessages(updated.data.messages);
-    }
+        const updated = await getMessages(currentConversation._id);
 
-    console.log("Incoming:", data.message.conversation);
-  };
+        setMessages(updated.data.messages);
+      }
 
-  const handleMessageRead = ({ messageId }) => {
-    setMessages((prev) =>
-      prev.map((message) =>
-        message._id === messageId
-          ? {
-              ...message,
-              isRead: true,
-            }
-          : message,
-      ),
-    );
-  };
+      console.log("Incoming:", data.message.conversation);
+    };
 
-  socket.on("receive_message", handleReceiveMessage);
-  socket.on("message_read", handleMessageRead);
+    const handleMessageRead = ({ messageId }) => {
+      setMessages((prev) =>
+        prev.map((message) =>
+          message._id === messageId
+            ? {
+                ...message,
+                isRead: true,
+              }
+            : message,
+        ),
+      );
+    };
 
-  return () => {
-    socket.off("receive_message", handleReceiveMessage);
-    socket.off("message_read", handleMessageRead);
-  };
-}, [currentConversation]);
+    socket.on("receive_message", handleReceiveMessage);
+    socket.on("message_read", handleMessageRead);
+
+    return () => {
+      socket.off("receive_message", handleReceiveMessage);
+      socket.off("message_read", handleMessageRead);
+    };
+  }, [currentConversation]);
 
   const handleSelectUser = async (user) => {
     setSelectedUser(user);
@@ -66,7 +71,7 @@ useEffect(() => {
       const conversation = conversationRes.data.conversation;
 
       setCurrentConversation(conversation);
-      setRefreshChats(prev => prev + 1);
+      setRefreshChats((prev) => prev + 1);
 
       // Load all previous messages
       const messagesRes = await getMessages(conversation._id);
