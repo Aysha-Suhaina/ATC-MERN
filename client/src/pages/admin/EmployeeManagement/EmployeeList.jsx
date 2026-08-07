@@ -22,7 +22,12 @@ const EmployeeList = () => {
   const [employees, setEmployees] = useState([]);
   const [departments, setDepartments] = useState([]);
   const [designations, setDesignations] = useState([]);
-
+  const filteredDesignations = departmentFilter
+  ? designations.filter(
+      (designation) =>
+        designation.department?._id === departmentFilter
+    )
+  : designations;
   const navigate = useNavigate();
 
   const fetchEmployees = async () => {
@@ -126,7 +131,10 @@ const EmployeeList = () => {
 
         <select
           value={departmentFilter}
-          onChange={(e) => setDepartmentFilter(e.target.value)}
+          onChange={(e) => {
+            setDepartmentFilter(e.target.value);
+            setDesignationFilter("");
+          }}
         >
           <option value="">All Departments</option>
 
@@ -143,7 +151,7 @@ const EmployeeList = () => {
         >
           <option value="">All Designations</option>
 
-          {designations.map((des) => (
+          {filteredDesignations.map((des) => (
             <option key={des._id} value={des._id}>
               {des.name}
             </option>
