@@ -11,6 +11,9 @@ import Login from "./pages/Auth/Login";
 import ResetPassword from "./pages/Auth/ResetPassword";
 import Register from "./pages/Auth/Register";
 
+//profile
+import Profile from "./pages/Profile/Profile";
+
 //dashboard - attendance mgmt
 import Dashboard from "./pages/employee/Dashboard";
 import EditAttendance from "./pages/employee/EditAttendance";
@@ -176,7 +179,7 @@ function App() {
           />
         </Route>
 
-        {/* <Route
+        <Route
           path="/profile"
           element={
             <ProtectedRoute
@@ -185,7 +188,7 @@ function App() {
               <Profile />
             </ProtectedRoute>
           }
-        /> */}
+        />
       </Routes>
       <ToastContainer position="top-right" autoClose={3000} theme="colored" />
     </>
