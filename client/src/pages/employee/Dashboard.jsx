@@ -108,7 +108,7 @@ const Dashboard = () => {
 
         {profile && (
           <div className="grid-3">
-            <InfoCard title="Employee" value={profile.name} />
+            <InfoCard title="Name" value={profile.name} />
             <InfoCard
               title="Department"
               value={profile.department?.name || "-"}

@@ -11,6 +11,10 @@ function Navbar() {
         <h2>{localStorage.getItem("userRole")?.toUpperCase()} Portal</h2>
 
         <div className="navbar-actions">
+          <Link to="/profile">
+            <Button variant="secondary">Profile</Button>
+          </Link>
+
           <Link to="/chat">
             <Button variant="secondary">Chat</Button>
           </Link>
