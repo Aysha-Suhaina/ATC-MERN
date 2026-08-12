@@ -3,26 +3,14 @@ import Department from "../model/Department.js";
 import User from "../model/User.js";
 import ApiResponse from "../utils/ApiResponse.js";
 
-export const submitAttendance = async (
-  req,
-  res,
-  next
-) => {
+export const submitAttendance = async (req, res, next) => {
   try {
-    const {
-      checkInTime,
-      checkOutTime,
-      attendanceStatus,
-      remarks,
-    } = req.body;
+    const { checkInTime, checkOutTime, attendanceStatus, remarks } = req.body;
     const attendanceDate = new Date();
     attendanceDate.setHours(0, 0, 0, 0);
     const parsedDate = attendanceDate;
 
-    const normalizeDateTime = (
-      value,
-      fallbackDate
-    ) => {
+    const normalizeDateTime = (value, fallbackDate) => {
       if (!value) return null;
 
       const direct = new Date(value);
@@ -37,7 +25,7 @@ export const submitAttendance = async (
         fallbackDate
       ) {
         const combined = new Date(
-          `${fallbackDate.toISOString().split("T")[0]}T${value}`
+          `${fallbackDate.toISOString().split("T")[0]}T${value}`,
         );
         if (!Number.isNaN(combined.getTime())) {
           return combined;
@@ -47,14 +35,8 @@ export const submitAttendance = async (
       return null;
     };
 
-    const normalizedCheckIn = normalizeDateTime(
-      checkInTime,
-      attendanceDate
-    );
-    const normalizedCheckOut = normalizeDateTime(
-      checkOutTime,
-      attendanceDate
-    );
+    const normalizedCheckIn = normalizeDateTime(checkInTime, attendanceDate);
+    const normalizedCheckOut = normalizeDateTime(checkOutTime, attendanceDate);
 
     if (
       Number.isNaN(parsedDate.getTime()) ||
@@ -62,8 +44,7 @@ export const submitAttendance = async (
       !normalizedCheckOut
     ) {
       return res.status(400).json({
-        message:
-          "Please provide valid date and time values",
+        message: "Please provide valid date and time values",
       });
     }
 
@@ -74,214 +55,128 @@ export const submitAttendance = async (
 
     if (existing) {
       return res.status(400).json({
-        message:
-          "Attendance already submitted",
+        message: "Attendance already submitted",
       });
     }
 
     const totalHours =
       Math.max(
         0,
-        (normalizedCheckOut - normalizedCheckIn) /
-          (1000 * 60 * 60)
+        (normalizedCheckOut - normalizedCheckIn) / (1000 * 60 * 60),
       ) || 0;
 
-    const attendance =
-      await Attendance.create({
-        user: req.user.id,
-        date: attendanceDate,
-        checkInTime: normalizedCheckIn,
-        checkOutTime: normalizedCheckOut,
-        totalHours: Number(totalHours.toFixed(2)),
-        attendanceStatus,
-        remarks,
-      });
+    const attendance = await Attendance.create({
+      user: req.user.id,
+      date: attendanceDate,
+      checkInTime: normalizedCheckIn,
+      checkOutTime: normalizedCheckOut,
+      totalHours: Number(totalHours.toFixed(2)),
+      attendanceStatus,
+      remarks,
+    });
 
-    return res.status(201).json(
-      new ApiResponse(
-        201,
-        "Attendance submitted",
-        attendance
-      )
-    );
+    return res
+      .status(201)
+      .json(new ApiResponse(201, "Attendance submitted", attendance));
   } catch (error) {
     next(error);
   }
 };
 
-export const getAllAttendance = async (
-  req,
-  res,
-  next
-) => {
+export const getAllAttendance = async (req, res, next) => {
   try {
-
-    const {
-      search,
-      department,
-      status,
-      approval,
-      date,
-    } = req.query;
+    const { search, department, status, approval, date } = req.query;
 
     const filter = {};
 
     if (status) {
-      filter.attendanceStatus =
-        status;
+      filter.attendanceStatus = status;
     }
 
     if (approval) {
-      filter.approvalStatus =
-        approval;
+      filter.approvalStatus = approval;
     }
 
     if (date) {
+      const selected = new Date(date);
 
-      const selected =
-        new Date(date);
+      selected.setHours(0, 0, 0, 0);
 
-      selected.setHours(
-        0,
-        0,
-        0,
-        0
-      );
+      const nextDate = new Date(selected);
 
-      const nextDate =
-        new Date(selected);
-
-      nextDate.setDate(
-        nextDate.getDate() + 1
-      );
+      nextDate.setDate(nextDate.getDate() + 1);
 
       filter.date = {
-
         $gte: selected,
 
         $lt: nextDate,
-
       };
-
     }
 
-    let attendance =
-      await Attendance.find(filter)
-        .populate({
-          path: "user",
-          select:
-            "name email role department designation",
-          populate: [
-            {
-              path: "department",
-            },
-            {
-              path: "designation",
-            },
-          ],
-        });
+    let attendance = await Attendance.find(filter).populate({
+      path: "user",
+      select: "name email role department designation",
+      populate: [
+        {
+          path: "department",
+        },
+        {
+          path: "designation",
+        },
+      ],
+    });
 
     if (department) {
-
-      attendance =
-        attendance.filter(
-          (item) =>
-            item.user?.department?._id.toString() ===
-            department
-        );
-
+      attendance = attendance.filter(
+        (item) => item.user?.department?._id.toString() === department,
+      );
     }
 
     if (search) {
+      const keyword = search.toLowerCase();
 
-      const keyword =
-        search.toLowerCase();
-
-      attendance =
-        attendance.filter(
-          (item) =>
-            item.user?.name
-              ?.toLowerCase()
-              .includes(keyword) ||
-            item.user?.email
-              ?.toLowerCase()
-              .includes(keyword)
-        );
-
+      attendance = attendance.filter(
+        (item) =>
+          item.user?.name?.toLowerCase().includes(keyword) ||
+          item.user?.email?.toLowerCase().includes(keyword),
+      );
     }
 
     attendance.sort((a, b) => {
-
-      if (
-        a.approvalStatus ===
-          "pending" &&
-        b.approvalStatus !==
-          "pending"
-      )
+      if (a.approvalStatus === "pending" && b.approvalStatus !== "pending")
         return -1;
 
-      if (
-        a.approvalStatus !==
-          "pending" &&
-        b.approvalStatus ===
-          "pending"
-      )
+      if (a.approvalStatus !== "pending" && b.approvalStatus === "pending")
         return 1;
 
-      return (
-        new Date(b.date) -
-        new Date(a.date)
-      );
-
+      return new Date(b.date) - new Date(a.date);
     });
 
-    return res.status(200).json(
-      new ApiResponse(
-        200,
-        "All attendance fetched",
-        attendance
-      )
-    );
-
-  } catch (error) {
-
-    next(error);
-
-  }
-};
-
-export const getMyAttendance = async (
-  req,
-  res,
-  next
-) => {
-  try {
-    const attendance =
-      await Attendance.find({
-        user: req.user.id,
-      }).sort({ date : -1 });
-
-    return res.status(200).json(
-      new ApiResponse(
-        200,
-        "Attendance fetched",
-        attendance
-      )
-    );
+    return res
+      .status(200)
+      .json(new ApiResponse(200, "All attendance fetched", attendance));
   } catch (error) {
     next(error);
   }
 };
 
-export const getAttendanceById = async (
-  req,
-  res,
-  next
-) => {
+export const getMyAttendance = async (req, res, next) => {
   try {
-    const attendance = await Attendance.findById(
-      req.params.attendanceId
-    );
+    const attendance = await Attendance.find({
+      user: req.user.id,
+    }).sort({ date: -1 });
+
+    return res
+      .status(200)
+      .json(new ApiResponse(200, "Attendance fetched", attendance));
+  } catch (error) {
+    next(error);
+  }
+};
+
+export const getAttendanceById = async (req, res, next) => {
+  try {
+    const attendance = await Attendance.findById(req.params.attendanceId);
 
     if (!attendance) {
       return res.status(404).json({
@@ -290,63 +185,41 @@ export const getAttendanceById = async (
       });
     }
 
-    if (
-      attendance.user.toString() !==
-      req.user.id
-    ) {
+    if (attendance.user.toString() !== req.user.id) {
       return res.status(403).json({
         success: false,
         message: "Unauthorized",
       });
     }
 
-    return res.status(200).json(
-      new ApiResponse(
-        200,
-        "Attendance fetched",
-        attendance
-      )
-    );
+    return res
+      .status(200)
+      .json(new ApiResponse(200, "Attendance fetched", attendance));
   } catch (error) {
     next(error);
   }
 };
 
-export const getPendingAttendance =
-  async (req, res, next) => {
-    try {
-
-
-
-      const attendance = await Attendance.find({
-        approvalStatus: "pending",
+export const getPendingAttendance = async (req, res, next) => {
+  try {
+    const attendance = await Attendance.find({
+      approvalStatus: "pending",
+    })
+      .populate({
+        path: "user",
+        populate: [{ path: "department" }, { path: "designation" }],
       })
-          .populate({
-    path: "user",
-    populate: [
-        { path: "department" },
-        { path: "designation" }
-    ]
-})
-          .sort({ date: -1 });
+      .sort({ date: -1 });
 
-      return res.status(200).json(
-        new ApiResponse(
-          200,
-          "Pending attendance fetched",
-          attendance
-        )
-      );
-    } catch (error) {
-      next(error);
-    }
-  };
+    return res
+      .status(200)
+      .json(new ApiResponse(200, "Pending attendance fetched", attendance));
+  } catch (error) {
+    next(error);
+  }
+};
 
-export const getManagerPendingAttendance = async (
-  req,
-  res,
-  next
-) => {
+export const getManagerPendingAttendance = async (req, res, next) => {
   try {
     const department = await Department.findOne({
       manager: req.user.id,
@@ -365,9 +238,7 @@ export const getManagerPendingAttendance = async (
       isActive: true,
     }).select("_id");
 
-    const employeeIds = employees.map(
-      (emp) => emp._id
-    );
+    const employeeIds = employees.map((emp) => emp._id);
 
     const attendance = await Attendance.find({
       approvalStatus: "pending",
@@ -377,75 +248,57 @@ export const getManagerPendingAttendance = async (
     })
       .populate({
         path: "user",
-        populate: [
-          { path: "department" },
-          { path: "designation" },
-        ],
+        populate: [{ path: "department" }, { path: "designation" }],
       })
       .sort({ date: -1 });
 
-    return res.status(200).json(
-      new ApiResponse(
-        200,
-        "Pending attendance fetched",
-        attendance
-      )
-    );
+    return res
+      .status(200)
+      .json(new ApiResponse(200, "Pending attendance fetched", attendance));
   } catch (error) {
     next(error);
   }
 };
 
-export const getManagerAttendanceHistory = async (
-  req,
-  res,
-  next
-) => {
+export const getManagerAttendanceHistory = async (req, res, next) => {
   try {
-    const department =
-      await Department.findOne({
-        manager: req.user.id,
-      });
+    const department = await Department.findOne({
+      manager: req.user.id,
+    });
 
     if (!department) {
       return res.status(404).json({
         success: false,
-        message:
-          "No department assigned.",
+        message: "No department assigned.",
       });
     }
 
-    const employees =
-      await User.find({
-        department: department._id,
-        role: "employee",
-      }).select("_id");
+    const employees = await User.find({
+      department: department._id,
+      role: "employee",
+    }).select("_id");
 
-    const employeeIds =
-      employees.map(
-        (emp) => emp._id
-      );
+    const employeeIds = employees.map((emp) => emp._id);
 
-    const attendance =
-      await Attendance.find({
-        user: {
-          $in: employeeIds,
-        },
+    const attendance = await Attendance.find({
+      user: {
+        $in: employeeIds,
+      },
+    })
+      .populate({
+        path: "user",
+        populate: [
+          {
+            path: "department",
+          },
+          {
+            path: "designation",
+          },
+        ],
       })
-        .populate({
-          path: "user",
-          populate: [
-            {
-              path: "department",
-            },
-            {
-              path: "designation",
-            },
-          ],
-        })
-        .sort({
-          date: -1,
-        });
+      .sort({
+        date: -1,
+      });
 
     return res.status(200).json({
       success: true,
@@ -456,129 +309,72 @@ export const getManagerAttendanceHistory = async (
   }
 };
 
-export const approveAttendance =
-  async (req, res, next) => {
-    try {
-      const { attendanceId } = req.params;
-      const { remarks } = req.body;
-
-      const attendance =
-        await Attendance.findById(
-          attendanceId
-        );
-
-      if (!attendance) {
-        return res.status(404).json({
-          message:
-            "Attendance not found",
-        });
-      }
-
-      attendance.approvalStatus =
-        "approved";
-
-      attendance.approvedBy =
-        req.user.id;
-
-      attendance.approvedAt =
-        new Date();
-
-      attendance.remarks = remarks;
-
-      await attendance.save();
-
-      return res.status(200).json(
-        new ApiResponse(
-          200,
-          "Attendance approved",
-          attendance
-        )
-      );
-    } catch (error) {
-      next(error);
-    }
-  };
-
-export const rejectAttendance =
-  async (req, res, next) => {
-    try {
-      const { attendanceId } = req.params;
-      const { remarks } = req.body;
-
-      const attendance =
-        await Attendance.findById(
-          attendanceId
-        );
-
-      if (!attendance) {
-        return res.status(404).json({
-          message:
-            "Attendance not found",
-        });
-      }
-
-      attendance.approvalStatus =
-        "rejected";
-
-      attendance.rejectedBy =
-        req.user.id;
-
-      attendance.rejectedAt =
-        new Date();
-
-      attendance.remarks = remarks;
-
-      await attendance.save();
-
-      return res.status(200).json(
-        new ApiResponse(
-          200,
-          "Attendance rejected",
-          attendance
-        )
-      );
-    } catch (error) {
-      next(error);
-    }
-  };
-
-export const deleteAttendance = async (
-  req,
-  res,
-  next
-) => {
+export const approveAttendance = async (req, res, next) => {
   try {
-    const attendance = await Attendance.findByIdAndDelete(
-      req.params.attendanceId
-    );
+    const { attendanceId } = req.params;
+    const { remarks } = req.body;
+
+    const attendance = await Attendance.findById(attendanceId);
 
     if (!attendance) {
       return res.status(404).json({
-        success: false,
         message: "Attendance not found",
       });
     }
 
-    return res.status(200).json(
-      new ApiResponse(
-        200,
-        "Attendance deleted",
-        attendance
-      )
-    );
+    attendance.approvalStatus = "approved";
+
+    attendance.approvedBy = req.user.id;
+
+    attendance.approvedAt = new Date();
+
+    attendance.remarks = remarks;
+
+    await attendance.save();
+
+    return res
+      .status(200)
+      .json(new ApiResponse(200, "Attendance approved", attendance));
   } catch (error) {
     next(error);
   }
 };
 
-export const resubmitAttendance = async (
-  req,
-  res,
-  next
-) => {
+export const rejectAttendance = async (req, res, next) => {
   try {
-    const attendance = await Attendance.findById(
-      req.params.id
+    const { attendanceId } = req.params;
+    const { remarks } = req.body;
+
+    const attendance = await Attendance.findById(attendanceId);
+
+    if (!attendance) {
+      return res.status(404).json({
+        message: "Attendance not found",
+      });
+    }
+
+    attendance.approvalStatus = "rejected";
+
+    attendance.rejectedBy = req.user.id;
+
+    attendance.rejectedAt = new Date();
+
+    attendance.remarks = remarks;
+
+    await attendance.save();
+
+    return res
+      .status(200)
+      .json(new ApiResponse(200, "Attendance rejected", attendance));
+  } catch (error) {
+    next(error);
+  }
+};
+
+export const deleteAttendance = async (req, res, next) => {
+  try {
+    const attendance = await Attendance.findByIdAndDelete(
+      req.params.attendanceId,
     );
 
     if (!attendance) {
@@ -588,35 +384,72 @@ export const resubmitAttendance = async (
       });
     }
 
-    if (
-      attendance.user.toString() !==
-      req.user.id
-    ) {
+    return res
+      .status(200)
+      .json(new ApiResponse(200, "Attendance deleted", attendance));
+  } catch (error) {
+    next(error);
+  }
+};
+
+export const resubmitAttendance = async (req, res, next) => {
+  try {
+    const attendance = await Attendance.findById(req.params.id);
+
+    if (!attendance) {
+      return res.status(404).json({
+        success: false,
+        message: "Attendance not found",
+      });
+    }
+
+    if (attendance.user.toString() !== req.user.id) {
       return res.status(403).json({
         success: false,
         message: "Unauthorized",
       });
     }
 
-    if (
-      attendance.approvalStatus !== "rejected"
-    ) {
+    // Only rejected attendance can be resubmitted
+    if (attendance.approvalStatus !== "rejected") {
       return res.status(400).json({
         success: false,
-        message:
-          "Only rejected attendance can be edited",
+        message: "Only rejected attendance can be resubmitted",
+      });
+    }
+
+    // Allow only one resubmission
+    if (attendance.resubmissionCount >= 1) {
+      return res.status(400).json({
+        success: false,
+        message: "Attendance can only be resubmitted once",
+      });
+    }
+
+    // Compare calendar dates
+    const today = new Date();
+
+    const attendanceDate = new Date(attendance.date);
+
+    const isSameDay =
+      attendanceDate.getFullYear() === today.getFullYear() &&
+      attendanceDate.getMonth() === today.getMonth() &&
+      attendanceDate.getDate() === today.getDate();
+
+    if (!isSameDay) {
+      return res.status(400).json({
+        success: false,
+        message: "Attendance can only be resubmitted on the same day",
       });
     }
 
     const baseDate = attendance.date || new Date();
 
-    const normalizeTimeToDate = (
-      value,
-      fallbackDate
-    ) => {
+    const normalizeTimeToDate = (value, fallbackDate) => {
       if (!value) return null;
 
       const direct = new Date(value);
+
       if (!Number.isNaN(direct.getTime())) {
         return direct;
       }
@@ -627,10 +460,7 @@ export const resubmitAttendance = async (
         !value.includes("T")
       ) {
         const combined = new Date(
-          `${fallbackDate.toISOString().slice(
-            0,
-            10
-          )}T${value}`
+          `${fallbackDate.toISOString().slice(0, 10)}T${value}`,
         );
 
         if (!Number.isNaN(combined.getTime())) {
@@ -643,35 +473,43 @@ export const resubmitAttendance = async (
 
     const normalizedCheckIn = normalizeTimeToDate(
       req.body.checkInTime,
-      baseDate
-    );
-    const normalizedCheckOut = normalizeTimeToDate(
-      req.body.checkOutTime,
-      baseDate
+      baseDate,
     );
 
-    if (
-      !normalizedCheckIn ||
-      !normalizedCheckOut
-    ) {
+    const normalizedCheckOut = normalizeTimeToDate(
+      req.body.checkOutTime,
+      baseDate,
+    );
+
+    if (!normalizedCheckIn || !normalizedCheckOut) {
       return res.status(400).json({
         success: false,
         message: "Invalid check-in or check-out time",
       });
     }
 
+    if (normalizedCheckOut <= normalizedCheckIn) {
+      return res.status(400).json({
+        success: false,
+        message: "Check-out time must be after check-in time",
+      });
+    }
+
     attendance.checkInTime = normalizedCheckIn;
     attendance.checkOutTime = normalizedCheckOut;
+
     attendance.remarks = req.body.remarks || "";
+
     attendance.totalHours = Number(
-      Math.max(
-        0,
-        (normalizedCheckOut - normalizedCheckIn) /
-          (1000 * 60 * 60)
-      ).toFixed(2)
+      ((normalizedCheckOut - normalizedCheckIn) / (1000 * 60 * 60)).toFixed(2),
     );
 
+    // Move back to pending
     attendance.approvalStatus = "pending";
+
+    // Record that the one allowed resubmission has been used
+    attendance.resubmissionCount += 1;
+
     attendance.rejectionReason = "";
     attendance.rejectedBy = null;
     attendance.rejectedAt = null;

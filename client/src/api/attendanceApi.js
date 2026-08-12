@@ -115,7 +115,11 @@ export const getAllAttendance = (
 
 };
 
-
+export const resubmitAttendance = async (id, data) => {
+  return axios.put(`${API}/${id}/resubmit`, data, {
+    withCredentials: true,
+  });
+};
 
 export const deleteAttendance = async (id) => {
   return axios.delete(`${API}/${id}`, {

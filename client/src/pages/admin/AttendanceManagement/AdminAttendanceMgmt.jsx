@@ -1,13 +1,16 @@
 import { useEffect, useState } from "react";
 import { toast } from "react-toastify";
-import { getAllAttendance, deleteAttendance } from "../../../api/attendanceApi";
-import { getDepartments } from "../../../api/departmentApi";
+import { getAllAttendance, deleteAttendance,approveAttendance,
+  rejectAttendance, } from "../../../api/attendanceApi";
+import {
+  getDepartments,
+} from "../../../api/departmentApi";
 import Button from "../../../components/ui/Button";
 import PageHeader from "../../../components/ui/PageHeader";
 import Card from "../../../components/ui/Card";
 import FilterBar from "../../../components/ui/FilterBar";
 import SearchBar from "../../../components/ui/searchBar";
-import StatusBadge from "../../../components/ui/StatusBadge";
+import ApprovalBadge from "../../../components/ui/ApprovalBadge";
 
 const AdminAttendanceMgmt = () => {
   const [records, setRecords] = useState([]);
@@ -70,6 +73,55 @@ const AdminAttendanceMgmt = () => {
     } catch (error) {
       console.error(error);
       toast.error("Failed to delete attendance");
+    }
+  };
+
+  const handleApprove = async (id) => {
+    try {
+      await approveAttendance(id);
+
+      toast.success("Attendance approved");
+
+      setRecords((prev) =>
+        prev.map((record) =>
+          record._id === id
+            ? {
+                ...record,
+                approvalStatus: "approved",
+              }
+            : record,
+        ),
+      );
+    } catch (error) {
+      console.error(error);
+
+      toast.error(
+        error.response?.data?.message || "Failed to approve attendance",
+      );
+    }
+  };
+  const handleReject = async (id) => {
+    try {
+      await rejectAttendance(id);
+
+      toast.success("Attendance rejected");
+
+      setRecords((prev) =>
+        prev.map((record) =>
+          record._id === id
+            ? {
+                ...record,
+                approvalStatus: "rejected",
+              }
+            : record,
+        ),
+      );
+    } catch (error) {
+      console.error(error);
+
+      toast.error(
+        error.response?.data?.message || "Failed to reject attendance",
+      );
     }
   };
 
@@ -179,13 +231,31 @@ const AdminAttendanceMgmt = () => {
 
                   <td>{record.attendanceStatus.replace("_", " ")}</td>
 
+                  {/* <td>
+                    {record.approvalStatus
+                      ? record.approvalStatus.replace("_", " ")
+                      : "-"}
+                  </td> */}
                   <td>
-                    <StatusBadge
-                      active={record.approvalStatus === "approved"}
-                    />
+                    <ApprovalBadge status={record.approvalStatus} />
                   </td>
 
                   <td>
+                    {record.approvalStatus === "pending" && (
+                      <>
+                        <Button onClick={() => handleApprove(record._id)}>
+                          Approve
+                        </Button>
+
+                        <Button
+                          variant="danger"
+                          onClick={() => handleReject(record._id)}
+                        >
+                          Reject
+                        </Button>
+                      </>
+                    )}
+
                     <Button
                       variant="danger"
                       onClick={() => handleDelete(record._id)}
