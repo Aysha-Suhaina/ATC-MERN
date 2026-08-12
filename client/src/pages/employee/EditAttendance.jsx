@@ -2,6 +2,7 @@ import { useCallback, useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { toast } from "react-toastify";
 import axios from "axios";
+import { resubmitAttendance } from "../../api/attendanceApi";
 import Button from "../../components/ui/Button";
 import Navbar from "../../components/Navbar";
 import PageHeader from "../../components/ui/PageHeader";
@@ -43,8 +44,12 @@ const EditAttendance = () => {
         remarks: data.remarks || "",
       });
     } catch (error) {
-      console.error(error);
-      toast.error("Failed to load attendance");
+      console.error("RESUBMIT ERROR:", error);
+      console.error("RESUBMIT RESPONSE:", error.response?.data);
+
+      toast.error(
+        error.response?.data?.message || "Failed to resubmit attendance",
+      );
     } finally {
       setLoading(false);
     }
@@ -77,9 +82,7 @@ const EditAttendance = () => {
     e.preventDefault();
 
     try {
-      await axios.put(`/api/attendance/${id}/resubmit`, formData, {
-        withCredentials: true,
-      });
+      await resubmitAttendance(id, formData);
 
       toast.success("Attendance resubmitted successfully");
 
