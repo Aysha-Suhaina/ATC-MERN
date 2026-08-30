@@ -1,6 +1,6 @@
 # ATC
 
-A full-stack workforce management platform built with the MERN stack and Socket.IO.
+Full-stack HRMS and workforce management platform built with React, Node.js, Express, MongoDB, and Socket.IO.
 
 ## Overview
 
@@ -12,19 +12,41 @@ The project follows a client-server architecture using React for the frontend an
 
 The repository is organized into separate client and server applications, with additional technical documentation available under the `docs/` directory.
 
-## Features
+## Key Features
 
-- JWT-based authentication with secure password hashing using bcrypt.
-- Role-based access control for administrators, managers, and employees.
-- Employee registration and administrative role assignment workflow.
-- Department and designation management with manager allocation.
-- Employee management, including profile updates and status management.
-- Attendance tracking with approval workflows for administrators and managers.
-- Department-level access restrictions for manager operations.
-- Real-time one-to-one messaging powered by Socket.IO.
-- Chat features including conversation history, online/offline presence, typing indicators, and read receipts.
-- Dashboard views tailored to user roles with relevant operational insights.
-- Attendance data export in CSV and Excel formats.
+### Authentication & Authorization
+- JWT-based authentication
+- Secure password hashing with bcrypt
+- Role-based access control
+- Protected routes and APIs
+- Admin, Manager, and Employee roles
+
+### Employee & Organization Management
+- Employee management
+- Department management
+- Designation management
+- Manager assignment
+- Hierarchical role structure
+- Employee status management
+
+### Attendance Management
+- Daily attendance submission
+- Manager approval/rejection
+- Attendance resubmission workflow
+- Department-level access control
+- Attendance reporting and export
+
+### Real-Time Communication
+- One-to-one messaging
+- Online/offline presence
+- Typing indicators
+- Read receipts
+- Conversation history
+
+### Dashboards & Reporting
+- Role-specific dashboards
+- Attendance insights
+- CSV/Excel attendance export
 
 ## Tech Stack
 
@@ -79,6 +101,14 @@ ATC/
 │   └── package.json
 └── package.json            # Root scripts
 ```
+
+##
+Documentation
+
+- [API Documentation](docs/API.md)
+- [Architecture](docs/ARCHITECTURE.md)
+- [Database Design](docs/DATABASE.md)
+- [Testing](docs/TESTING.md)
 
 ## Getting Started
 
